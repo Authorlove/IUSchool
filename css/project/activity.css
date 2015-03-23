@@ -1,0 +1,92 @@
+.all {
+    padding: 0.3em 0 0 0;
+    min-height: 5.0em;
+    background: white;
+    margin-bottom: 0.5em
+}
+
+.allleft {
+    margin-right: 0.2em;
+    width: 3.6em;
+}
+
+.type {
+    display:block;
+    width: 2em;
+   height:1em;
+}
+
+.tz {
+    background: #FA9B5A;
+}
+
+.jz {
+    background: green;
+}
+
+.bs {
+    background: black;
+}
+
+.gr {
+    background: blue;
+}
+
+.hd {
+    background: #5ff;
+}
+
+.zy {
+    background: #566;
+}
+
+.iconn {
+    display: block;
+    width: 2.5em;
+    height: 2.5em;
+    margin: 0.3em 0.3em 0.3em 0.3em;
+    border-radius: 0.2em;
+    background-size: cover
+}
+
+.time {
+    font-size: 0.68em;
+	color:gray;
+}
+
+.title {
+    font-size: 0.85em
+}
+
+.author {
+    font-size: 0.76em;
+    color: #3498db;
+}
+
+.introduce {
+    overflow: hidden;
+    height: 4em
+}
+
+.pic {
+    margin: 0.4em;
+    width: 4.5em;
+	height:4em;
+    background-size: cover
+}
+
+.right {
+    margin: 0.3em;
+    padding: 0.2em 0.3em 0.3em 0.3em;
+    border-radius: 0.5em;
+}
+
+.good {
+    float: left;
+    font-size: 0.8em;
+    margin: 0.2em 0.3em 0 0.1em
+}
+
+.comment {
+    font-size: 0.8em;
+}

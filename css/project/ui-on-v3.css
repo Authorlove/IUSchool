@@ -1,0 +1,31 @@
+.swi2
+{	
+	width:3.1875em;
+	position:relative;
+	height:2em;
+	overflow:hidden;
+	background-image:url('images/open.png');
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+	background-origin:border-box;
+}
+
+.swi-btn2
+{
+	background-image:url('images/close.png');	
+	-webkit-transition: all 200ms linear;
+	transition: all 200ms linear;
+	width:3.1875em;
+	height:2em;
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+	background-origin:border-box;
+}
+input+ div>div.swi-btn2{
+ 	-webkit-transform:translate(-0em);
+}
+
+input:checked  + div>div.swi-btn2
+{
+	-webkit-transform:translate(3.8em);
+}

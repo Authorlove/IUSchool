@@ -1,0 +1,53 @@
+ .first {
+                padding: 0.5em
+            }
+            
+            .m {
+                margin-top: 0.6em
+            }
+            
+            .ma {
+                width: 3.5em;
+                height: 3.5em;
+                margin-right: 0.4em;
+                border-radius: 0.3em;
+            }
+            
+            .mb {
+                font-size: 1.2em;
+                font-weight: bold
+            }
+            
+            .mc {
+                background: #54B6FF;
+                display: block;
+                width: 4.4em;
+                height: 1.1m;
+                float: right;
+                padding:
+                0.3em 0.4em;
+                border-radius:
+                0.5em;
+                font-size:
+                0.8em;
+                color:
+                white;
+            }
+            
+            .md {
+                width: 1.35em;
+                height: 1em;
+                background: url(project/images/sixin.png);
+                display: block;
+                float: left;
+                margin-right: 0.7em;
+                
+                margin-top: 0.15em;
+            }
+            
+            .me {
+                float: left
+            }
+			.mb1{
+				float:right;margin-right:0.5em;
+			}

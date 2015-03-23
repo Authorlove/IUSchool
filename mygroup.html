@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-tab.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="myclass/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <style>
+            input[type = "radio"]:checked + div.rdi {
+                background: #E7A51B;
+                color: white
+            }
+            
+            .radio {
+                border: 1px solid #E7A51B;
+                font-size: 0.9em;
+                color: #E7A51B;
+                float: left;
+                padding: 0.25em 0.9em;
+            }
+            
+            .span1 {
+                margin-right: 0.6em
+            }
+            
+            .span2 {
+                font-size: 0.7em
+            }
+        </style>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header">
+                <div class="uh t-wh ub c-blu">
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                        <div class="t-btn-a1 ub-img uwh-tBtn">
+                        </div>
+                    </div>
+                    <div class="ub-f1 ub-ac ub-pc uinn">
+                        <div class="ub uc-a1  b-wh tx-c">
+                            <div style="margin:0 auto" id="hmenu" style="display:none">
+                                <input type="radio" name="rdi" class="uhide" value="" checked>
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "mygroup_content.html", 0, $$("header").offsetHeight)' class="uinn-a15  ub-f1 rdi radio" style="border-radius: 0.3em 0 0 0.3em;">
+                                   帖子
+                                </div>
+                                <input type="radio" name="rdi" class="uhide" value="">
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "mygroupmember.html", 0, $$("header").offsetHeight)' class="uinn-a15 c-blu ub-f1 rdi t-wh radio" style="border-radius:0 0.3em 0.3em 0">
+                                    成员
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('g_fabu','g_fabu.html')">
+                        发帖
+                    </div>
+                </div>
+            </div>
+            <!--header结束-->
+            <!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-wh">
+            </div>
+            <!--content结束-->
+            <div id="footer">
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                zy_con("content", "mygroup_content.html", 0, $$("header").offsetHeight);
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+        }
+    </script>
+</html>

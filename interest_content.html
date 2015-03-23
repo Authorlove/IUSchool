@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src='js/zy_slide.js'>
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <style>
+            .che {
+                float: left;
+                margin: 0.3em;
+            }
+            
+            input:checked + div {
+                background: #2ecc71;
+                color: white;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-wh umar-a" ontouchstart>
+        <div id="labels" class="uc-a1 t-bla c-gra uba b-gra tx-c">
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            if (window.localStorage.comeFrom == "fabu") {
+                getStudentLabel();
+            }
+            else 
+                getAllLabel();
+        }
+        //获取所有标签
+        //上传参数:session
+        //返回参数:labels
+        function getAllLabel(){
+            var url = URL() + "IULabel/getAllLabel";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var tmpl = '<input type="checkbox" name="che1" class="uhide" value=${label_id} id=${label_id}>' +
+                    '<div onclick="zy_for(event)" class="uinn uba b-gra  che uc-a">${label_name}</div>';
+                    var s = zy_tmpl(tmpl, data.data.labels, zy_tmpl_count(data.data.labels));
+                    $$("labels").innerHTML = s;
+                    getMyInterest();
+                }
+                
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function getMyInterest(){
+            var interests = window.localStorage['interest'].split(",");
+            for (var i = 0; i < interests.length; i++) {
+                if ($$(interests[i]) != null) 
+                    $$(interests[i]).checked = true;
+            }
+        }
+        
+        //获取学生账号使用的标签
+        //上传参数:session
+        //返回参数:labels
+        function getStudentLabel(){
+            var url = URL() + "IULabel/getStudentLabel";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                //				alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var tmpl = '<input type="checkbox" name="${label_name}" class="uhide" value=${label_id} id=${label_id}>' +
+                    '<div onclick="zy_for(event)" class="uinn uba b-gra  che uc-a">${label_name}</div>';
+                    var s = zy_tmpl(tmpl, data.data.labels, zy_tmpl_count(data.data.labels));
+                    $$("labels").innerHTML = s;
+                    var interests = window.localStorage['fabu_labels'].split(",");
+                    for (var i = 0; i < interests.length; i++) {
+                        if ($$(interests[i]) != null) 
+                            $$(interests[i]).checked = true;
+                    }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function finishChoose(){
+            if (window.localStorage.comeFrom == "person_content") 
+                selectMyInterest();
+            else 
+                if (window.localStorage.comeFrom == "fabu") 
+                    fabu_labels();
+                else {
+                    selectLabel();
+                }
+        }
+        
+        function fabu_labels(){
+            var labels = "";
+            var labels_name = "";
+            var selectedLabel = document.getElementsByTagName("input");
+            for (var i = 0; i < selectedLabel.length; i++) {
+                if (selectedLabel[i].checked) {
+                    labels += selectedLabel[i].value;
+                    labels_name += selectedLabel[i].name;
+                    labels += ",";
+                    labels_name += "、";
+                }
+            }
+			labels = labels.substr(0,labels.length-1);
+			labels_name= labels_name.substr(0,labels_name.length-1);
+            window.localStorage.fabu_labels_name = labels_name;
+            window.localStorage.fabu_labels = labels;
+            uexWindow.evaluatePopoverScript("fabu", "content", "fillLabels()");
+            uexWindow.evaluateScript("interest", 0, "closeWin()");
+        }
+        
+        function selectLabel(){
+			var labels_name="";
+            var labels = "";
+            var selectedLabel = document.getElementsByTagName("input");
+            for (var i = 0; i < selectedLabel.length; i++) {
+                if (selectedLabel[i].checked) {
+					labels_name+=selectedLabel[i].text;
+                    labels += selectedLabel[i].value;
+                    labels += ",";
+					labels_name+=",";
+                }
+            }
+			labels = labels.substr(0,labels.length-1);
+            window.localStorage.selectedLabel = labels;
+			window.localStorage.labels_name = labels_name;
+			uexWindow.evaluateScript("interest", 0, "closeWin()");
+            uexWindow.evaluateScript("root",0,"reloadFromLabel()");
+        }
+        
+        function selectMyInterest(){
+            var labels = "";
+            var selectedLabel = document.getElementsByTagName("input");
+            for (var i = 0; i < selectedLabel.length; i++) {
+                if (selectedLabel[i].checked) {
+                    labels += selectedLabel[i].value;
+                    
+                    labels += ",";
+                }
+            }
+			labels = labels.substr(0,labels.length-1);
+            window.localStorage['interest'] = labels;
+            var url = URL() + "IUStudentBusiness/modifyInfo";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.field = "interest";
+            json.value = labels;
+            json = JSON.stringify(json);
+            alert(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    uexWindow.toast(0, 5, "成功修改了兴趣标签", 3000);
+                    uexWindow.evaluateScript("interest", 0, "closeWin()");
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+    </script>
+</html>

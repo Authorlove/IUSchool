@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/fans.css">
+        <link rel="stylesheet" href="myclass_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <style>
+            .maa {
+                width: 3em;
+                height: 3em;
+                border-radius: 0.5em;
+            }
+            
+            .mrr {
+                margin-right: 0.5em
+            }
+            
+            .bbc {
+                padding: 0.2em 0.4em;
+                font-size: 0.9em;
+                float: left;
+                
+            }
+            
+            .ttt {
+                font-size: 0.9em;
+                color: lightslategrey;
+            }
+            
+            .ttt1 {
+                font-size: 0.9em;
+                color: lightslategrey;
+                text-align: right;
+            }
+            
+            .fla {
+                font-size: 0.8em;
+background: rgba(0,0,0,0.1);
+width: 7em;
+margin: 0 auto;
+color: white;
+border-radius: 0.4em;
+margin-bottom: 0.8em;
+            }
+            
+            .mll {
+                margin-left: 0.5em;
+            }
+            
+            .leftdiv {
+                float: left;
+            }
+            
+            .color {
+                color: orange
+            }
+            
+            .privatecontent {
+                padding: 0.5em 0.7em;
+                width: 15em;
+            }
+			.privatecontent1 {
+                padding: 0.5em 0.7em;
+                width: 15em;
+				text-align:right;
+            }
+			.conte{
+				background:white;
+				display:inline-table;
+				padding:0.2em 0.4em;
+			}
+        </style>
+    </head>
+    <body class="um-vp c-wh" ontouchstart style="background:#e8e8e8;">
+        <input type="hidden" id="getid" value="1"><!--获取最后一个输出的id值-->
+        <div class="ub ub-ver" tabindex="0" id="tianchong">
+            <div>
+               
+                            
+                      
+                    
+                
+				
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                uexWindow.setBounce("1");
+                uexWindow.showBounceView("1", "rgba(255,255,255,0)", "0");
+                
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+            window.localStorage['private_letter_count'] = 0;
+            initlist(0);
+            setPageBounce(dorpDownUpdate, pullUpUpdate);
+            
+        }
+        function initlist(id){
+            uexWindow.toast(1, 5, "数据加载中", 0);
+            var url = URL() + "IUPrivateLetter/getLetters";
+            var json = {};
+            json.letter_id = id;
+            json.session = {};
+            json.session.uid = sessionuid();
+            json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    //  var k = JSON.stringify(data);
+                    //alert(k);
+                    if (data.data.letters == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 2000);
+                        return;
+                    }
+                    var t = data.data.letters.length;
+                    var idd = data.data.letters[t - 1].letter_id;
+                    $$('getid').value = idd;
+                    var i = 0;
+                    for (i = 0; i < t; i++) {
+                        var kk = data.data.letters[i];
+                        if (kk.sender_id == uid()) {
+                            //我发送的
+							
+                            var q = '<div class="ub"><ul class="  ub-f1 first" onclick="check1(\'' + kk.receiver_id + '\')"><li><center class="fla">' +
+                            kk.create_time.substr(5, 11) +
+                            '</center></li><li><div class="bbc"><p class="ttt1">' +
+                            '我 @ <span class="color">' +
+                            kk.another_one_message.display_name +
+                            '</span></p>' +
+                            '<div class="privatecontent1"><div class="conte">' +
+                            kk.content +
+                            '</div></div></div><div class="leftdiv"><div class="maa " style="background:url(' +
+                            icon() +
+                            ');background-size: cover;">' +
+                            '</div></div></li></ul></div>';
+                            var para = document.createElement("div");
+                            para.innerHTML = q;
+                            var d = document.getElementById("tianchong");
+                            d.appendChild(para);
+                            uexWindow.closeToast();
+                        }
+                        else {
+                            //他发送的
+                            var q = '<div class="ub"><ul class="  ub-f1 first" onclick="check1(\''+ kk.sender_id +'\')">'+
+                             '<li><center class="fla">'+
+                               kk.create_time.substr(5, 11) +
+                             '</center></li><li><div class="leftdiv">'+
+                             '<div class="maa " style="background:url('+kk.another_one_message.icon+');background-size: cover;">'+
+                              '</div></div><div class="bbc"><p class="ttt">'+
+                              ' <span class="color">'+ kk.another_one_message.display_name+'</span> @ 我</p>'+
+                                '<div class="privatecontent"><div class="conte">'+
+                                  kk.content +
+                                '</div></div></div></li></ul></div>';
+                            var para = document.createElement("div");
+                            para.innerHTML = q;
+                            var d = document.getElementById("tianchong");
+                            d.appendChild(para);
+                        }
+                    }
+                }
+                else {
+                    alert(data.status.error_mesg);
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function check1(id){
+            window.localStorage['other_user_id'] = id;
+            openNewWin('private', 'privateletter.html');
+        }
+        
+        function dorpDownUpdate(){
+            $$('tianchong').innerHTML = "";
+            initlist(0);
+        }
+        
+        function pullUpUpdate(){
+            var ty = document.getElementById('getid').value;
+            initlist(ty);
+            
+        }
+    </script>
+</html>

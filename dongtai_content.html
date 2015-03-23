@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="dongtai_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <style>
+            .dtt {
+                margin-top: 0.5em
+            }
+            
+            .bgg {
+                background: white
+            }
+        </style>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+        <div class="ub  ubb b-gra uinn bgg">
+            <div class="ub-img umwh1" style="background-image: url('dongtai_content/css/myImg/g2.png');">
+            </div>
+            <div class="ub ub-f1 ub-ver umar-l" onclick="openNewWin('myfocus','myfocus.html')">
+                <div class="dtt">
+                    好友动态
+                </div>
+            </div>
+        </div>
+        <div class="ub ub-ac ubb b-gra uinn bgg" ontouchstart="zy_touch('')" onclick="openNewWin('myclass','myclass.html');">
+            <div class="ub-img umwh1" style="background-image: url('dongtai_content/css/myImg/g6.png');">
+            </div>
+            <div class="ub ub-f1 ub-ver umar-l">
+                <div class="dtt">
+                    我的班级
+                </div>
+                <div class="t-gra ulev-1 umar-t">
+                    班级通知、作业发布平台
+                </div>
+            </div>
+        </div>
+        <div id="mygrouplist" style="margin:0;padding:0"">
+        </div>
+        <br/>
+        <div ontouchstart="zy_touch('btn-act')" onclick="openNewWin('addgroup','addgroup.html')" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+            添加更多讨论组
+        </div>
+    </body>
+    <script>
+        zy_init();
+        var url = URL() + "IUGroupBusiness/getMyGroups";
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            upload("");
+			$.clearLS(url);
+            upload("");
+            setPageBounce(dropDownUpdate, null);
+        }
+        function upload(condition){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_meg) {
+                    uexWindow.alert(error_meg);
+                }
+                else {
+                    var tmpl = '<div class="ub ub-ac ubb b-gra uinn bgg" ontouchstart="zy_touch(\'\')"  onclick="detail(\'${group_id}\')">' +
+                    '<div class="ub-img umwh1" style="background-image: url(${icon});"></div>' +
+                    '<div class="ub ub-f1 ub-ver umar-l">' +
+                    '<div class="dtt">${group_name}</div>' +
+                    '<div class="t-gra ulev-1 umar-t">${cb:notice}</div></div></div>';
+                    var s = zy_tmpl(tmpl, data.data.groups, zy_tmpl_count(data.data.groups), tmplCB);
+                    function tmplCB(a, b){
+                        switch (b[1]) {
+                            case 'notice':{
+                                var notice = a.notice.substr(0, 36);
+                                return notice;
+                                break;
+                            }
+                        }
+                    }
+                    $$("mygrouplist").innerHTML = s;
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                }
+            }, 'json', function(err){
+            }, 'POST', json, true);
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            upload("down");
+        }
+        
+        function detail(my_group_id){
+            window.localStorage['my_group_id'] = my_group_id;
+            openNewWin('mygroup', 'mygroup.html');
+        }
+    </script>
+</html>

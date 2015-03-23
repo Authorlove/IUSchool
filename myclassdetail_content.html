@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="information/css/main.css">
+        <link rel="stylesheet" href="information_content/css/main.css">
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <style>
+            .bgg {
+                width: 0.4em;
+                height: 2.2em;
+                border-radius: 0 0.5em 0.5em 0;
+                margin: 0.2em 0;
+                text-align: left;
+            }
+            
+            input[type =
+            "radio"]:checked + div.rdi {
+                background: green;
+            }
+            
+            .p {
+                width: 90%;
+                display: block;
+                margin: 0.45em;
+            }
+            
+            .span1 {
+                width: 4em;
+                margin: 0 4em 0 0.3em;
+            }
+            
+            .span2 {
+                width: 8em;
+            }
+            
+            .span3 {
+                float: right;
+                font-size: 0.7em;
+            }
+            
+            #change_nick {
+                width: 14em;
+                height: 1.4em;
+                border: none;
+                font-size: 0.95em;
+                border-bottom: 1px solid grey;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#e3e3e3;overflow:hidden">
+        <div id="content" class="ub-f1 tx-l t-bla" style="font-size:0.925em">
+            <div class="ub ub-ver" style="padding:0.7em 0em">
+                <div class="uba b-gra-b7  uinn-na2 c-wh " id="touxiangg">
+                    <img src="" style="width: 4em;height: 4em;margin: 0.3em;float:left; " id="icon">
+                    <div style="background:url('css/project/images/addImg.png');background-size:cover;width: 4em;height: 4em;margin: 0.3em;float:left;" ontouchstart="zy_touch('btn-act')" onclick='confirmfun()'>
+                    </div>
+                </div>
+            </div>
+            <div class="ub-ver">
+                <div class="uba b-gra-b7  c-wh" style="border-bottom: 1px solid grey;">
+                    <div class="b-gra-be  ub">
+                        <div style="background:#1EAC56;" class="bgg ">
+                        </div>
+                        <p class="p">
+                            <span class="span1">班级名称</span>
+                            <span class="span2" id="class_name"></span>
+                        </p>
+                    </div>
+                    <div class="b-gra-be  ub">
+                        <div style="background:#3697DB;" class="bgg">
+                        </div>
+                        <p class="p">
+                            <span class="span1">创建者</span>
+                            <span class="span2" id="classcreator"></span>
+                        </p>
+                    </div>
+                    <div class="ub">
+                        <div style="background:#E4A715;" class="bgg">
+                        </div>
+                        <p class="p" style="margin: 0.45em 0.45em 0em 0.45em;border:none;">
+                            <span class="span1" style="float:left;">班级介绍</span>
+                            <span class="span2" id="class_intro" style="background:white;display:block;float:left"></span>
+                            <span class="span3" onclick="openNewWin('changeclassintroduce','changeclassintroduce.html')">></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div ontouchstart="zy_touch('btn-act')" onclick="resign_class()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+                <span>退出</span>班级
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <input type="hidden" name="iconn" value="" id="iconn"/>
+</body>
+<script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                //zy_con("content", "information_content.html", 0, $$("header").offsetHeight);
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+			
+            // A();
+            var url = URL() + "IUClassBusiness/getClassMesg";
+            var sessionuid1 = sessionuid();
+            var sessionsid1 = sessionsid();
+            var json = {};
+            json.session = {};
+            json.session.uid = sessionuid1;
+            json.session.sid = sessionsid1;
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                var t = JSON.stringify(data);
+                alert(t);
+				$$("class_name").innerHTML = data.data.classMesg.class_name;
+				$$("classcreator").innerHTML = data.data.classMesg.owner_id;
+				$$("class_intro").innerHTML = data.data.classMesg.introduce;
+				$$("icon").src = data.data.classMesg.icon;
+               
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+    
+        }
+        
+        function confirmfun(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 0) {
+                    uexCamera.open();
+                }
+                else 
+                    if (data == 1) {
+                        uexImageBrowser.pick();
+                    }
+                    else {
+                    }
+                
+            }
+            uexWindow.confirm("更改头像", "选择图片上传方式", ["拍照", "本地上传", "取消"]);
+            var cText = 0;
+            var cJson = 1;
+            var cInt = 2;
+            uexCamera.cbOpen = function(opCode, dataType, data){
+                switch (dataType) {
+                    case cText:
+                        document.getElementById('icon').src = data;
+                        upload(data);
+                        break;
+                    case cJson:
+                        alert("uex.cJson");
+                        break;
+                    case cInt:
+                        alert("uex.cInt");
+                        break;
+                    default:
+                        alert("error");
+                }
+            }
+            uexImageBrowser.cbPick = function(opCode, dataType, data){
+                document.getElementById('icon').src = data;
+                upload(data);
+            }
+            uexWidgetOne.cbError = function(opCode, errorCode, errorInfo){
+                alert("errorCode:" + errorCode + "\nerrorInfo:" + errorInfo);
+            }
+        }
+        
+        function upload(data){
+            var t = URL() + "UploadFile/uploadIcon";
+            uexUploaderMgr.createUploader(1, t);
+            $$('iconn').value = data;
+            uexUploaderMgr.uploadFile(1, data, "iconn", 3, 300);
+            uexUploaderMgr.onStatus = function(opCode, fileSize, percent, serverPath, status){
+                switch (status) {
+                    case 0:
+                        var kk = "上传进度：" + percent + "%";
+                        uexWindow.toast(1, 5, kk, 2000);
+                        break;
+                    case 1:
+                        var h = eval('(' + serverPath + ')');
+                        //上传头像
+                        var iconName = h.data.picName[0];
+                        url = URL() + "IUStudentBusiness/uploadIcon";
+                        
+                        var sessionuid1 = sessionuid();
+                        var sessionsid1 = sessionsid();
+                        var json = {};
+                        json.iconName = iconName;
+                        json.session = {};
+                        json.session.uid = sessionuid1;
+                        json.session.sid = sessionsid1;
+                        var t = JSON.stringify(json);
+                        var json = [{
+                            'key': 'json',
+                            'type': '0',
+                            'value': t
+                        }];
+                        $.getJSON(url, function(data){
+                            var t = JSON.stringify(data);
+                            //	alert(t);
+                            window.localStorage['icon'] = data.data.icon;
+                            //图片缓存u = data.data.icon;
+                            //   zy_imgcache("iconn", 'iconn', u, null, null, null);
+                            $$('icon').src = data.data.icon;
+                            alert("上传成功.");
+                            
+                        }, 'json', function(err){
+                        
+                        }, 'POST', json);
+                        
+                        //关闭上传对象 
+                        
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    case 2:
+                        alert("上传失败");
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    default:
+                }
+            }
+            
+            //createUploader的回调函数
+            uexUploaderMgr.cbCreateUploader = function(opCode, dataType, data){
+                if (data == 0) {
+                }
+                else {
+                }
+            }
+        }
+        
+        function A(){
+            $$('icon').src = icon();
+            $$('nick').innerHTML = nickname();
+            $$('uid').innerHTML = uid();
+            if (sex() == 1) 
+                $$('sex').innerHTML = "男";
+            else 
+                $$("sex").innerHTML = "女";
+            $$("univs_name").innerHTML = univs_name();
+            $$("grade_academy").innerHTML = grade() + academy_name();
+            
+            if (class_id() == "null") {
+                $$("classname").innerHTML = '<label style="color:blue">加入班级</label>';
+                
+            }
+            else {
+                $$('tips').innerHTML = "有班级的人不能修改以下资料。";
+                $$("classname").innerHTML = class_name();
+            }
+            $$("realname").innerHTML = realname();
+            $$("nick").innerHTML = nickname();
+        }
+        
+        function C(){
+            winClose();
+            uexWindow.evaluateScript("threadWindow", "content", "B()");
+            
+        }
+    	function resign_class(){
+    		var url = URL() + "IUClassBusiness/leaveClass";
+    		 var sessionuid1 = sessionuid();
+            var sessionsid1 = sessionsid();
+            var json = {};
+            json.session = {};
+            json.session.uid = sessionuid1;
+            json.session.sid = sessionsid1;
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                var t = JSON.stringify(data);
+          alert(t);
+		  openNewWin("dongtai","dongtai.html");
+                
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+    
+        }
+    	
+</script>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="news_content/css/main.css">
+        <link rel="stylesheet" href="css/project/activity.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <style>
+        </style>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+        <div class="ub umar-t umar-b">
+            <div class="ub-f1 t-bla">
+                <div class="ub-f1 ub uba c-wh b-gra  sel">
+                    <div id="default_school" onclick="changeSchool()" class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                    </div>
+                </div>
+            </div>
+            <!--下拉列表开始-->
+            <div class="ub-f1 t-bla">
+                <div class="ub-f1 ub uba c-wh b-gra  sel">
+                    <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                        全部类型
+                    </div>
+                    <select name="sel0" selectedindex="0" id="catagory" onchange="zy_selectmenu(this.id),getMessageBaseOnCondition(0)">
+                        <option value="">全部类型</option>
+                        <option value="1">新闻</option>
+                        <option value="2">通知</option>
+                        <option value="3">讲座</option>
+                        <option value="4">比赛</option>
+                        <option value="5">活动</option>
+                        <option value="10">招新</option>
+                    </select>
+                </div>
+            </div>
+            <!--下拉列表开始-->
+            <div class="ub-f1 t-bla">
+                <div class="ub-f1 ub uba c-wh b-gra  sel">
+                    <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                        全部发布者
+                    </div>
+                    <select name="sel1" selectedindex="0" id="publisher_type" onchange="zy_selectmenu(this.id),getMessageBaseOnCondition(0)">
+                        <option value="">全部发布者</option>
+                        <option value="A">学校</option>
+                        <option value="B">学院</option>
+                        <option value="C">社团</option>
+                        <option value="D">学生</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ub-f1 t-bla">
+                <div class="ub-f1 ub uba c-wh b-gra  sel">
+                    <div id="choose_label" onclick="changeLabel()" class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel ulim">
+                        全部标签
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tianchong">
+        </div>
+    </body>
+    <script type="text/javascript">
+        zy_init();
+        var label = "";
+        var message_id = 0;
+        var url = URL() + "IUMessageBusiness/getMessageBaseOnCondition";
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            if (typeof(window.localStorage.selected_univs_name) != "undefined") {
+                $$("default_school").innerHTML = window.localStorage.selected_univs_name;
+            }
+            else 
+                $$("default_school").innerHTML = univs_name();
+            setPageBounce(dropDownUpdate, pullUpUpdate);
+            getMessageBaseOnCondition(0, "");
+			$.clearLS(url);
+            getMessageBaseOnCondition(0, "");
+        }
+        function changeSchool(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch (data) {
+                    case 0:
+                        if ($$("default_school").innerHTML != univs_name()) {
+                            $$("default_school").innerHTML = univs_name();
+                            window.localStorage.selected_univs_id = window.localStorage.univs_id;
+                            getMessageBaseOnCondition(0);
+                        }
+                        break;
+                    case 1:
+                        change_univs();
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            uexWindow.confirm("", "切换学校", ["本校", "其他学校", "取消"]);
+        }
+        
+        function changeLabel(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch (data) {
+                    case 0:
+					alert($$("choose_label").innerHTML != "全部标签");
+                        if ($$("choose_label").innerHTML != "全部标签") {
+                            $$("choose_label").innerHTML = "全部标签";
+                            label = "";
+                            getMessageBaseOnCondition(0, "");
+                        }
+                        break;
+                    case 1:
+                        goToInterest();
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            uexWindow.confirm("", "切换标签", ["全部标签", "筛选标签", "取消"]);
+            
+        }
+        
+        function goToInterest(){
+            openNewWin('interest', 'interest.html');
+            window.localStorage.comeFrom = "allInfo";
+        }
+        
+        function change_univs(){
+            openNewWin("change_univs", "change_univs.html");
+        }
+        
+        function reload(){
+//            alert("reload");
+            $$("default_school").innerHTML = window.localStorage.selected_univs_name;
+            getMessageBaseOnCondition(0, "");
+        }
+        
+        function reloadFromLabel(){
+            alert("label");
+            $$("choose_label").innerHTML = window.localStorage.labels_name;
+            getMessageBaseOnCondition(0, "");
+        }
+        
+        function getMessageBaseOnCondition(mid, condition){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = mid;
+            var publisher_type = $$("publisher_type").value;
+            var catagory = $$("catagory").value;
+            if (typeof(window.localStorage.selectedLabel) != "undefined") 
+                label = window.localStorage.selectedLabel;
+            else 
+                label = "";
+            if (typeof(window.localStorage.selected_univs_id) == "undefined") 
+                window.localStorage.selected_univs_id = window.localStorage.univs_id;
+            condition_string = window.localStorage.selected_univs_id + '|' + publisher_type + '|' + catagory + '|' + label;
+            json.condition_string = condition_string;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    if (data.data.messages == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 1000);
+                        return;
+                    }
+                    var t = data.data.messages.length;
+                    message_id = data.data.messages[t - 1].message_id;
+                    if (mid == 0) {
+                        document.getElementById("tianchong").innerHTML = "";
+                    }
+                    for (var i = 0; i < t; i++) {
+                        var k = data.data.messages[i];
+                        if (k.type_id == "11") {
+                            var typename = choosetype(k.forwarded_message.type_id);
+                            var zhuanfa = '<div><div class="ub ub-f1 ubb b-gra4 all" id="' + k.message_id + '"><div class="ub-f1 ub ub-ver">' +
+                            '<div><div class="t1"><span class="t3">' +
+                            k.publisher_message.realname +
+                            '分享了</span>' +
+                            '<span class="time aa">' +
+                            k.create_time.substr(5, 11) +
+                            '</span></div></div>' +
+                            '<div class="t4">' +
+                            k.content +
+                            '</div>' +
+                            '<div class="t-gra-b1 ulh-for uof t5 ' +
+                            typename +
+                            '1" onclick="openNew(\'' +
+                            k.forwarded_message.message_id +
+                            '\')">' +
+                            '<div class="author t6">' +
+                            '<span class="type1" id="typename" style="background:url(css/project/icon/' +
+                            typename +
+                            '.png) no-repeat;background-size:100%"></span>' +
+                            '<span class="t7">' +
+                            k.forwarded_message.title.substr(0, 10) +
+                            '</span></div>' +
+                            '<div class="t8">' +
+                            k.forwarded_message.content.substr(0, 30) +
+                            '</div></div></div></div></div>';
+                            var para = document.createElement("div");
+                            para.innerHTML = zhuanfa;
+                            var d = document.getElementById("tianchong");
+                            d.appendChild(para);
+                        }
+                        else {
+                            var typename = choosetype(k.type_id);
+                            if (k.picture_url_list.length == 0) {
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all1" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename"></p>' +
+                                '</div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                k.title +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div  class="author ub-f1" onclick=check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')>' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div>' +
+                                '<div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '<span class="uinn">赞</span><span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></p></div></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                            else {
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename">' +
+                                '</p></div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                k.title +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div onclick="check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')" class="author ub-f1">' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div><div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '</p></div></div></div><div class="ub-img">' +
+                                '<div class="pic" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')" style="background:url(' +
+                                k.picture_url_list[0].thumbPicUrl +
+                                ');background-size: cover;" id="picture">' +
+                                '</div><div class="time umar-t tx-c right"><span class="uinn">赞</span>' +
+                                '<span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                        }
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                    else 
+                        if (condition == "up") {
+                            uexWindow.resetBounceView('1');
+                            if (t == 0) {
+                                uexWindow.toast(0, 5, "没有更多消息", 1000);
+                            }
+                        }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json,true);
+        }
+        
+        function closeWin(){
+            winClose();
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            getMessageBaseOnCondition(0, "down");
+        }
+        
+        function pullUpUpdate(){
+            $.clearLS(url);
+            getMessageBaseOnCondition(message_id, "up");
+        }
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+    </script>
+</html>

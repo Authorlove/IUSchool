@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="person_content/css/main.css">
+        <link rel="stylesheet" href="css/project/activity.css">
+        <link rel="stylesheet" href="css/fans.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <style>
+            .jianjie {
+                float: right;
+                margin: -5em -0.5em;
+                width: 3.1em;
+                height: 1.22em;
+                background-size: 100%;
+                color: white;
+                text-align: center;
+                background: black;
+                border-radius: 0.8em 0em 0em 0.8em;
+                opacity: 0.3;
+            }
+            
+            .li-size {
+                margin-right: 0.4em;
+                width: 1.8em;
+                height: 1.8em;
+            }
+            
+            .li-size2 {
+                border-bottom: 2px solid grey;
+                padding: 0.5em;
+            }
+            
+            .hehe {
+                float: left;
+                margin: 0 0.8em
+            }
+            
+            .aaa {
+                font-size: 0.9em;
+                text-indent: 2em;
+                background: white;
+                padding: 1em;
+            }
+            
+            #gz {
+                height: 3em;
+                margin: 0em 0.5em;
+                padding: 0.25em;
+                float: right;
+                width: 5em;
+                position: absolute;
+            }
+            
+            #sx1 {
+                position: absolute;
+                margin: 0em 0.5em;
+                padding: 0.25em;
+                float: right;
+                width: 5em;
+                height: 3em;
+            }
+            
+            .cw {
+                width: 6em
+            }
+            
+            .minheight {
+                min-height: 0;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#E3E3E3">
+        <input type="hidden" id="intro" value=""><input type="hidden" id="choosewhich" value='0'><input type="hidden" id="getid" value="0">
+        <div class="ub ub-ver">
+        <div id="tianchong">
+        </div>
+    </body>
+    <script>            
+	var url = URL() + "IUMessageBusiness/getMyMarkMessage";
+        zy_init();
+        window.uexOnload = function(type){
+            upload(0, "");
+            setPageBounce(dropDownUpdate, pullUpUpdate);
+        }
+        var mark_id = 0;
+        function upload(id, condition){
+            var json = {};
+            json.mark_id = id;
+            json.session = {};
+            json.session.uid = sessionuid();
+            json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+          $.getJSON(url, function(data){
+                //alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    if (data.data.messages == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 3000);
+                        return;
+                    }
+                    var t = data.data.messages.length;
+                    mark_id = data.data.messages[t - 1].message_id;
+                    if (id == 0) {
+                        document.getElementById("tianchong").innerHTML = "";
+                    }
+                    for (var i = 0; i < t; i++) {
+                        var k = data.data.messages[i];
+                        if (k.type_id == "11") {
+                            var typename = choosetype(k.forwarded_message.type_id);
+                            var zhuanfa = '<div><div class="ub ub-f1 ubb b-gra4 all" id="' + k.message_id + '"><div class="ub-f1 ub ub-ver">' +
+                            '<div><div class="t1"><span class="t3">' +
+                            k.publisher_message.realname +
+                            '分享了</span>' +
+                            '<span class="time aa">' +
+                            k.create_time.substr(5, 11) +
+                            '</span></div></div>' +
+                            '<div class="t4">' +
+                            k.content +
+                            '</div>' +
+                            '<div class="t-gra-b1 ulh-for uof t5 ' +
+                            typename +
+                            '1" ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')">' +
+                            '<div class="author t6">' +
+                            '<span class="type1" id="typename" style="background:url(css/project/icon/' +
+                            typename +
+                            '.png) no-repeat;background-size:100%"></span>' +
+                            '<span class="t7">' +
+                            k.forwarded_message.title.substr(0, 10) +
+                            '</span></div>' +
+                            '<div class="t8">' +
+                            k.forwarded_message.content.substr(0, 30) +
+                            '</div></div></div></div></div>';
+                            var para = document.createElement("div");
+                            para.innerHTML = zhuanfa;
+                            var d = document.getElementById("tianchong");
+                            d.appendChild(para);
+                        }
+                        else {
+                            var typename = choosetype(k.type_id);
+                            if (k.picture_url_list.length == 0) {
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all1" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub"  ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename"></p>' +
+                                '</div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')">' +
+                                k.title +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div  class="author ub-f1" onclick=check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')>' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div>' +
+                                '<div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '<span class="uinn">赞</span><span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></p></div></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                            else {
+                            
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub" ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename">' +
+                                '</p></div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')">' +
+                                k.title +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div onclick="check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')" class="author ub-f1">' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div><div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '</p></div></div></div><div class="ub-img">' +
+                                '<div class="pic"  ontouchstart="zy_touch(\'btn-act\'),gtouchstart(\'"+k.forwarded_message.message_id+"\')" ontouchmove="gtouchmove()" ontouchend="gtouchend(\'"+k.forwarded_message.message_id+"\')" style="background:url(' +
+                                k.picture_url_list[0].thumbPicUrl +
+                                ');background-size: cover;" id="picture">' +
+                                '</div><div class="time umar-t tx-c right"><span class="uinn">赞</span>' +
+                                '<span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                        }
+                    }
+                    if (t < 15) {
+                      var para = document.createElement("div");
+                        para.innerHTML = '<center class="ub-f1 tx-c umar-a uc-a" style="color:gray">没有更多消息</center>';
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                    else 
+                        if (condition == "up") {
+                            uexWindow.resetBounceView('1');
+                        }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            upload(0, "down");
+        }
+        
+        function pullUpUpdate(){
+            $.clearLS(url);
+            upload(mark_id, "up");
+        }
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+        
+        var timeOutEvent = 0;//定时器
+        //开始按
+        function gtouchstart(id){
+            timeOutEvent = setTimeout("confirmfun("+id+")", 500);//这里设置定时器，定义长按500毫秒触发长按事件，时间可以自己改，个人感觉500毫秒非常合适
+            return false;
+        };
+        //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
+        function gtouchend(id){
+            clearTimeout(timeOutEvent);//清除定时器
+            if (timeOutEvent != 0) {
+                openNew(id);
+            }
+            return false;
+        };
+        //如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
+        function gtouchmove(){
+            clearTimeout(timeOutEvent);//清除定时器
+            timeOutEvent = 0;
+        };
+        function confirmfun(id){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch(data){
+					case 0:
+					dontMarkMessage(); break;
+					case 1:
+					break;
+				}
+            }
+            uexWindow.confirm("", "取消收藏", ["确认", "取消"]);
+        }
+        
+        function dontMarkMessage(){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/dontMarkMessage";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    uexWindow.toast(0, 5, "成功取消收藏", 500);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+    </script>
+</html>

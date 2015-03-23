@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-list-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="person_content/css/main.css">
+        <link rel="stylesheet" href="dongtai_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <style>
+            .jianjie {
+                float: right;
+                margin: -5em -0.5em;
+                width: 3.1em;
+                height: 1.22em;
+                background-size: 100%;
+                color: white;
+                text-align: center;
+                background: black;
+                border-radius: 0.8em 0em 0em 0.8em;
+                opacity: 0.3;
+            }
+            
+            .li-size {
+                margin-right: 0.4em;
+                width: 1.8em;
+                height: 1.8em;
+            }
+            
+            .li-size2 {
+                border-bottom: 2px solid grey;
+                padding: 0.5em;
+            }
+            
+            #realname span {
+                margin: 0.5em
+            }
+            
+            .iconn {
+                margin-right: 0.625em;
+                width: 2.2em;
+                height: 2.2em;
+                border-radius: 0.3em
+            }
+            
+            .uull {
+                padding: 0.35em;
+            }
+            
+            .bgg {
+                background: white
+            }
+            
+            .jr {
+                float: right;
+                margin-right: 0.5em;
+                height: 2em;
+                width: 3.8em;
+            }
+            
+            .umwh1 {
+                min-height: 4em;
+                min-width: 4em;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#E3E3E3">
+        <div class="ub-img1 perBg ub-fh ub ub-ver" onclick="openNewWin('groupdetail','groupdetail.html')">
+            <div class="uinn-a1 ub-f1" style="font-size: 0.8em;">
+                <center style="margin-top:0.5em">
+                    <div class="c-wh uinn-a16" style="border-radius:0.6em;width:3.5em;height:3.5em">
+                        <div class="ub-fh ub-fv ub-img" style="border-radius:0.6em;background-size:cover;" id="icon">
+                        </div>
+                    </div>
+                </center>
+                <center>
+                    <div id="realname" style="color:white;font-size:1.1em;font-weight: bold;margin-top:0.5em">
+                        <span id="groupname"></span>
+                    </div>
+                </center>
+                <p style="float:right;margin-right:1em;color:white;margin-top:0.5em">
+                    成员 <span id="groupmemcnt"></span>
+                </p>
+            </div>
+        </div>
+        <div id="groupMemberList" class="c-wh">
+        </div>
+    </body>
+    <script>
+        zy_init();
+        var id;
+        var url = URL() + "IUGroupBusiness/getGroupMembers";
+        window.uexOnload = function(type){
+            getGroupInfo();
+            upload("");
+            $.clearLS(url);
+            upload("");
+            setPageBounce(dropDownUpdate, null);
+        }
+        function getGroupInfo(){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.group_id = window.localStorage['my_group_id'];
+            var url = URL() + "IUGroupBusiness/getGroupInfo";
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                alert(JSON.stringify(data));
+                if (data.status.error_meg) {
+                    uexWindow.alert(error_meg);
+                }
+                else {
+                    var group = data.data.group;
+                    window.localStorage['my_group_name'] = group.group_name;
+                    window.localStorage['my_groupmemcnt'] = group.member_count;
+                    window.localStorage['my_notice'] = group.notice;
+                    window.localStorage['my_icon'] = group.icon;
+                    $$("groupname").innerHTML = window.localStorage['my_group_name'];
+                    $$("groupmemcnt").innerHTML = window.localStorage['my_groupmemcnt'];
+                    $$("icon").style.backgroundImage = 'url(' + window.localStorage['my_icon'] + ')';
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function upload(condition){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.group_id = window.localStorage['my_group_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_meg) {
+                    uexWindow.alert(error_meg);
+                }
+                else {
+                    var tmpl = '<div class="ub ub-ac ubb b-gra uinn bgg">' +
+                    '<div class="ub-img umwh1" style="background:url(${icon}) no-repeat; background-size:100%" ontouchstart="zy_touch(\'\')" onclick="detail(\'${uid}\',\'${nickname}\')"></div>' +
+                    '<div class="ub ub-f1 ub-ver umar-l"> <div>' +
+                    '${realname}<span onclick="sendMesg(\'${uid}\')" class="jr" style="background:url(css/project/icon/sx.png) no-repeat;background-size:100%;"></span>' +
+                    '</div>' +
+                    '<div class="t-gra ulev-1">' +
+                    ' ${introduction}' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                    var s = zy_tmpl(tmpl, data.data.members, zy_tmpl_count(data.data.members));
+                    
+                    $$("groupMemberList").innerHTML = s;
+                    if (data.data.members.length < 15) {
+                        var para = document.createElement("div");
+                        para.innerHTML = '<center class="ub-f1 tx-c umar-a uc-a" style="color:gray">没有更多消息</center>';
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                }
+            }, 'json', function(err){
+            }, 'POST', json, true);
+        }
+        
+        function sendMesg(id){
+            if (id == uid()) {
+                uexWindow.toast(0, 5, "不可以给自己发私信", 2000);
+                return;
+            }
+            window.localStorage['other_user_id'] = id;
+            openNewWin('private', 'privateletter.html');
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            upload("up");
+        }
+        
+        function detail(uid, name){
+            window.localStorage['other_user_id'] = uid;
+            window.localStorage['other_name'] = name;
+            openNewWin('other', 'other_index.html');
+        }
+    </script>
+</html>

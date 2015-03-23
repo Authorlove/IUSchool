@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="dongtai_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <style>
+            .dtt {
+                margin-top: 0.5em
+            }
+            
+            .bgg {
+                background: white
+            }
+            
+            .jr {
+                float: right;
+                margin-right: 0.5em;
+                padding: 0.2em 0.4em;
+                border-radius: 0.4em;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+        <div id="group_list" class="ub ub-ac ubb b-gra bgg">
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                upload(0, "");
+                setPageBounce(dropDownUpdate, pullUpUpdate);
+            }
+        }
+        var group_id = 0;
+        function upload(group_id, condition){
+            var url = URL() + "IUGroupBusiness/getGroupListByUnivs";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.univs_id = univs_id();
+            json.group_id = group_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var content = "";
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var len = data.data.groups.length;
+                    group_id = data.data.groups[len - 1].group_id;
+                    for (var i = 0; i < len; i++) {
+                        content += '<div class="ub ub-ac ubb b-gra uinn bgg" ontouchstart="zy_touch(\'\')">' +
+                        '<div class="ub-img umwh1" style="background-image: url(' +
+                        data.data.groups[i].icon +
+                        ');"></div>' +
+                        '<div class="ub ub-f1 ub-ver umar-l">' +
+                        '<div class="dtt" id="group">' +
+                        data.data.groups[i].group_name;
+                        if (data.data.groups[i].hasJoined == 1) {
+                            content += '<span onclick="detail(\''+data.data.groups[i].group_id+'\')" class="jr t-blu">已加入</span>';
+                        }
+                        else 
+                            content += '<span class="jr c-blu2" onclick="joinGroup(' + data.data.groups[i].group_id + ')">加入</span>';
+                        content += '</div>' +
+                        '<div class="t-gra ulev-1 umar-t">' +
+                        data.data.groups[i].notice.substr(0, 35) +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                    }
+                    if (group_id == 0) 
+                        $$("group_list").innerHTML = content;
+                    else {
+                        var para = document.createElement("div");
+                        para.innerHTML = content;
+                        var d = document.getElementById("group_list");
+                        d.appendChild(para);
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                    else 
+                        if (condition == "up") {
+                            uexWindow.resetBounceView('1');
+                            if (len < 15) {
+                                uexWindow.toast(0, 5, "没有更多消息", 1000);
+                            }
+                            else 
+                                uexWindow.toast(0, 5, "加载成功", 1000);
+                        }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function joinGroup(group_id){
+            uexWindow.cbPrompt = function(opId, dataType, data){
+            
+                var obj = eval('(' + data + ')');
+                
+                if (obj.num == 0) 
+                    confirmJoinGroup(group_id, obj.value);
+            }
+            uexWindow.prompt("加入群组", "选填", "", ["确认", "取消"]);
+        }
+        
+        function confirmJoinGroup(group_id, introduction){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.group_id = group_id;
+            json.introduction = introduction;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUGroupBusiness/joinGroup";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    $$("group").innerHTML = '<span onclick="detail(\''+data.data.groups[i].group_id+'\')" class="jr t-blu">已加入</span>';
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function detail(my_group_id){
+            window.localStorage['my_group_id'] = my_group_id;
+            openNewWin('mygroup', 'mygroup.html');
+        }
+        
+        function dropDownUpdate(){
+            upload(0, "down");
+        }
+        
+        function pullUpUpdate(){
+            upload(group_id, "up");
+        }
+    </script>
+</html>

@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="news_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <style>
+            .d {
+                font-size: 0.8em;
+                margin-left: 0.4em;
+                overflow: hidden;
+            }
+            
+            .first {
+                border: 1px solid grey;
+                height: 4em
+            }
+            
+            .iconn {
+                width: 3em;
+                height: 3em;
+                float: left;
+                margin: 0.5em;
+                background: red;
+            }
+            
+            .second {
+                float: left;
+                margin: 0.8em 0.4em 0 0.4em;
+            }
+            
+            .time {
+                font-size: 0.9em;
+                color: orange;
+                margin-top: 0.5em
+            }
+            
+            .third {
+                float: right;
+                margin: 0.3em;
+            }
+            
+            #mark {
+                display: block;
+                margin: 1.7em 1em 0 0.4em;
+                background: url(css/project/icon/love.png);
+                width: 1.57em;
+                height: 1.4em;
+                float: left;
+                background-size: cover;
+            }
+            
+            #cancelmark {
+                display: block;
+                margin: 1.7em 1em 0 0.4em;
+                background: url(css/project/icon/love_act.png);
+                width: 1.57em;
+                height: 1.4em;
+                float: left;
+                background-size: cover;
+            }
+            
+            #type {
+                font-size: 0.8em;
+                background: orange;
+                width: 4em;
+                text-align: center;
+                padding: 0.3em 0.5em;
+                margin: 0.5em 0.5em 0.5em 0;
+                border-radius: 0 0.4em 0.4em 0;
+                color: white;
+            }
+            
+            #title {
+                font-weight: bold;
+                margin-left: 0.3em
+            }
+            
+            .fourth {
+                font-size: 0.9em;
+                margin: 0.2em 0.8em;
+            }
+            
+            #content {
+                overflow-x: hidden;
+                padding: 0.6em;
+                font-size: 0.9em;
+                line-height: 1.5em
+            }
+            
+            #baoming {
+                font-size: 1em;
+                font-weight: bold;
+                padding: 0.2em;
+                clear: both;
+            }
+            
+            #imglist img {
+                width: 18em;
+                margin: 0 auto;
+                opacity: 1;
+                border: 1px solid gainsboro;
+            }
+            
+            #baoming img, #img_list img {
+                float: left;
+                width: 3em;
+                height: 3em;
+                margin: 0.3em
+            }
+            
+            .thumbImg {
+                float: left;
+                width: 3em;
+                height: 3em;
+                margin: 0.1em
+            }
+            
+            #comment {
+                clear: both;
+            }
+        </style>
+    </head>
+    <body id="inflate" class="um-vp" ontouchstart>
+    </body>
+    <script>
+        zy_init();
+		var title;
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/getFullMessage";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert(JSON.stringify(data));
+                    inflate(data.data);
+                    getComments(0);
+                    previewImgs();
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        function previewImgs(){
+            var imgs = $$("content").getElementsByTagName("img");
+            for (var i = 0; i < imgs.length; i++) {
+                imgs[i].setAttribute("onclick", "previewTinyImage('" + imgs[i].src + "')");
+            }
+        }
+        
+        function inflate(data){
+			title= data.message.title;
+            if (data.message.picture_url_list.length != 0) {
+                window.localStorage.thumbPicUrl = data.message.picture_url_list[0].thumbPicUrl;
+                window.localStorage.bigPicUrl = data.message.picture_url_list[0].bigPicUrl;
+                window.localStorage.forward_url = data.message.forward_url;
+            }
+			var typename = choosetype(data.message.type_id);
+            uexWindow.evaluateScript("news", 0, "updateLike(" + data.message.like_it + "," + data.message.hasLikedIt + ")");
+            uexWindow.evaluateScript("news", 0, "updateForwardCount(" + data.message.forward_count + ")");
+            uexWindow.evaluateScript("news", 0, "updateCommentCount(" + data.message.comment_count + ")");
+            var content = '<div class="first">' +
+            '<div onclick="previewTinyImage(\'' +
+            data.message.publisher_message.icon +
+            '\')" class="iconn" id="icon" style="background:url(' +
+            data.message.publisher_message.icon +
+            ') no-repeat; background-size:100%">' +
+            '</div>' +
+            '<div class="second" >' +
+            '<p id="author" class="t-blu" onclick="check(' +
+            '\'' +
+            data.message.publisher_message.uid +
+            '\'' +
+            ',' +
+            data.message.publisher_message.type +
+            ',' +
+            '\'' +
+            data.message.publisher_message.display_name +
+            '\'' +
+            ')">' +
+            data.message.publisher_message.display_name +
+            '</p>' +
+            '<p id="time" class="ulev-4 umar-t">' +
+            data.message.create_time +
+            '</p>' +
+            '</div>' +
+            '<div id="markdiv" class="third">';
+            if (data.message.hasMarked == 0) 
+                content += '<span id="mark" onclick="markMessage()"></span>';
+            else 
+                content += '<span id="cancelmark" onclick="dontMarkMessage()"></span>';
+            content += '</div>' +
+            '</div><div class="ub">' +
+			 '<div class="" style="float:left;width:3em;height:2em;background:url(css/project/icon/' +
+                            typename +
+                            '.png) no-repeat;background-size:100%"></div><div class="umar-l">'+data.message.label_str+'</div></div>'+
+            '<div id="title">' +
+            data.message.title +
+            '</div>';
+            if (data.message.type_id == 3 || data.message.type_id == 4 || data.message.type_id == 5) {
+                var content1 = '<div class="fourth">' +
+                '<p>' +
+                '<strong>举办时间：</strong>' +
+                '<span id="holdtime">' +
+                data.message.holding_time +
+                '</span>' +
+                '</p>' +
+                '<p>' +
+                '<strong>举办地点：</strong>' +
+                '<span id="address">' +
+                data.message.holding_place +
+                '</span>' +
+                '</p>' +
+                '<p>' +
+                '<span><strong id="label">标     签：</strong></span>' +
+                '<span>' +
+                data.message.label_str +
+                '</span>' +
+                '</p>' +
+                '</div>' +
+                '<hr/>' +
+                '<center id="imglist" class="ub ub-ver">';
+                for (var i = 0; i < data.message.picture_url_list.length; i++) {
+                    content1 += '<img class="ub-f1 ub-img" onclick="previewTinyImage(\'' + data.message.picture_url_list[i].bigPicUrl + '\')" src="' + data.message.picture_url_list[i].bigPicUrl + '"></img>';
+                }
+                content1 += '</center>' +
+                '<div id="content">' +
+                data.message.content +
+                '</div>' +
+                '<hr/><div id="joindate">';
+                if (data.message.addedToDoList == 1) {
+                    content1 += '<div class="c-blu2 uinn uc-a umar-a tx-c" onclick="canceltodolist()">取消待办事项 </div>';
+                }
+                else {
+                    content1 += '<div class="ulev-4">加入日程表 </div>' +
+                    '<div id="setRemindTime" class="ub">' +
+                    '<div id="date" onclick="checked_day()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒日期</div>' +
+                    '<div id="setTime" onclick="openTker()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒时间</div>' +
+                    '<div ontouchstart="zy_touch(\'btn-act\')" onclick="confirm_add(\'' +
+                    data.message.title +
+                    '\')" class="ub-f1 uinn c-org uc-a umar-a tx-c">确定</div></div>';
+                }
+                content1 += '</div><hr/><div class="ub"><div id="follow" class="ub-f1 umar-a c-blu2 uc-a uinn tx-c">';
+                if (data.message.hasFollowed == 1) {
+                    content1 += '<div onclick="dontFollowMessage(' + data.message.message_id + ')">取消参加 </div></div>';
+                }
+                else {
+                    content1 += '<div onclick="followMesg(' + data.message.message_id + ')" >我要参加 </div></div>';
+                }
+                content1 += '<div id="group"  class="umar-a ub-f1 ">';
+                if (data.message.group_id) {
+                    if (data.message.group_message.hasJoined == 1) {
+                        content1 += '<div class="c-blu2 uc-a uinn tx-c" onclick="gotogroup(' + '\'' + data.message.group_message.group_id + '\'' + ')">进入讨论组</div>';
+                    }
+                    else {
+                        content1 += '<div class="c-blu2 uc-a uinn tx-c" onclick="joinGroup(' +
+                        data.message.group_id +
+                        ')">加入讨论组</div>';
+                    }
+                }
+                content1 += '</div></div><hr/>' +
+                '<div class="umar-a">' +
+                '报名列表' +
+                '</div>' +
+                '<div id="baoming"></div><hr style="clear:both"/><div style="clear:both" class="umar-a">' +
+                '评论列表' +
+                '</div>';
+            }
+            else 
+                if (data.message.type_id == 7) {
+                    var content1 = '<center id="imglist" class="ub ub-ver">';
+                    for (var i = 0; i < data.message.picture_url_list.length; i++) {
+                        content1 += '<img class="ub-f1 ub-img"  onclick="previewTinyImage(\'' + data.message.picture_url_list[i].bigPicUrl + '\')" src="' + data.message.picture_url_list[i].bigPicUrl + '"></img>';
+                    }
+                    content1 += '</center>' +
+                    '<div id="content">' +
+                    data.message.content +
+                    '</div>' +
+                    '<hr/>' +
+                    '<div style="margin-top:0.3em"><div id="joindate">';
+                    if (data.message.addedToDoList == 1) {
+                        content1 += '<div class="c-blu2 uinn uc-a umar-a tx-c" onclick="openNewWin(\'todolist\', \'todolist.html\')">进入日程表 </div>';
+                    }
+                    else {
+                        content1 += '<div class="umar-a">加入日程表 </div>' +
+                        '<div id="setRemindTime" class="ub">' +
+                        '<div id="date" onclick="checked_day()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒日期</div>' +
+                        '<div id="setTime" onclick="openTker()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒时间</div>' +
+                        '<div ontouchstart="zy_touch(\'btn-act\')" onclick="confirm_add(\'' +
+                        data.message.title +
+                        '\')" class="ub-f1 uinn c-org uc-a umar-a tx-c">确定</div></div>';
+                    }
+                    content1 += '</div><hr/><div class="umar-a">答案列表</div><div id="img_list" class="umar-a" ontouchstart="zy_touch(\'btn-act\')">' +
+                    '<img id="addImg" class="thumbImg ub-img uwh-bg umar-r-ect" src="fabu_content/css/myImg/addImg.png" style="display:inline" ontouchstart="zy_touch(\'btn-act\')" onclick="addPic()">';
+                    +'</img></div>';
+                }
+                else {
+                    var content1 = '<center id="imglist" class="ub ub-ver">';
+                    for (var i = 0; i < data.message.picture_url_list.length; i++) {
+                        content1 += '<img class="ub-f1 ub-img"  onclick="previewTinyImage(\'' + data.message.picture_url_list[i].bigPicUrl + '\')" src="' + data.message.picture_url_list[i].bigPicUrl + '"></img>';
+                    }
+                    content1 += '</center>' +
+                    '<div id="content">' +
+                    data.message.content +
+                    '</div>';
+                }
+            content += content1;
+            var content2 = '<div class="ub ub-ver" id="comment"></div>';
+            content += content2;
+            $$("inflate").innerHTML = content;
+            if (data.message.type_id == 3 || data.message.type_id == 4 || data.message.type_id == 5) 
+                getMessageFollowers(data.message.message_id);
+            if (data.message.type_id == 7) 
+                getHomeworkAnswers();
+        }
+        
+        function getHomeworkAnswers(){
+            var list;
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            var url = URL() + "IUMessageBusiness/getHomeworkAnswers";
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    for (var j = 0; j < data.data.homeworkAnswers.length; j++) {
+                        var imgElem = document.createElement("img");
+                        imgElem.setAttribute("class", "ub-img uwh-bg umar-r-ect thumbImg");
+                        imgElem.setAttribute("id", "imgA_" + j);
+                        imgElem.setAttribute("onclick", "previewTinyImage('" + data.data.homeworkAnswers[j].bigPicUrl + "')");
+                        imgElem.src = data.data.homeworkAnswers[j].thumbPicUrl;
+                        $$("img_list").insertBefore(imgElem, $$("addImg"));
+                    }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        var comment_id = 0;
+        function getComments(comment_id){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json.comment_id = comment_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/getComments";
+            
+            $.getJSON(url, function(data){
+                //				alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var newComment = "";
+                    var comments = data.data.comments;
+                    if (comments.length == 0) {
+                        return;
+                    }
+                    comment_id = comments[comments.length - 1].comment_id;
+                    for (var i = 0; i < comments.length; i++) {
+                        var comment = comments[i];
+                        newComment += '<ul ontouchstart="zy_touch(\'btn-act\')" class="ubb ub b-gra4 lis">' +
+                        '<li onclick="" class="uh-app3 uw-app3 ub-img mar-ar1" style="background:url(' +
+                        comment.commenter.icon +
+                        ') no-repeat; background-size:100%">' +
+                        '</li>' +
+                        '<li class="ub-f1 ub ub-ver">' +
+                        ' <div class="ub ub-f1 ub-ac">' +
+                        '  <div onclick="check(\'' +
+                        comment.commenter.uid +
+                        ',\'' +
+                        comment.commenter.type +
+                        ',\'' +
+                        comment.commenter.display_name +
+                        '\')" class="ut-s ulev-4 t-blu ">' +
+                        comment.commenter.display_name +
+                        ' </div>' +
+                        '</div>' +
+                        ' <div class="ub umar-t">' +
+                        '   <div class="ub-f1 ub t-gra-comm ulev-2">' +
+                        ' <div class="umar-r-comm">' +
+                        comment.create_time +
+                        ' </div>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div onclick="makeCommonQuote(\'' +
+                        comment.comment_id +
+                        '\',\'' +
+                        comment.commenter.uid +
+                        '\')" class="t-bla ub-f2 ulev-4 umar-t" style="overflow:hidden">' +
+                        comment.content +
+                        '</div></li></ul><div id="' +
+                        comment.comment_id +
+                        '">';
+                        var quotes = comment.quotes;
+                        for (var j = 0; j < quotes.length; j++) {
+                            var quote = quotes[j];
+                            newComment += '<div><ul style="margin-left:3em" ontouchstart="zy_touch(\'btn-act\')" class="ubb ub b-gra4 lis">' +
+                            '<li onclick="" class="uh-app3 uw-app3 ub-img mar-ar1" style="background:url(' +
+                            quote.commenter.icon +
+                            ') no-repeat; background-size:100%">' +
+                            '</li>' +
+                            '<li class="ub-f1 ub ub-ver">' +
+                            ' <div class="ub ub-f1 ub-ac">' +
+                            '  <div class="ut-s ulev-4 t-blu "><span onclick="check(\'' +
+                            comment.commenter.uid +
+                            '\',' +
+                            comment.commenter.type +
+                            ',\'' +
+                            quote.commenter.display_name +
+                            '\')" >' +
+                            quote.commenter.display_name +
+                            ' </span>' +
+                            '<span style="color:black"> 回复 </span>' +
+                            '<span onclick="check(\'' +
+                            comment.commenter.uid +
+                            '\',' +
+                            comment.commenter.type +
+                            ',\'' +
+                            quote.quoteder.display_name +
+                            '\')" >' +
+                            quote.quoteder.display_name +
+                            '</span>' +
+                            '</div></div>' +
+                            ' <div class="ub umar-t">' +
+                            '   <div class="ub-f1 ub t-gra-comm ulev-2">' +
+                            ' <div class="umar-r-comm">' +
+                            quote.create_time +
+                            ' </div>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div onclick="makeCommonQuote(\'' +
+                            comment.comment_id +
+                            '\',\'' +
+                            quote.commenter.uid +
+                            '\')" class="t-bla ub-f2 ulev-4 umar-t" style="overflow:hidden">' +
+                            quote.content +
+                            '</div></li></ul></div>';
+                        }
+                        newComment += '</div>';
+                    }
+                    $$("comment").innerHTML = newComment;
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function updateComment(){
+            var comment = eval('(' + window.localStorage.comment + ')');
+            var div = document.createElement("div");
+            var newComment = '<ul ontouchstart="zy_touch(\'btn-act\')" class="ubb ub b-gra4 lis">' +
+            '<li onclick="" class="uh-app3 uw-app3 ub-img mar-ar1" style="background:url(' +
+            comment.commenter.icon +
+            ') no-repeat; background-size:100%">' +
+            '</li>' +
+            '<li class="ub-f1 ub ub-ver">' +
+            ' <div class="ub ub-f1 ub-ac">' +
+            '  <div onclick="check(\'' +
+            comment.commenter.uid +
+            '\',' +
+            comment.commenter.type +
+            ',\'' +
+            comment.commenter.display_name +
+            ')" class="ut-s ulev-4 t-blu ">' +
+            comment.commenter.display_name +
+            ' </div>' +
+            '</div>' +
+            ' <div class="ub umar-t">' +
+            '   <div class="ub-f1 ub t-gra-comm ulev-2">' +
+            ' <div class="umar-r-comm">' +
+            comment.create_time +
+            ' </div>' +
+            '</div>' +
+            '</div>' +
+            '<div class="t-bla ulev-4 ub-f1 umar-t t-blu2" style="overflow:hidden">' +
+            comment.content +
+            '</div>' +
+            '</li>' +
+            ' </ul>';
+            div.innerHTML = newComment;
+            $$("comment").appendChild(div);
+            div.focus();
+        }
+        
+        function makeCommonQuote(comment_id, quoteder){
+            uexWindow.cbPrompt = function(opId, dataType, data){
+                var obj = eval('(' + data + ')');
+                if (obj.value == "") 
+                    return;
+                uploadMakeCommonQuote(comment_id, quoteder, obj.value);
+            }
+            uexWindow.prompt("评论", "填写评论", "", ["确认", "取消"]);
+        }
+        
+        function uploadMakeCommonQuote(comment_id, quoteder, content){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.comment_id = comment_id;
+            json.quoteder = quoteder;
+            json.content = content;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/makeCommonQuote";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    //                    alert(JSON.stringify(data));
+                    var quote = data.data.quote;
+                    var quote_content = '<div><ul style="margin-left:3em" ontouchstart="zy_touch(\'btn-act\')" class="ubb ub b-gra4 lis">' +
+                    '<li onclick="" class="uh-app3 uw-app3 ub-img mar-ar1" style="background:url(' +
+                    quote.commenter.icon +
+                    ') no-repeat; background-size:100%">' +
+                    '</li>' +
+                    '<li class="ub-f1 ub ub-ver">' +
+                    ' <div class="ub ub-f1 ub-ac">' +
+                    '  <div class="ut-s ulev-4 t-blu "><span onclick="check(\'' +
+                    quote.commenter.uid +
+                    ',\'' +
+                    quote.commenter.type +
+                    '\',' +
+                    quote.commenter.display_name +
+                    '\')" >' +
+                    quote.commenter.display_name +
+                    ' </span>' +
+                    '<span style="color:black"> 回复 </span>' +
+                    '<span onclick="check(\'' +
+                    quote.quoteder.uid +
+                    '\',' +
+                    quote.quoteder.type +
+                    ',\'' +
+                    quote.quoteder.display_name +
+                    '\')" >' +
+                    quote.quoteder.display_name +
+                    '</span>' +
+                    '</div></div>' +
+                    ' <div class="ub umar-t">' +
+                    '   <div class="ub-f1 ub t-gra-comm ulev-2">' +
+                    ' <div class="umar-r-comm">' +
+                    quote.create_time +
+                    ' </div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div onclick="makeCommonQuote(\'' +
+                    comment.comment_id +
+                    '\',\'' +
+                    quote.commenter.uid +
+                    '\')" class="t-bla ulev-4 ub-f1 umar-t t-blu2" style="overflow:hidden">' +
+                    quote.content +
+                    '</div></li></ul></div>';
+                    var div = document.createElement("div");
+                    div.innerHTML = quote_content;
+                    $$(comment_id).appendChild(div);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function previewTinyImage(src){
+            var array = [];
+            array[0] = src;
+            uexImageBrowser.open(array);
+        }
+        
+        function markMessage(){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/markMessage";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    $$("markdiv").innerHTML = '<span id="cancelmark" onclick="dontMarkMessage()"></span>';
+                    uexWindow.toast(0, 5, "收藏成功", 500);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function dontMarkMessage(){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/dontMarkMessage";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    $$("markdiv").innerHTML = '<span id="mark" onclick="markMessage()"></span>';
+                    uexWindow.toast(0, 5, "取消收藏", 500);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function uploadAnswer(message_id){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = message_id;
+            json.pics = pics;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/addHomeworkAnswer";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert("添加成功!");
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function gotogroup(group_id){
+			
+            window.localStorage['my_group_id'] = group_id;
+            openNewWin('mygroup', 'mygroup.html');
+        }
+        
+        function followMesg(mesg_id){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = mesg_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/followMessage";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    getMessageFollowers(mesg_id);
+                    $$("follow").innerHTML = '<div onclick="dontFollowMessage(' + mesg_id + ')">取消参加 </div>';
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function dontFollowMessage(mesg_id){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = mesg_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/dontFollowMessage";
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    getMessageFollowers(mesg_id);
+                    $$("follow").innerHTML = '<div onclick="followMesg(' + mesg_id + ')">我要参加 </div>';
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function joinGroup(group_id){
+            uexWindow.cbPrompt = function(opId, dataType, data){
+            
+                var obj = eval('(' + data + ')');
+                
+                if (obj.num == 0) 
+                    confirmJoinGroup(group_id, obj.value);
+            }
+            uexWindow.prompt("加入群组", "选填", "", ["确认", "取消"]);
+        }
+        
+        function confirmJoinGroup(group_id, introduction){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.group_id = group_id;
+            json.introduction = introduction;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUGroupBusiness/joinGroup";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    $$("group").innerHTML = '<div class="c-blu2 uc-a uinn tx-c" onclick="gotogroup(' + '\'' + data.message.group_message.group_id + '\'' + ')">进入讨论组</div>';
+                    openNewWin("mygroup", "mygroup.html");
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function getMessageFollowers(followed_message_id){
+            var followlist = "";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.followed_message_id = followed_message_id;
+            json = JSON.stringify(json);
+            
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/getMessageFollowers";
+            
+            $.getJSON(url, function(data){
+            
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var n = data.data.followers.length;
+                    if (n > 5) {
+                    
+                        for (var i = 0; i < n; i++) {
+                        
+                        
+                            followlist += '<img src=' + data.data.followers[i].follower_message.icon + ' onclick="check1(' + '\'' + data.data.followers[i].uid + '\'' + ',' + '\'' + data.data.followers[i].follower_message.display_name + '\'' + ')">';
+                        }
+                        followlist += '<img src="" onclick="openNewWin(\'follow_message_members\',\'follow_message_members\')">';
+                    }
+                    else {
+                        for (var i = 0; i < n; i++) {
+                            followlist += '<img src="' + data.data.followers[i].follower_message.icon + '" onclick="check1(' + '\'' + data.data.followers[i].uid + '\'' + ',' + '\'' + data.data.followers[i].follower_message.display_name + '\'' + ')">';
+                        }
+                    }
+                    $$("baoming").innerHTML = followlist;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+            
+        }
+        
+        function check(id, type, name){
+            window.localStorage['other_user_id'] = id;
+            window.localStorage['other_name'] = name;
+            if (type == '1') 
+                openNewWin('other', 'other_index.html');
+            else {
+                openNewWin('club', 'club_index.html');
+            }
+        }
+        
+        function check1(id, name){
+            window.localStorage['other_user_id'] = id;
+            window.localStorage['other_name'] = name;
+            openNewWin('other', 'other_index.html');
+        }
+        
+        var adddata = new Date();
+        var addyear = adddata.getFullYear();
+        var addmonth = adddata.getMonth() + 1 < 10 ? ("0" + (adddata.getMonth() + 1)) : (adddata.getMonth() + 1);
+        var adddate = adddata.getDate();
+        var addhour = adddata.getHours();
+        var addminute = adddata.getMinutes();
+        var remind_time = "";
+        //查询日期
+        function checked_day(){
+            uexControl.cbOpenDatePicker = function(opId, dataType, data){
+                if (dataType == 1) {
+                    var obj = eval('(' + data + ')');
+           
+                    $$('date').innerHTML = obj.year + '-' + obj.month + '-' + obj.day;
+                }
+            }
+            uexControl.openDatePicker(addyear, addmonth, adddate);
+        }
+        
+        //打开选择器
+        function openTker(){
+            uexControl.cbOpenTimePicker = function(opId, dataType, data){
+                if (dataType == 1) {
+                    var obj = eval('(' + data + ')');
+                    $$('setTime').innerHTML = obj.hour + ':' + obj.minute;
+                }
+            }
+            //调用时间选择器
+            uexControl.openTimePicker(addhour, addminute);
+        }
+        
+        function confirm_add(title){
+            var url = URL() + "IUMessageBusiness/addToDoList";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage.news_id;
+            json.remind_time = $$("date").innerHTML + " " + $$("setTime").innerHTML;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+            
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    uexWindow.toast(0, 5, "添加成功", 500);
+                    var ymd =  $$("date").innerHTML.split("-");
+                    var hms = $$("setTime").innerHTML.split(":");
+                    var remind_time = new Date(parseInt(ymd[0]), (parseInt(ymd[1]) - 1), parseInt(ymd[2]), parseInt(hms[0]), parseInt(hms[1]), 0);
+                    remind_time = remind_time.getTime();
+                    uexLocalNotification.add(window.localStorage['news_id'], remind_time, 1, "日程提醒:" + title, "关闭提醒", "", "yearly", "1");
+                    uexLocalNotification.remove(window.localStorage['news_id']);
+					$$("joindate").innerHTML = '<div class="c-blu2 uinn uc-a umar-a tx-c" onclick="canceltodolist()">取消待办事项 </div>';
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+		   
+        function canceltodolist(){
+            uexWindow.confirm("", "取消待办事项？", ["取消", "确定"]);
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch (parseInt(data)) {
+                    case 0:
+                        break;
+                    case 1:
+                        deleteToDoListItem();
+                        break;
+                }
+            }
+        }
+        
+        //对一条消息取消待办事项
+        //上传参数:session,message_id
+        //返回参数:成功或失败
+        function deleteToDoListItem(){
+            var url = URL() + "IUMessageBusiness/deleteToDoListItem";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage.news_id;
+            json = JSON.stringify(json);
+            alert(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var content = "";
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    uexLocalNotification.remove(window.localStorage.news_id);	
+					$$("joindate").innerHTML = '<div class="ulev-4">加入日程表 </div>' +
+                    '<div id="setRemindTime" class="ub">' +
+                    '<div id="date" onclick="checked_day()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒日期</div>' +
+                    '<div id="setTime" onclick="openTker()" class="ub-f1 c-org uinn uc-a umar-a tx-c">选择提醒时间</div>' +
+                    '<div ontouchstart="zy_touch(\'btn-act\')" onclick="confirm_add(\'' +
+                   title +
+                    '\')" class="ub-f1 uinn c-org uc-a umar-a tx-c">确定</div></div>';			
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function addPic(){
+            uexWindow.confirm("", "添加照片", ["拍摄", "本地", "取消"]);
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch (parseInt(data)) {
+                    case 0:
+                        uexCamera.open();
+                        break;
+                    case 1:
+                        uexImageBrowser.pick();
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            //照相机拍照成功或出错的回调函数
+            uexCamera.cbOpen = function(opCode, dataType, data){
+                picNum++;
+                if (picNum > 9) {
+                    alert("最多添加" + (picNum - 1) + "张图片");
+                    return;
+                }
+                i++;
+                var imgElem = document.createElement("img");
+                imgElem.setAttribute("class", "ub-img uwh-bg umar-r-ect thumbImg");
+                imgElem.setAttribute("id", "img_" + i);
+                imgElem.setAttribute('onclick', 'delImg(' + "img_" + i + ')');
+                imgElem.src = data;
+                $$("img_list").insertBefore(imgElem, $$("addImg"));
+                uploadImg(data);
+            }
+            //选择图片的回调函数
+            uexImageBrowser.cbPick = function(opCode, dataType, data){
+                picNum++;
+                if (picNum > 9) {
+                    alert("最多添加" + picNum - 1 + "张图片");
+                    return;
+                }
+                i++;
+                var imgElem = document.createElement("img");
+                imgElem.className = "ub-img uwh-bg umar-r-ect thumbImg";
+                imgElem.setAttribute("id", "img_" + i);
+                imgElem.setAttribute('onclick', 'delImg(' + "img_" + i + ')');
+                imgElem.src = data;
+                $$("img_list").insertBefore(imgElem, $$("addImg"));
+                uploadImg(data);
+            }
+        }
+        
+        var json = {};
+        json.pics = [];
+        function uploadImg(data){
+            var picPath;
+            var t = URL() + "UploadFile/uploadPicture";
+            uexUploaderMgr.createUploader(1, t);
+            $$('inputPic').value = data;
+            uexUploaderMgr.uploadFile(1, data, "ipic", 2, 300);
+            uexUploaderMgr.onStatus = function(opCode, fileSize, percent, serverPath, status){
+                switch (status) {
+                    case 0:
+                        var kk = "上传进度：" + percent + "%";
+                        uexWindow.toast(1, 5, kk, 2000);
+                        break;
+                    case 1:
+                        var h;
+                        picPath = eval('(' + serverPath + ')');
+                        h = picPath.data.picName[0];
+                        //关闭上传对象  
+                        alert("图片上传成功");
+                        uexUploaderMgr.closeUploader(1);
+                        if (h != "") {
+                            var picObj = {};
+                            picObj.picName = h;
+                            json.pics.push(picObj);
+                        }
+                        break;
+                    case 2:
+                        alert("图片上传失败");
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    default:
+                }
+            }
+            //createUploader的回调函数
+            uexUploaderMgr.cbCreateUploader = function(opCode, dataType, data){
+                if (data == 0) {
+                }
+                else {
+                }
+            }
+        }
+        
+        function getdata(){
+            var json;
+            json.pics = [];
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.onlyForFriends = onlyForFriends;
+            json.lable = "";
+            json.title = $$('ftitle').value;
+            json.content = $$('fcontent').value;
+            var url = URL() + "IUStudentBusiness/publishMessage";
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed == 1) {
+                    alert("发布成功");
+                    uexWindow.evaluateScript("fabu", 0, "closewindow()");
+                }
+                else {
+                    alert(data.status.error_mesg);
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function delImg(id){
+            picNum--;
+            uexWindow.confirm('', '删除照片?', ['确定', '取消'])
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 0) {
+                    $$("img_list").removeChild($$(id));
+                }
+            }
+        }
+    </script>
+</html>

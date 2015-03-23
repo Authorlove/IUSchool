@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="person_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <style>
+            .jianjie {
+                float: right;
+                margin: -5em -0.5em;
+                width: 3.1em;
+                height: 1.22em;
+                background-size: 100%;
+                color: white;
+                text-align: center;
+                background: black;
+                border-radius: 0.8em 0em 0em 0.8em;
+                opacity: 0.3;
+            }
+            
+            .li-size {
+                margin-right: 0.4em;
+                width: 1.8em;
+                height: 1.8em;
+            }
+            
+            .li-size2 {
+                border-bottom: 2px solid grey;
+                padding: 0.5em;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#E3E3E3">
+        <div class="ub ub-ver">
+        <div class="ub-img1 perBg uh-per1 ub-fh ub ub-ver">
+            <br/>
+            <div class="uinn-a1 ub-f1" style="font-size: 0.8em;">
+                <center class="ub umar-b">
+                    <div class="uwh-per2 c-wh uinn-a16" onclick="confirmChange()" style="border-radius:0.6em">
+                        <div class="ub-fh ub-fv  ub-img  " style="border-radius:0.6em;background-size:cover;" id="icon">
+                        </div>
+                    </div>
+                </center>
+                <center>
+                    <div id="realname" onclick="openNewWin('information','information.html')" class="umar-a uc-a" style="width:5em;margin:0.3em auto;color:white;font-size:1.1em;font-weight: bold; background:rgba(0,0,255,0.4)">
+                    </div>
+                </center>
+                <br/>
+            </div>
+            <div class="ub c-wh-per uinn-a11 ub-ae">
+                <div class="ub ub-ver ub-f1 ub-pc ubr b-gra-per" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('myprivate','myprivate.html')">
+                    <div class="ub-ae t-org ufm1 tx-c" id="private_letter_count">
+                    </div>
+                    <div class="t-gra5 ulev-4 tx-c ub-f1">
+                        私信
+                    </div>
+                </div>
+                <div class="ub ub-ver ub-f1 ub-pc ubr b-gra-per" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('myattention','myattention.html')">
+                    <div class="ub-ae t-gra5 ufm1 tx-c" id="follow_others_count">
+                        0
+                    </div>
+                    <div class="t-gra5 ulev-4 tx-c ub-f1">
+                        关注
+                    </div>
+                </div>
+                <div class="ub ub-ver ub-f1 ub-pc ubr b-gra-per" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('myfans','myfans.html')">
+                    <div class="ub-ae t-gra5 ufm1 tx-c" id="followed_count">
+                        2
+                    </div>
+                    <div class="t-gra5 ulev-4 tx-c ub-f1">
+                        粉丝
+                    </div>
+                </div>
+                <div class="ub ub-ver ub-f1 ub-pc ubr b-gra-per" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('mydongtai','mydongtai.html')">
+                    <div class="ub-ae t-gra5 ufm1 tx-c" id="publish_count">
+                        0
+                    </div>
+                    <div class="t-gra5 ulev-4 tx-c ub-f1">
+                        动态
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ub-f1 ub ub-ver">
+            <div class=" c-wh" style="border-bottom:1px solid grey">
+                <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" onclick="openNewWin('todolist','todolist.html')">
+                    <li class="ub-img li-size" style="background: url('person_content/css/myImg/rcb.png');background-size: cover;">
+                    </li>
+                    <li class="ub-f1 ut-s ulev-app1 li-size2">
+                        我的日程表
+                    </li>
+                </ul>
+                <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" onclick="openNewWin('myfavour','myfavour.html')">
+                    <li class="ub-img li-size" style="background: url('person_content/css/myImg/sc.png');background-size: cover;">
+                    </li>
+                    <li class="ub-f1 ut-s ulev-app1 li-size2">
+                        我的收藏
+                    </li>
+                </ul>
+                <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" style="padding: 0.4em 0;" onclick="goToInterest()">
+                    <li class="ub-img li-size" style="background: url('person_content/css/myImg/xq.png');background-size: cover;">
+                    </li>
+                    <li class="ub-f1 ut-s ulev-app1 li-size2" style="border:none">
+                        我的兴趣
+                    </li>
+                </ul>
+            </div>
+            <div class="ub-f1 ub ub-ver" style="margin-top:0.75em">
+                <div class=" c-wh" style="border-bottom:1px solid grey">
+                    <!--                   <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" onclick="openNewWin('tuijian','tuijian.html')">
+                    <li class="ub-img li-size" style="background: url('person_content/css/myImg/tjhy.png');background-size: cover;">
+                    </li>
+                    <li class="ub-f1 ut-s ulev-app1 li-size2">
+                    推荐给好友
+                    </li>
+                    </ul>-->
+                    <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" onclick="openNewWin('about','about.html')">
+                        <li class="ub-img li-size" style="background: url('person_content/css/myImg/rjxg.png');background-size: cover;">
+                        </li>
+                        <li class="ub-f1 ut-s ulev-app1 li-size2">
+                            软件相关
+                        </li>
+                    </ul>
+                    <ul ontouchstart="zy_touch('btn-act')" class="ub t-bla ub-ac umar-FP1 uinn-a11 b-gra2" style="padding: 0.4em 0;" onclick="changeid()">
+                        <li class="ub-img li-size" style="background: url('person_content/css/myImg/qhzh.png');background-size: cover;">
+                        </li>
+                        <li class="ub-f1 ut-s ulev-app1 li-size2" style="border:none">
+                            切换帐号
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            initialize();
+			uexWindow.setBounce(0);
+        }
+        function goToInterest(){
+            openNewWin('interest', 'interest.html');
+            window.localStorage.comeFrom = "person_content";
+        }
+        
+        function changeid(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 0) {
+                    window.localStorage['iu_user'] = null;
+                    uexWindow.evaluateScript("root", 0, "closeIndex()");
+                    openNewWin('login', 'login_content.html');
+                }
+            }
+            uexWindow.confirm("提示", "你确定要切换帐号？", ["确认", "取消"]);
+        }
+        
+        function initialize(){
+            $$('realname').innerHTML = realname();
+            $$('private_letter_count').innerHTML = private_letter_count();
+            $$('publish_count').innerHTML = publish_count();
+            $$('followed_count').innerHTML = followed_count();
+            $$('follow_others_count').innerHTML = follow_others_count();
+            $$('icon').style.backgroundImage = "url(" + icon() + ")";
+        }
+        
+        function confirmChange(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                switch (data) {
+                    case 0:
+                        confirmfun();
+                        break;
+                    case 1:
+                        previewTinyImage(icon());
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            uexWindow.confirm("", "操作", ["切换头像", "预览头像", "取消"]);
+        }
+        
+        function previewTinyImage(src){
+			alert(src);
+            var array = [];
+            array[0] = src;
+            uexImageBrowser.open(array);
+        }
+        
+        function confirmfun(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 0) {
+                    uexCamera.open();
+                }
+                else 
+                    if (data == 1) {
+                        uexImageBrowser.pick();
+                    }
+                    else {
+                    }
+                
+            }
+            uexWindow.confirm("更改头像", "选择图片上传方式", ["拍照", "本地上传", "取消"]);
+            uexCamera.cbOpen = function(opCode, dataType, data){
+                        upload(data);
+            }
+            uexImageBrowser.cbPick = function(opCode, dataType, data){
+                upload(data);
+            }
+        }
+        
+        function upload(data){
+            var t = URL() + "UploadFile/uploadIcon";
+            uexUploaderMgr.createUploader(1, t);
+            $$('iconn').value = data;
+            uexUploaderMgr.uploadFile(1, data, "iconn", 3, 300);
+            uexUploaderMgr.onStatus = function(opCode, fileSize, percent, serverPath, status){
+                switch (status) {
+                    case 0:
+                        var kk = "上传进度：" + percent + "%";
+                        uexWindow.toast(1, 5, kk, 2000);
+                        break;
+                    case 1:
+                        var h = eval('(' + serverPath + ')');
+                        //上传头像
+                        var iconName = h.data.picName[0];
+                        url = URL() + "IUStudentBusiness/uploadIcon";
+                        
+                        var sessionuid1 = sessionuid();
+                        var sessionsid1 = sessionsid();
+                        var json = {};
+                        json.iconName = iconName;
+                        json.session = {};
+                        json.session.uid = sessionuid1;
+                        json.session.sid = sessionsid1;
+                        var t = JSON.stringify(json);
+                        var json = [{
+                            'key': 'json',
+                            'type': '0',
+                            'value': t
+                        }];
+                        $.getJSON(url, function(data){
+                            var t = JSON.stringify(data);
+                            window.localStorage['icon'] = data.data.icon;
+							$$('icon').style.backgroundImage = "url(" + data.data.icon + ")"
+                            alert("修改成功.");
+                            
+                        }, 'json', function(err){
+                        
+                        }, 'POST', json);
+                        
+                        //关闭上传对象 
+                        
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    case 2:
+                        alert("上传失败");
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    default:
+                }
+            }
+            
+            //createUploader的回调函数
+            uexUploaderMgr.cbCreateUploader = function(opCode, dataType, data){
+                if (data == 0) {
+                }
+                else {
+                }
+            }
+        }
+    </script>
+</html>

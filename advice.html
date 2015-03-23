@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src='js/zy_slide.js'>
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+        <!--header开始-->
+        <div id="header" class="uh t-wh ub c-blu">
+            <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                <div class="t-btn-a1 ub-img uwh-tBtn">
+                </div>
+            </div>
+            <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0" id='name'>建议反馈</h1>
+            <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+            </div>
+        </div>
+        <!--header结束-->
+        <!--content开始-->
+        <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+            <div style="padding:0.5em">
+                <textarea placeholder="请输入反馈内容，我们会第一时间与你联系。" id="content1" style="width: 100%;height: 10em;border-radius: 0.5em;font-size: 1em;border:1px solid grey"></textarea>
+                <!--按钮开始-->
+                <div ontouchstart="zy_touch('btn-act')" onclick="send()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+                    发送
+                </div>
+                <!--按钮结束-->
+            </div>
+            <!--content结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+		function send(){
+	    var content  = $$('content1').value;
+	    if(content=='') uexWindow.alert('提示','请输入内容','确定');
+	else {
+		 var json = {};
+         json.content = content;
+		 json.session = {};
+		 json.session.uid  = sessionuid();
+		 json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+			url = URL() +"IUFeedback/feedback";
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+				  $$('content').innerHTML = "<br/><br/><center onclick='winClose()'>感谢您的反馈，点击关闭窗口。</center>";
+                 //uexWindow.toast(0,5,'fff',3000);
+                 //winClose();
+				}
+                else {
+                    uexWindow.alert("提示",data.status.error_mesg,"确定");
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+	}
+}
+    </script>
+</html>

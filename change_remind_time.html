@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="register/css/main.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="register_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="register_content/js/register_main.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+        <!--header开始-->
+        <div id="header" class="uh t-wh ub c-blu">
+            <div id="header" class="uh t-wh ub c-blu">
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                    取消
+                </div>
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">修改提醒时间</h1>
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')">
+                </div>
+            </div>
+        </div>
+        <!--header结束-->
+        <!--content开始-->
+        <div id="content" class="ub-f1 tx-l t-bla c-gra1 umar-a">
+            <div id="setRemindTime" class="ub">
+                <div id="date" onclick="checked_day()" class="ub-f1 c-org uinn uc-a umar-a tx-c">
+                    选择提醒日期
+                </div>
+                <div id="setTime" onclick="openTker()" class="ub-f1 c-org uinn uc-a umar-a tx-c">
+                    选择提醒时间
+                </div>
+            </div>
+            <br/>
+            <div ontouchstart="zy_touch(\'btn-act\')" onclick="confirm_add()" class="ub-f1 uinn c-org uc-a umar-a tx-c">
+                确定
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+         uexLocalNotification.onActive = onActiveCallBack;
+                uexLocalNotification.cbGetData = cbGetData;
+        }
+		 function onActiveCallBack(notificationID){
+                alert(notificationID + " active");
+            }
+            function cbGetData(notificationID, msg){
+                alert(msg);
+            }
+            function test(ret){
+                alert(ret);
+            }
+        var adddata = new Date();
+        var addyear = adddata.getFullYear();
+        var addmonth = adddata.getMonth() + 1 < 10 ? ("0" + (adddata.getMonth() + 1)) : (adddata.getMonth() + 1);
+        var adddate = adddata.getDate();
+        var addhour = adddata.getHours();
+        var addminute = adddata.getMinutes();
+        var addday = adddata.getDay();
+        var remind_time = "";
+        var alockTime = "";
+        //查询日期
+        function checked_day(){
+            uexControl.cbOpenDatePicker = function(opId, dataType, data){
+                if (dataType == 1) {
+                    var obj = eval('(' + data + ')');
+                    aclockTime += obj.year + "/" + (obj.month - 1) + "/" + boj.day + " ";
+                    $$('date').innerHTML = obj.year + '-' + obj.month + '-' + obj.day;
+                }
+            }
+            uexControl.openDatePicker(addyear, addmonth, addday);
+        }
+        
+        //打开选择器
+        function openTker(){
+            uexControl.cbOpenTimePicker = function(opId, dataType, data){
+                if (dataType == 1) {
+                    var obj = eval('(' + data + ')');
+                    aclockTime += obj.hour + ':' + obj.minute + ":00";
+                    $$('setTime').innerHTML = obj.hour + ':' + obj.minute;
+                }
+            }
+            //调用时间选择器
+            uexControl.openTimePicker(addhour, addminute);
+        }
+        
+        function confirm_add(){
+            var url = URL() + "IUMessageBusiness/addToDoList";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage.news_id;
+            json.remind_time = $$("date").innerHTML + " " + $$("setTime").innerHTML;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    uexWindow.toast(0, 5, "添加成功", 500);
+                   var date = remind_time.split(" ");
+                    var ymd = date[0].split("-");
+                    var hms = date[1].split(":");
+                    var remind_time = new Date(parseInt(ymd[0]), (parseInt(ymd[1]) - 1), parseInt(ymd[2]), parseInt(hms[0]), parseInt(hms[1]), 0);
+                    remind_time = remind_time.getTime();
+                    uexLocalNotification.remove(window.localStorage.todoid);
+                    uexLocalNotification.add(window.localStorage.todoid, remind_time, 1, "日程提醒:" + window.localStorage.todotitle, "关闭提醒", "", "yearly", "1");
+                    winClose();
+                    uexWindow.evaluatePopoverScript("todolist", "content", "reload()");
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+    </script>
+</html>

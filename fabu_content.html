@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-on-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="fabu_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <style>
+            .pic {
+                float: left;
+                height: 4em;
+                width: 4em;
+            }
+            
+            .che {
+                float: left;
+                margin: 0.3em;
+            }
+            
+            input:checked + div {
+                background: #3d566e;
+                color: white;
+            }
+        </style>
+    </head>
+    <body class="um-vp" ontouchstart>
+        <div class="umar-a c-wh b-gra uinput ulev0">
+            <input id="ftitle" placeholder="请输入标题" type="text" class="">
+        </div><hr/><!--文本输入开始-->
+        <div class="c-wh b-gra uinput umar-a ulev0">
+            <textarea id="fcontent" placeholder="请输入详细内容" name="textarea-0" class="" rows='15'></textarea>
+        </div>
+        <hr/><!--文本输入结束-->
+        <div id="img_list" class="umar-a" ontouchstart="zy_touch('btn-act')"">
+            <img id="addImg" class="ub-img uwh-bg umar-r-ect" src="fabu_content/css/myImg/addImg.png" style="display:inline" ontouchstart="zy_touch('btn-act')" onclick='addPic()'>
+            </img>
+        </div>
+        <div class="ub btn btn-r uc-a umar-a">
+            <div class="ub ub-ac uc-a c-blu2 uinn" onclick="goToInterest()">
+                添加标签
+            </div>
+            <div id="labels" class="umar-a" style="max-width: 18em;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+            </div>
+        </div>
+        <div class="ub t-bla umar-a">
+            <div class="ub-f1">
+                <input type="radio" name="rdi1" class="uhide" checked="checked" value="1">
+                <div onclick="zy_for(event)" ontouchstart="zy_touch('btn-act')" class="ub uba b-gra ui-rdi uc-tl uc-bl uinn">
+                    <div class="ub-f1 ut-s tx-c">
+                        所有的人可见 
+                    </div>
+                </div>
+            </div>
+            <div class="ub-f1">
+                <input type="radio" id="onlyForFriends" name="rdi1" class="uhide" value="0">
+                <div onclick="zy_for(event)" ontouchstart="zy_touch('btn-act')" class=" ub uba b-gra ui-rdi uc-tr uc-br uinn">
+                    <div class="ub-f1 ut-s tx-c">
+                        关注我的人可见
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <br/>
+        </div>
+        <input id="inputPic" value="" style="display:none">
+    </body>
+    <script type="text/javascript">
+        zy_init();
+        var picNum = 0;
+        var i = 0;
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+        }
+        function goToInterest(){
+            openNewWin('interest', 'interest.html');
+            window.localStorage.comeFrom = "fabu";
+        }
+        
+        function fillLabels(){
+            $$("labels").innerHTML = window.localStorage.fabu_labels_name;
+        }
+        
+        function addPic(){
+            if (picNum >= 4) {
+                alert("最多添加" + picNum + "张图片");
+                return;
+            }
+            uexWindow.confirm("", "添加照片(最多添加四张)", ["拍摄", "本地", "取消"]);
+            uexWindow.cbConfirm = function(opId, dataType, data){
+            
+                switch (parseInt(data)) {
+                    case 0:
+                        uexCamera.open();
+                        break;
+                    case 1:
+                        uexImageBrowser.pick();
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            
+            //照相机拍照成功或出错的回调函数
+            uexCamera.cbOpen = function(opCode, dataType, data){
+                picNum++;
+                i++;
+                var imgElem = document.createElement("img");
+                imgElem.setAttribute("class", "ub-img uwh-bg umar-r-ect pic");
+                var id = "'img_" + i + "'";
+                imgElem.setAttribute("id", id);
+                imgElem.setAttribute('onclick', 'delImg(' + id + ')');
+                imgElem.src = data;
+                $$("img_list").insertBefore(imgElem, $$("addImg"));
+            }
+            //选择图片的回调函数
+            uexImageBrowser.cbPick = function(opCode, dataType, data){
+                picNum++;
+                i++;
+                var imgElem = document.createElement("img");
+                imgElem.setAttribute("class", "ub-img uwh-bg umar-r-ect pic");
+                var id = "'img_" + i + "'";
+                imgElem.setAttribute("id", id);
+                imgElem.setAttribute('onclick', 'delImg(' + id + ')');
+                imgElem.src = data;
+                $$("img_list").insertBefore(imgElem, $$("addImg"));
+            }
+        }
+        
+        function delImg(id){
+            picNum--;
+            uexWindow.confirm('', '删除照片?', ['确定', '取消'])
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 0) {
+                    $$("img_list").removeChild($$("'" + id + "'"));
+                }
+            }
+        }
+        
+        var pics = [];
+        var picArray = $$("img_list").getElementsByTagName("img");
+        var numofimg = 0;
+        function confirmUploadImgs(){
+            if ($$("ftitle").value == "") {
+                alert("请输入标题");
+                $$("ftitle").focus();
+                return;
+            }
+            if ($$("fcontent").value == "") {
+                alert("请输入详细内容");
+                $$("fcontent").focus();
+                return;
+            }
+            if (picArray.length == 1) {
+                getdata();
+            }
+            else {
+                if (numofimg == picArray.length - 1) {
+                    getdata();
+                }
+                else {
+                    uploadImg(picArray[numofimg].src, numofimg);
+                    numofimg++;
+                }
+            }
+        }
+        
+        function uploadImg(data, i){
+            var picPath;
+            var t = URL() + "UploadFile/uploadPicture";
+            uexUploaderMgr.createUploader(1, t);
+            $$('inputPic').value = data;
+            uexUploaderMgr.uploadFile(1, data, "ipic", 2, 300);
+            uexUploaderMgr.onStatus = function(opCode, fileSize, percent, serverPath, status){
+                switch (status) {
+                    case 0:
+                        var kk = "上传进度：" + percent + "%";
+                        uexWindow.toast(1, 5, kk, 2000);
+                        break;
+                    case 1:
+                        var h;
+                        picPath = eval('(' + serverPath + ')');
+                        h = picPath.data.picName[0];
+                        //关闭上传对象  
+                         uexWindow.toast(0, 5, "图片上传成功", 1000);
+                        uexUploaderMgr.closeUploader(1);
+                        var picObj = {};
+                        picObj.picName = h;
+                        pics.push(picObj);
+                        confirmUploadImgs();
+                        break;
+                    case 2:
+                        uexWindow.toast(0, 5, "图片上传失败", 1000);
+                        uexUploaderMgr.closeUploader(1);
+                        break;
+                    default:
+                }
+            }
+            //createUploader的回调函数
+            uexUploaderMgr.cbCreateUploader = function(opCode, dataType, data){
+                if (data == 0) {
+                }
+                else {
+                }
+            }
+        }
+        
+        function getdata(){
+            if ($$('onlyForFriends').checked) {
+                var onlyForFriends = "1";
+            }
+            else {
+                var onlyForFriends = "0";
+            }
+            var json = {};
+            json.pics = pics;
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.onlyForFriends = onlyForFriends;
+            json.label = window.localStorage.fabu_labels;
+            json.title = $$('ftitle').value;
+            json.content = $$('fcontent').value;
+            var url = URL() + "IUStudentBusiness/publishMessage";
+            var t = JSON.stringify(json);
+
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed == 1) {
+                    alert("发布成功");
+                    uexWindow.evaluateScript("fabu", 0, "closewindow()");
+                }
+                else {
+                    alert(data.status.error_mesg);
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+    </script>
+</html>

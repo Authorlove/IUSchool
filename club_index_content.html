@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="person_content/css/main.css">
+        <link rel="stylesheet" href="css/project/activity.css">
+		 <link rel="stylesheet" href="css/fans.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <style>
+            .jianjie {
+                float: right;
+                margin: -5em -0.5em;
+                width: 3.1em;
+                height: 1.22em;
+                background-size: 100%;
+                color: white;
+                text-align: center;
+                background: black;
+                border-radius: 0.8em 0em 0em 0.8em;
+                opacity: 0.3;
+            }
+            
+            .li-size {
+                margin-right: 0.4em;
+                width: 1.8em;
+                height: 1.8em;
+            }
+            
+            .li-size2 {
+                border-bottom: 2px solid grey;
+                padding: 0.5em;
+            }
+            
+            .hehe {
+                float: left;
+                margin: 0 0.8em
+            }
+            
+            .aaa {
+                font-size: 0.9em;
+                background: white;
+                padding: 1em;
+            }
+			#gz{
+				height:3em;margin: 0em 0.5em;padding: 0.25em;float: right;width: 5em;position: absolute;
+			}
+			#sx1{
+				position: absolute;margin: 0em 0.5em;padding: 0.25em;float: right;width: 5em;height:3em;
+			}
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#E3E3E3">
+        <input type="hidden" id="intro" value=""><input type="hidden" id="choosewhich" value='0'><input type="hidden" id="getid" value="0">
+        <div class="ub ub-ver">
+            <div class="ub-img1 perBg ub-fh ub ub-ver">
+                <br/>
+                <div class="ub-f1" style="font-size: 0.8em;">
+                    <center>
+                        <div class="c-wh uinn-a16" style="border-radius:0.6em;width:4em;height:4em">
+                            <div class="ub-fh ub-fv  ub-img  " style="border-radius:0.6em;background-size:cover;" id="icon">
+							<img src="css/project/icon/icon_club.png" style="float:right;width:1em;height:1em">
+                            </div>
+                        </div>
+                        <div id="name" style="color:white;font-size:1.1em;font-weight: bold;">
+                            &nbsp;
+                        </div>
+                    </center>
+                     <div class="ub" style="height:2em;padding:0.5em 0;background:url(css/project/icon/bg1.png) no-repeat;background-size:100%">
+                        <div class="ub-f1" style='position:relative'>
+                            <div style='position:absolute;'>
+                            </div>
+                        </div>
+                        <div class="ub-f1" style='position:relative'>
+                            <div style='background:url(css/project/icon/sx.png) no-repeat;background-size:100%' id="sx1" onclick="openNewWin('private', 'privateletter.html')">
+                               
+                            </div>
+                        </div>
+                        <div class="ub-f1" style='position:relative'>
+                            <div onclick="gztr()"style='background:url(css/project/icon/notgz.png) no-repeat;background-size:100%;' id='gz'>
+                                <input type="hidden" id="gztype" value="1"/><!--默认是关注他人-->
+                            </div>
+                        </div>
+                        <div class="ub-f1" style='position:relative;'>
+                            <div style='position:absolute;'>
+                            </div>
+                        </div>     
+				    </div>
+                </div>
+            </div>
+            <div class="ub" style="text-align:center;background:#e3e3e3;font-size:0.9em;padding:0.35em 0;border-bottom: 1px solid grey;">
+                <div class="ub-f1" ontouchstart="zy_touch('btn-act')" onclick="change1()" id="dt" style="color:orange;">
+                    <span>发布</span>
+                    <span id="publish_count"></span>
+                </div>                
+				<div class="ub-f1" ontouchstart="zy_touch('btn-act')" onclick="change3()" id="fs1">
+                    <span>粉丝</span>
+                    <span id="followed_count"></span>
+                </div>
+                <div class="ub-f1" ontouchstart="zy_touch('btn-act')" onclick="change2()" id="gz1">
+                    <span>介绍</span>
+                </div>
+
+            </div>
+            <div id="tianchong">
+            </div>
+  </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            A();
+           setPageBounce(R, T);
+        }
+        
+        function A(){
+            uexWindow.toast(1, 5, "数据加载中", 0);
+            var url = URL() + "IUStudentBusiness/getAccountHomePageMesg";
+            var json = {};
+            json.uid = window.localStorage['other_user_id'];
+            json.session = {};
+            json.session.uid = sessionuid();
+            json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+//                    var k = JSON.stringify(data);
+//                    alert(k);
+                    var hasFollowedHim = data.data.accountMesg.hasFollowedHim;
+                    var name = data.data.accountMesg.display_name;
+                    var icon = data.data.accountMesg.icon;
+                    var publish_count = data.data.accountMesg.publish_count;
+                    var followed_count = data.data.accountMesg.followed_count;
+					var introduce = "";
+				    if(data.data.accountMesg.hasOwnProperty('detail_intro')){
+					    if (data.data.accountMesg.detail_intro != "") {
+							introduce = data.data.accountMesg.detail_intro;
+						}
+						else { introduce =data.data.accountMesg.introduce;
+						}
+					}
+					else introduce = "暂时没有介绍";
+                    $$('intro').value = introduce;
+					//alert(icon);
+                    $$('icon').style.backgroundImage = "url(" + icon + ")";
+                    $$('name').innerHTML = name;
+                    $$('publish_count').innerHTML = publish_count;
+                    $$('followed_count').innerHTML = followed_count;
+                    if (hasFollowedHim) {
+						$$('gz').style.backgroundImage = "url(css/project/icon/hasgz.png)";
+						$$('gztype').value = '0';
+					}
+					else {
+					$$('gz').style.backgroundImage = "url(css/project/icon/notgz.png)";
+					$$('gztype').value = '1';
+					}
+                    uexWindow.closeToast();
+                }
+                else {
+                    uexWindow.alert('提示', data.status.error_mesg, '确定');
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+            B(0);
+        }
+        
+        function B(id){
+        
+            var url = URL() + "IUMessageBusiness/getMessageOfSomeone";
+            var json = {};
+            json.message_id = id;
+            json.target_user_id = window.localStorage['other_user_id'];
+            json.session = {};
+            json.session.uid = sessionuid();
+            json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    //var k = JSON.stringify(data);
+					//alert(k);
+                    if (data.data.messages == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 3000);
+                        return;
+                    }
+                    var t = data.data.messages.length;
+                    var idd = data.data.messages[t - 1].message_id;
+                    $$('getid').value = idd;
+                    
+                   var tmpl = '<div class="ub ub-f1 ubb b-gra4 all" ontouchstart="zy_touch(\'\')" onclick="openNew(\'${message_id}\')">' +
+                    '<div class="ub-f1 ub ub-ver">' +
+                    '<div class="ulh-for  umar-l">${title}</div>' +
+                    '<div class="ub umar-l umar-t"><div class="author ub-f1"><span>${publisher_message.display_name}</span></div>' +
+                    '<div class="ub-f4"><p class="time tx-l">${cb:create_time}</p></div></div>' +
+					'<div class="ub umar-t"><div class="ub-img type">${cb:type_id}</div><div class="umar-l time">${label_str}</div></div>'+
+                    '</div><div class="ub-img">' +
+                    '<div class="pic" style="background:url(${cb:picture_url_list});background-size: cover;" id="picture">' +
+                    '</div><div class="time umar-t tx-c right">' +
+                    '<span class="uinn">赞</span>' +
+                    '<span id="goodid">${cb:like_it}</span>' +
+                    '<span class="uinn">评论</span>' +
+                    '<span id="commentid">${cb:comment_count}</span></div></div></div>';
+                    var s = zy_tmpl(tmpl, data.data.messages, zy_tmpl_count(data.data.messages), tmplCB);
+                    function tmplCB(a, b){
+                        switch (b[1]) {
+                            case 'type_id':{
+                                var type = a.type_id;
+                                var type_name = choosetype(type);
+                                var ccc = '<p class="type" style="background:url(css/project/icon/' + type_name + '.png) no-repeat;background-size:100%" id="typename"></p>';
+                                return ccc;
+                                break;
+                            }
+                            case 'create_time':{
+                                var t = a.create_time;
+                                var time = t.substr(5, 11);
+                                return time;
+                                break;
+                            }
+                            case 'content':{
+                                var c = a.content;
+                                var content = c.substr(0, 30) + "...";
+                                return content;
+                                break;
+                            }
+                            case 'picture_url_list':{
+                                var p = a.picture_url_list;
+                                if (p.length == 0) {
+                                }
+                                else {
+                                    var k = p[0].thumbPicUrl;
+                                    return k;
+                                };
+                            }
+							case 'like_it':{
+								var like_it = a.like_it;
+								if(like_it>0)
+								return like_it;
+								else
+								return " ";
+							}
+							case 'comment_count':{
+								var comment_count = a.comment_count;
+								if(comment_count>0)
+								return comment_count;
+								else return " ";
+							}
+                        }
+                        return '';
+                    }
+                    var para = document.createElement("div");
+                    para.innerHTML = s;
+                    var d = document.getElementById("tianchong");
+                    d.appendChild(para);
+                    uexWindow.closeToast();
+                }
+                else {
+                    uexWindow.alert('提示', data.status.error_mesg, '确定');
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function C(){
+            $$('tianchong').innerHTML = "<div class='aaa'>" + $$('intro').value + "</div>";
+        }
+		  function D(id){
+			uexWindow.toast(1, 5, "数据加载中", 0);
+                                    var url = URL() + "IUStudentBusiness/getClubFollowers";
+                                    var json = {};
+                                    json.club_id = window.localStorage['other_user_id'] ;
+									json.follow_id = id;
+                                    json.session = {};
+                        			json.session.uid = sessionuid();
+                        			json.session.sid = sessionsid();
+                                    var t = JSON.stringify(json);
+                                    var json = [{
+                                        'key': 'json',
+                                        'type': '0',
+                                        'value': t
+                                    }];
+                                    $.getJSON(url, function(data){	
+                                        if (data.status.succeed){
+											//var k = JSON.stringify(data);
+											//alert(k);
+											if(data.data.follow_list==""){
+												 uexWindow.toast(1, 5, "没有新数据", 2000);
+												return;}
+											var t = data.data.follow_list.length;
+											var idd = data.data.follow_list[t-1].follow_id;
+ 						     				$$('getid').value =idd;
+                        				var tmpl ='<div class="ubb ub cb">'+
+                                            '<ul  class=" ub ub-f1 first">'+
+                                                '<li class="ub pos_re" onclick="check1(\'${user_message.uid}\',${user_message.type},\'${user_message.display_name}\')">'+
+                                                    '<div class="uh-app3 ub-img ma " style="background:url(${user_message.icon});background-size: cover;">'+
+                                                    '</div>'+
+                                                '</li>'+
+                                                '<li class="ub-f1 ub m">'+
+                                                    '<div class="ub ub-ver ub-f1 umar-r-infor">'+
+                                                        '<div class="t-bla ulev-app1">'+
+                                                            '<span class="mb">${user_message.display_name}</span>'+
+                                                            '<p class="mc" onclick="check2(\'${user_message.uid}\')">'+
+                                                                '<span class="md" style="background-size:cover"></span>'+
+                                                                '<span class="me" >私信</span>'+
+                                                            '</p><p>${cb:user_message.type}</p></div></div></li></ul></div>';
+                       	 var s = zy_tmpl(tmpl, data.data.follow_list, zy_tmpl_count(data.data.follow_list),tmplCB);
+					     function tmplCB(a,b){
+                          switch(b[1]){
+                            case 'user_message.type':
+        					var t = a.user_message.type;
+        					if (t == 1) return "个人用户";
+        					else if(t == 2) return "学校机构";
+        					else if(t == 3) return "社团/官方组织";
+                             break;
+                          }
+                          return '';
+                        }	
+                        var para = document.createElement("div");
+                        para.innerHTML = s;
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);					
+                       	uexWindow.closeToast();
+						var t = $$("tianchong").lastChild;
+                                        }
+                                        else {
+                                            uexWindow.alert("提示",data.status.error_mesg,"确定");
+                                        }
+                                    }, 'json', function(err){
+                                    }, 'POST', json);
+		}
+ 
+        function gztr(){
+            var v = $$('gztype').value;
+            var json = {};
+            json.followed_uid = window.localStorage['other_user_id'];
+            json.session = {};
+            json.session.uid = sessionuid();
+            json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            if (v == '1') {
+                //点击关注他
+                var url = URL() + "IUStudentBusiness/followUser";
+                
+            }
+            else {
+                var url = URL() + "IUStudentBusiness/dontFollowUser";
+                
+            }
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    uexWindow.toast(1, 5, "操作成功", 2000);
+                    if (v == 1) {
+						$$('gztype').value = '0';
+					$$('gz').style.backgroundImage = "url(css/project/icon/hasgz.png)";
+					}
+                    else 
+                    {
+						$$('gztype').value = '1';
+						$$('gz').style.backgroundImage = "url(css/project/icon/notgz.png)";
+					}    
+                    
+                }
+                else {
+                    uexWindow.toast(1, 5, "操作失败，请重试", 2000);
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+        
+        function change1(){
+            $$('getid').value = '0';
+            $$('tianchong').innerHTML = "";
+            B(0);
+            $$('dt').style.color = "orange";
+            $$('gz1').style.color = "black";
+            $$('fs1').style.color = "black";
+            $$('choosewhich').value = '0';
+        }
+        
+        function change2(){
+            $$('getid').value = '0';
+            $$('tianchong').innerHTML = "";
+            C();
+            $$('gz1').style.color = "orange";
+            $$('dt').style.color = "black";
+            $$('fs1').style.color = "black";
+            $$('choosewhich').value = '1';
+        }
+        
+        function change3(){
+            $$('getid').value = '0';
+            $$('tianchong').innerHTML = "";
+            D(0);
+            $$('fs1').style.color = "orange";
+            $$('dt').style.color = "black";
+            $$('gz1').style.color = "black";
+            $$('choosewhich').value = '2';
+        }
+        
+        function check1(id, type, name){
+            if (uid() != id) {
+                window.localStorage['other_user_id'] = id;
+                window.localStorage['other_name'] = name;
+                if (type == '1') //openNewWin('other','other_index.html');
+                {
+                    $$('tianchong').innerHTML = "";
+                    change1();
+                    A(0);
+                    //	uexWindow.evaluateScript("other","other","DD()");
+                }
+                else {
+                    openNewWin('club', 'club_index.html');
+                }
+            }
+        }
+        
+        function check2(id){
+            if (uid() != id) {
+                window.localStorage['other_user_id'] = id;
+                openNewWin('private', 'privateletter.html');
+            }
+        }
+
+        //刷新页面数据      
+        function R(){
+        }
+        
+        function T(){
+            var k = $$('choosewhich').value;
+            var id = $$('getid').value;
+            if (k == '0') {
+                B(id);
+            }
+            else 
+                if (k == '1') {                    
+                }
+                else {
+                    D(id);
+                }
+        }
+    </script>
+</html>

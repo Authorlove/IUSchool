@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="index1_content/css/main.css">
+        <link rel="stylesheet" href="css/project/activity.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src='js/zy_slide.js'>
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+
+			
+            <div id="tianchong">
+            	
+            </div>
+
+    </body>
+    <script>
+        zy_init();
+	
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            upload(0);
+			setPageBounce(dorpDownUpdate, pullUpUpdate); 
+        }
+        var idd;//记录最大的news_id 
+         //获取我关注的社团发布的信息
+  //上传参数:session,message_id
+  //返回参数:messages     
+        function upload(message_id){
+			var url = URL() + "IUMessageBusiness/getMessageOfMyFollowedClubUser";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = message_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+			//	alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    if (data.data.messages == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 3000);
+                        return;
+                    }
+                    var t = data.data.messages.length;
+                    idd = data.data.messages[t - 1].message_id;
+                    var tmpl = '<div class="ub ub-f1 ubb b-gra4 all" ontouchstart="zy_touch(\'\')">' +
+                    '<div class="ub-f1 ub ub-ver">' +
+					'<div class="ub" onclick="openNew(\'${message_id}\')"><div class="ub-img umar-b type">${cb:type_id}</div><div class="umar-l umar-b time">${label_str}</div></div>'+
+                    '<div class="ulh-for umar-l" onclick="openNew(\'${message_id}\')">${title}</div>' +
+                    '<div class="ub umar-l umar-t" ><div onclick="check(\'${publisher_message.uid}\',\'${publisher_message.type}\',\'${publisher_message.display_name}\')"'+
+ 'class="author ub-f1"><span>${publisher_message.display_name}</span></div>' +
+                    '<div class="ub-f4"><p class="time tx-l">${cb:create_time}</p></div></div>' +
+                    '</div><div class="ub-img">' +
+                    '<div class="pic" onclick="openNew(\'${message_id}\')" style="background:url(${cb:picture_url_list});background-size: cover;" id="picture">' +
+                    '</div><div class="time umar-t tx-c right">' +
+                    '<span class="uinn">赞</span>' +
+                    '<span id="goodid">${cb:like_it}</span>' +
+                    '<span class="uinn">评论</span>' +
+                    '<span id="commentid">${cb:comment_count}</span></div></div></div>';
+                    var s = zy_tmpl(tmpl, data.data.messages, zy_tmpl_count(data.data.messages), tmplCB);
+                    function tmplCB(a, b){
+                        switch (b[1]) {
+                            case 'type_id':{
+                                var type = a.type_id;
+                                var type_name = choosetype(type);
+                                var ccc = '<p class="type" style="background:url(css/project/icon/' + type_name + '.png) no-repeat;background-size:100%" id="typename"></p>';
+                                return ccc;
+                                break;
+                            }
+                            case 'create_time':{
+                                var t = a.create_time;
+                                var time = t.substr(5, 11);
+                                return time;
+                                break;
+                            }
+                            case 'content':{
+                                var c = a.content;
+                                var content = c.substr(0, 30) + "...";
+                                return content;
+                                break;
+                            }
+                            case 'picture_url_list':{
+                                var p = a.picture_url_list;
+                                if (p.length == 0) {
+                                }
+                                else {
+                                    var k = p[0].thumbPicUrl;
+                                    return k;
+                                };
+                            }
+							case 'like_it':{
+								var like_it = a.like_it;
+								if(like_it>0)
+								return like_it;
+								else
+								return " ";
+							}
+							case 'comment_count':{
+								var comment_count = a.comment_count;
+								if(comment_count>0)
+								return comment_count;
+								else return " ";
+							}
+                        }
+                        return '';
+                    }
+                   if (message_id == 0) 
+						$$("tianchong").innerHTML = s;
+					else {
+						var para = document.createElement("div");
+						para.innerHTML = s;
+						var d = document.getElementById("tianchong");
+						d.appendChild(para);
+					}
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json, true);
+        }
+           function check(id, type, name){
+            window.localStorage['other_user_id'] = id;
+            window.localStorage['other_name'] = name;
+            if (type == '1') 
+                openNewWin('other', 'other_index.html');
+            else {
+                openNewWin('club', 'club_index.html');
+            }
+        }
+        function dorpDownUpdate(){
+            $.clearLS(url);
+            upload(0);
+            uexWindow.resetBounceView('0');
+			uexWindow.toast(0, 5, "刷新成功", 3000);
+        }
+        
+        function pullUpUpdate(){
+            $.clearLS(url);
+            upload(idd);
+            uexWindow.resetBounceView('1');
+			uexWindow.toast(0, 5, "加载成功", 3000);
+        }
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+    </script>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-list-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-list.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="person_content/css/main.css">
+        <link rel="stylesheet" href="dongtai_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <style>
+            .jianjie {
+                float: right;
+                margin: -5em -0.5em;
+                width: 3.1em;
+                height: 1.22em;
+                background-size: 100%;
+                color: white;
+                text-align: center;
+                background: black;
+                border-radius: 0.8em 0em 0em 0.8em;
+                opacity: 0.3;
+            }
+            
+            .li-size {
+                margin-right: 0.4em;
+                width: 1.8em;
+                height: 1.8em;
+            }
+            
+            .li-size2 {
+                border-bottom: 2px solid grey;
+                padding: 0.5em;
+            }
+            
+            #realname span {
+                margin: 0.5em
+            }
+            
+            .iconn {
+                margin-right: 0.625em;
+                width: 2.2em;
+                height: 2.2em;
+                border-radius: 0.3em
+            }
+            
+            .uull {
+                padding: 0.35em;
+            }
+            
+            .bgg {
+                background: white
+            }
+            
+            .jr {
+                float: right;
+                margin-right: 0.5em;
+                height: 2em;
+                width: 3.8em;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#E3E3E3">
+        <div id="followMemberList" class="c-wh">
+        </div>
+    </body>
+    <script>
+        zy_init();
+        var id;
+        var url = URL() + "IUGroupBusiness/getGroupMembers";
+        window.uexOnload = function(type){
+            upload("0");
+            setPageBounce(dropDownUpdate, pullUpUpdate);
+        }
+        function getMessageFollowers(followed_message_id){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.followed_message_id = window.localStotage['message_id'];
+            json = JSON.stringify(json);
+            alert(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var url = URL() + "IUMessageBusiness/getMessageFollowers";
+            
+            $.getJSON(url, function(data){
+                if (data.status.error_meg) {
+                    uexWindow.alert(error_meg);
+                }
+                else {
+                    alert(JSON.stringify(data));
+                    var tmpl = '<div class="ub ub-ac ubb b-gra uinn bgg">' +
+                    '<div class="ub-img umwh1" style="background:url(${icon}) no-repeat; background-size:100%" ontouchstart="zy_touch(\'\')" onclick="detail(\'${uid}\',\'${nickname}\')"></div>' +
+                    '<div class="ub ub-f1 ub-ver umar-l"> <div>' +
+                    '${realname}<span onclick="check2(\'${uid}\')" class="jr" style="background:url(css/project/icon/sx.png) no-repeat;background-size:100%;"></span>' +
+                    '</div>' +
+                    '<div class="t-gra ulev-1">' +
+                    ' ${introduce}' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                    
+                    var s = zy_tmpl(tmpl, data.data.members, zy_tmpl_count(data.data.members));
+                    $$("followMemberList").innerHTML = s;
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function check2(id){
+            window.localStorage['other_user_id'] = id;
+            openNewWin('private', 'privateletter.html');
+            
+        }
+        
+        function pullUpUpdate(){
+            $.clearLS(url);
+            upload("0");
+            alert('pull up update success');
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            upload(id);
+            alert('pull up update success');
+        }
+        
+        function detail(uid, name){
+            window.localStorage['other_user_id'] = uid;
+            window.localStorage['other_name'] = name;
+            openNewWin('other', 'other_index.html');
+        }
+    </script>
+</html>

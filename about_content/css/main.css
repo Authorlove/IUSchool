@@ -1,0 +1,52 @@
+.list{
+	min-height:2.5em;
+}
+.b-dfd{
+	border-color:#dfdfdf;
+}
+.umar-tcon{
+	margin-top:0.625em;
+}
+.umar-lrlist{
+	margin:0 .625em;
+}
+.uinn-lrlist{
+	padding:0 .625em;
+}
+.umar-lrtxt{
+	margin:0 0.625em;
+}
+.umwh-micons{
+	min-height:1.25em;
+	min-width:1.25em;
+}
+.t-c2c{
+	color:#c2c2c2;
+}
+.t-6b9{
+	color:#6b9fc2;
+}
+.res-feedback{
+	background-image:url(images/feedback.png);
+}
+.res-night{
+	background-image:url(images/nightmode.png);
+}
+.res-message{
+	background-image:url(images/message.png);
+}
+.res-noimage{
+	background-image:url(images/noimage.png);
+}
+.res-fontsize{
+	background-image:url(images/fontsize.png);
+}
+.res-about{
+	background-image:url(images/about.png);
+}
+.res-cleanstrg{
+	background-image:url(images/cleanstorage.png);
+}
+.res-checkversion{
+	background-image:url(images/checkversion.png);
+}

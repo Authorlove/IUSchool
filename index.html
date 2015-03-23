@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-tab.css">
+        <link rel="stylesheet" href="css/project/ui-nav-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="index/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <style>
+            input[type = "radio"]:checked + div.rdi {
+                background: #E7A51B;
+                color: white
+            }
+            
+            .radio {
+                border: 1px solid #E7A51B;
+                font-size: 0.9em;
+                color: #E7A51B;
+                float: left;
+                padding: 0.25em 0.9em;
+            }
+            
+            .span1 {
+                margin-right: 0.6em
+            }
+            
+            .span2 {
+                font-size: 0.7em
+            }
+        </style>
+    </head>
+    <body class="um-vp c-bf" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始--><!--header开始-->
+            <div id="header">
+                <div class="uh t-wh ub c-blu">
+                    <div id="hleft" class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')">
+                    </div>
+                    <h1 class="ut ub-f1 ulev-3 ut-s tx-c" id="indextitle" tabindex="0" style="display:none"></h1>
+                    <div id="zixun" class="ub-f1 ub-ac ub-pc uinn">
+                        <div class="ub uc-a1  b-wh tx-c">
+                            <div style="margin:0 auto" id="hmenu" style="display:none">
+                                <input type="radio" name="rdi" class="uhide" value="" checked>
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),first()' class="uinn-a15  ub-f1 rdi radio" style="border-radius: 0.3em 0 0 0.3em;">
+                                    推荐
+                                </div>
+                                <input type="radio" name="rdi" class="uhide" value="">
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con_allInfo()' class="uinn-a15 c-blu ub-f1 rdi t-wh radio" style="border-radius:0 0.3em 0.3em 0">
+                                    全部 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="hright" class="umw4 ub ub-ac ub-pc ulev-0" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('fabu','fabu.html')">
+                        发布
+                    </div>
+                </div>
+            </div>
+            <!--header结束-->
+            <!--content开始-->
+            <div id="content" class="ub-f1 tx-l  ub-img4">
+            </div>
+            <div id="allInfo_content" style="display:none" class="ub-f1 tx-l  ub-img4">
+            </div>
+            <!--content结束-->
+            <!--footer-->
+            <div id="footer" class="">
+                <!--导航条开始-->
+                <div class="uf t-bla ub tab t-wh ubt b-gra2 c-gra2" style="background:white">
+                    <div class="pos_re ub ub-f1">
+                        <input class="uhide" type="radio" name="tabSwitch" checked="true">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act" onclick='first()'>
+                            <div class="ub-f1 ub-img5 tp-home">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="first">
+                                资讯
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pos_re ub ub-f1">
+                        <input class="uhide" type="radio" name="tabSwitch">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act" onclick='third()'>
+                            <div class="ub-f1 ub-img5 tp-search">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="third">
+                                发现
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pos_re ub ub-f1" ontouchstart="zy_touch('',zy_for)" onclick='fourth()'>
+                        <input class="uhide" type="radio" name="tabSwitch">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act">
+                            <div class="ub-f1 ub-img5 tp-my">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="fourth">
+                                我
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--导航条结束-->
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+            if (typeof(window.localStorage['iu_user']) == "undefined" || window.localStorage['iu_user'] == null) {
+                openNewWin('login', 'login_content.html');
+            }
+            else {
+				uexDevice.getInfo();
+                if (!type) {
+                    userlogin();
+                }
+            }
+        }
+        function first(){
+            uexWindow.closePopover("allInfo_content");
+            $$("hright").innerHTML = "发布";
+            $$("hright").setAttribute("onclick", "openNewWin('fabu','fabu.html')");
+            $$("indextitle").style.display = "none";
+            $$("zixun").style.display = "block";
+            document.getElementsByTagName("input")[0].checked = true;
+            zy_con("content", "index1_content.html", 0, $$("header").offsetHeight);
+        }
+        
+        function third(){
+            uexWindow.closePopover("allInfo_content");
+            $$("hright").innerHTML = "";
+            $$("hright").setAttribute("onclick", "");
+            $$("indextitle").style.display = "block";
+            $$("zixun").style.display = "none";
+            $$("indextitle").innerHTML = "发现";
+            zy_con("content", "dongtai_content.html", 0, $$("header").offsetHeight);
+        }
+        
+        function fourth(){
+            uexWindow.closePopover("allInfo_content");
+            $$("hright").innerHTML = "";
+            $$("hright").setAttribute("onclick", "");
+		    $$("indextitle").style.display = "block";
+            $$("zixun").style.display = "none";
+            $$("indextitle").innerHTML = "我";
+            zy_con("content", "person_content.html", 0, $$("header").offsetHeight);
+        }
+        
+        function zy_con_allInfo(){
+            var s = window.getComputedStyle($$("content"), null);
+            uexWindow.openPopover("allInfo_content", "0", "allInfo_content.html", "", 0, int($$("header").offsetHeight), int(s.width), int(s.height), int(s.fontSize), "0");
+        }
+        
+        function userlogin(){
+            var uid = window.localStorage['uid'];
+            var upd = window.localStorage['upd'];
+            var url = URL() + "IUNewStudentUser/login";
+            var json = {};
+            json.uid = uid;
+            json.upd = upd;
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    var t = JSON.stringify(data);
+                    var h = eval('(' + t + ')');
+                    window.localStorage.checkout = h.data.accountMesg.checkout;
+                    window.localStorage['iu_user'] = t;
+                    window.localStorage['uid'] = h.data.accountMesg.uid;
+                    window.localStorage['univs_id'] = h.data.accountMesg.univs_id;
+                    window.localStorage['academy_id'] = h.data.accountMesg.academy_id;
+                    window.localStorage['grade'] = h.data.accountMesg.grade;
+                    window.localStorage['class_id'] = h.data.accountMesg.class_id;
+                    window.localStorage['lpn'] = h.data.accountMesg.lpn;
+                    window.localStorage['spn'] = h.data.accountMesg.spn;
+                    window.localStorage['realname'] = h.data.accountMesg.realname;
+                    window.localStorage['nickname'] = h.data.accountMesg.nickname;
+                    window.localStorage['sex'] = h.data.accountMesg.sex;
+                    window.localStorage['interest'] = h.data.accountMesg.interest;
+                    window.localStorage['univs_name'] = h.data.accountMesg.univs_name;
+                    window.localStorage['academy_name'] = h.data.accountMesg.academy_name;
+                    window.localStorage['icon'] = h.data.accountMesg.icon;
+                    window.localStorage['report'] = h.data.accountMesg.report;
+                    window.localStorage['sessionuid'] = h.data.session.uid;
+                    window.localStorage['sessionsid'] = h.data.session.sid;
+                    window.localStorage['publish_count'] = h.data.accountMesg.publish_count;
+                    window.localStorage['followed_count'] = h.data.accountMesg.followed_count;
+                    window.localStorage['follow_others_count'] = h.data.accountMesg.follow_others_count;
+                    window.localStorage['private_letter_count'] = h.data.accountMesg.private_letter_count;
+                    if (window.localStorage['class_id'] != "null") {
+                        window.localStorage['class_name'] = h.data.classMesg.class_name;
+                        window.localStorage['class_introduce'] = h.data.classMesg.introduce;
+                        window.localStorage['class_grade'] = h.data.classMesg.grade;
+                        window.localStorage['class_academy_id'] = h.data.classMesg.academy_id;
+                        window.localStorage['class_univs_name'] = h.data.classMesg.univs_name;
+                        window.localStorage['class_univs_id'] = h.data.classMesg.univs_id;
+                        window.localStorage['class_owner_id'] = h.data.classMesg.owner_id;
+                        window.localStorage['class_icon'] = h.data.classMesg.icon;
+                        window.localStorage['class_memberCount'] = h.data.classMesg.memberCount;
+                    }
+                    else {
+                        window.localStorage['class_name'] = "";
+                        window.localStorage['class_introduce'] = "";
+                        window.localStorage['class_grade'] = "";
+                        window.localStorage['class_academy_id'] = "";
+                        window.localStorage['class_univs_name'] = "";
+                        window.localStorage['class_univs_id'] = "";
+                        window.localStorage['class_owner_id'] = "";
+                        window.localStorage['class_icon'] = "";
+                        window.localStorage['class_memberCount'] = "";
+                    }
+                    zy_con("content", "index1_content.html", 0, $$("header").offsetHeight);
+                }
+                else {
+                    uexWindow.alert("提示", data.status.error_mesg, "确定");
+                    winClose();
+                    openNewWin('login', 'login_content.html');
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        function reload(){
+            alert("index reload");
+            uexWindow.evaluatePopoverScript("root", "allInfo_content", "reload()");
+        }
+        
+        function reloadFromLabel(){
+			alert("reload from label");
+            uexWindow.evaluatePopoverScript("root", "allInfo_content", "reloadFromLabel()");
+        }        
+        function closeIndex(){
+            winClose();
+        }
+    </script>
+</html>

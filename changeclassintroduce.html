@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="register/css/main.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="register_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+		<script src="js/zy_json.js"></script>
+		<script src="js/zy_icache.js"></script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh t-wh ub c-blu">
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                    <div class="t-btn-a1 ub-img uwh-tBtn">
+                    </div>
+                </div>
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">更改班级介绍</h1>
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+                </div>
+            </div>
+            <!--header结束-->
+            <!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+                <!--文本输入开始-->
+				<div style="padding:0.5em ">
+<div class=" c-wh b-gra uinput uinn4">
+    <textarea placeholder="输入班级介绍" name="textarea-0" class="uc-a1" style="border:1px solid grey;height:8em"></textarea>
+</div>
+<!--文本输入结束-->
+<!--按钮开始-->
+<div ontouchstart="zy_touch('btn-act')" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">确定更改</div>
+<!--按钮结束-->
+</div>
+
+            </div>
+            <!--content结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+            
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+		
+        }
+        function submitnick(){
+			
+			
+            var nickname = $$("nick").value;
+            var sessionuid1 = sessionuid();
+            var sessionsid1 = sessionsid();
+            if (nickname == "") 
+                alert("昵称不能为空！");
+            else {
+                var url = URL() + "IUStudentBusiness/modifyInfo";
+                var json = {};
+				json.field = "realname";
+                json.value = nickname;
+                json.session = {};
+				json.session.uid = sessionuid1;
+				json.session.sid = sessionsid1;
+                var t = JSON.stringify(json);
+                var json = [{
+                    'key': 'json',
+                    'type': '0',
+                    'value': t
+                }];
+                $.getJSON(url, function(data){
+                    if (data.status.succeed) {
+                        alert("修改成功！");
+                        window.localStorage['realname'] = nickname;
+                        winClose(); 
+						uexWindow.evaluateScript("information",0,"A()");
+                    }
+                    else {
+                        alert(data.status.error_mesg);
+                    }
+                }, 'json', function(err){
+					
+                }, 'POST', json);
+            }
+        }
+    </script>
+</html>

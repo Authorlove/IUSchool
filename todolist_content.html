@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-list-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <style>
+            .type {
+                display: block;
+                width: 3em;
+                height: 1.5em;
+            }
+            
+            .tpp {
+                width: 3.2em;
+                margin: 1em 0.6em 1em 0em;
+                height: 1.5em;
+            }
+            
+            .hhe {
+                margin-left: 1em
+            }
+        </style>
+    </head>
+    <body class="um-vp" style="background:#e1e1e1">
+        <div id="tianchong">
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            setPageBounce(dropDownUpdate, pullUpUpdate);
+            getToDoList(1, "");
+            uexLocalNotification.onActive = onActiveCallBack;
+            uexLocalNotification.cbGetData = cbGetData;
+        }
+        function reload(){
+            getToDoList(1, "");
+        }
+        
+        function onActiveCallBack(notificationID){
+            alert(notificationID + " active");
+        }
+        
+        function cbGetData(notificationID, msg){
+            alert(msg);
+        }
+        
+        function test(ret){
+            alert(ret);
+        }
+        
+        var page = 1;
+        //获取所有to_do_list
+        //上传参数:session,page
+        //返回参数:to_do_list
+        function getToDoList(page1, condition){
+            var url = URL() + "IUMessageBusiness/getToDoList";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.page = page1;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    var len = data.data.to_do_list.length;
+                    if (len >= 15) {
+                        page++;
+                    }
+                    var tmpl = '<div class="ub ub-ver" style="background:white" ontouchstart="zy_touch(\'btn-act\'),gtouchstart(${message_id},\'${title}\')" id="${message_id}"  ontouchmove="gtouchmove()" ontouchend="gtouchend(${message_id})" class="uc-t ubb ub b-gra t-bla ub-ac">' +
+                    '<div class="ub-f1 uinn">${title}</div>' +
+                    '<div class="ub"><div class="ub-f1 umar-t">${cb:type_id}</div>' +
+                    '<div class="ub-f1 t-gra umar-a tx-l">${publisher_display_name}</div>' +
+                    '<div class="t-blu umar-a ub-f4 tx-r">${cb:remind_time}</div></div></div>';
+                    var s = zy_tmpl(tmpl, data.data.to_do_list, zy_tmpl_count(data.data.to_do_list), tmplCB);
+                    function tmplCB(a, b){
+                        switch (b[1]) {
+                            case 'type_id':{
+                                var type = a.type_id;
+                                var type_name = choosetype(type);
+                                var ccc = '<p class="type" style="background:url(css/project/icon/' + type_name + '.png) no-repeat;background-size:100%" id="typename"></p>';
+                                return ccc;
+                                break;
+                            }
+                            case 'remind_time':{
+                                var date = a.remind_time.split(" ");
+                                var ymd = date[0].split("-");
+                                var hms = date[1].split(":");
+                                var remind_time = new Date(parseInt(ymd[0]), (parseInt(ymd[1]) - 1), parseInt(ymd[2]), parseInt(hms[0]), parseInt(hms[1]), parseInt(hms[2]));
+                                remind_time = remind_time.getTime();
+                                var now = new Date();
+                                var diff = remind_time - now;
+                                var diff1 = diff;
+                                var day = parseInt(diff / (24 * 60 * 60 * 1000));
+                                diff = diff % (24 * 60 * 60 * 1000);
+                                var hour = parseInt(diff / (60 * 60 * 1000));
+                                diff = diff % (60 * 60 * 1000);
+                                var minute = parseInt(diff / (60 * 1000));
+                                var displayTime = "";
+                                if (diff1 < 0) {
+                                    displayTime = "已过期";
+                                    return displayTime;
+                                }
+                                else 
+                                    displayTime = "还剩";
+                                if (day > 0 && hour >= 0) {
+                                    displayTime += day + "天" + hour + "小时";
+                                }
+                                else 
+                                    if (hour > 0 && minute >= 0) {
+                                        displayTime += hour + "小时" + minute + "分钟";
+                                    }
+                                    else {
+                                        if (minute == 0) {
+                                            minute = 1;
+                                        }
+                                        displayTime += minute + "分钟";
+                                    }
+                                return displayTime;
+                                break;
+                            }
+                        }
+                    }
+                    if (page1 == 1) 
+                        $$("tianchong").innerHTML = s;
+                    else {
+                        var para = document.createElement("div");
+                        para.innerHTML = s;
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                    else 
+                        if (condition == "up") {
+                            uexWindow.resetBounceView('1');
+                            if (len == 0) {
+                                uexWindow.toast(0, 5, "没有更多消息", 1000);
+                            }
+                        }
+                    if (len < 15) {
+                        var para = document.createElement("div");
+                        para.innerHTML = '<center class="ub-f1 tx-c umar-a uc-a" style="color:gray">没有更多消息</center>';
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);
+                    }
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        }
+        
+        var timeOutEvent = 0;//定时器
+        //开始按
+        function gtouchstart(mid, title){
+            timeOutEvent = setTimeout("menu(" + mid + ",'" + title + "')", 500);//这里设置定时器，定义长按500毫秒触发长按事件，时间可以自己改，个人感觉500毫秒非常合适
+            return false;
+        };
+        //手释放，如果在500毫秒内就释放，则取消长按事件，此时可以执行onclick应该执行的事件
+        function gtouchend(mid){
+            clearTimeout(timeOutEvent);//清除定时器
+            if (timeOutEvent != 0) {
+                openNew(mid);
+            }
+            return false;
+        };
+        //如果手指有移动，则取消所有事件，此时说明用户只是要移动而不是长按
+        function gtouchmove(){
+            clearTimeout(timeOutEvent);//清除定时器
+            timeOutEvent = 0;
+        };
+        
+        function menu(mid, title){
+            timeOutEvent = 0;
+            uexWindow.cbActionSheet = function(opId, dataType, data){
+                switch (parseInt(data)) {
+                    case 0:
+                        deleteToDoListItem(mid);
+                        break;
+                    case 1:
+                        changeRemindTime(mid);
+                        break;
+                    case 2:
+                        openNew(mid);
+                        break;
+                    case 3:
+                        break;
+                }
+            }
+            window.localStorage.todotitle = title;
+            uexWindow.actionSheet("操作", "取消", ["取消代办事项", "修改提醒时间", "查看原文"]);
+        }
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+        
+        //对一条消息取消待办事项
+        //上传参数:session,message_id
+        //返回参数:成功或失败
+        function deleteToDoListItem(id){
+            var url = URL() + "IUMessageBusiness/deleteToDoListItem";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = id;
+            json = JSON.stringify(json);
+            alert(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var content = "";
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert($$(id));
+                    uexLocalNotification.remove("'"+id+"'");
+                    $$(id).remove();
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        //修改一条待办事项的时间
+        //上传参数:session,message_id,remind_time
+        //返回参数:成功或失败
+        function changeRemindTime(id){
+            window.localStorage.todoid = id;
+            var url = URL() + "IUGroupBusiness/changeRemindTime";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            var content = "";
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert(JSON.stringify(data));
+                    openNewWin("change_remind_time", "change_remind_time.html");
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function dropDownUpdate(){
+            getToDoList(1, "down");
+        }
+        
+        function pullUpUpdate(){
+            getToDoList(page, "up");
+        }
+    </script>
+</html>

@@ -1,0 +1,62 @@
+.newsban{
+	background-image:url('myImg/yaoming.png');
+}
+.ub-imgnews
+{	
+	-webkit-background-size:100% 100%;
+	background-size:100% 100%;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+
+.uh-for1{
+	height:10.625em;
+}
+.uh-for2{
+	height:2.8em;
+}
+.c-bla-50{
+	background-color:rgba(0,0,0,0.4);
+}
+.uwh-for1{
+	width:0.25em;
+	height:0.25em;
+}
+.uwh-for2{
+	width:3.75em;
+	height:3.75em;
+}
+.uc-a-for1{
+	-webkit-border-radius: 0.25em;
+	border-radius: 0.25em;
+}
+.c-gra-for2{
+	background-color:#767676;
+}
+.umar-r-for{
+	margin-right:0.1875em;
+}
+.uinn-for1{
+	padding:0.625em 0.625em 0.4375em 0.625em;
+}
+.t-gra-b1{
+	color:#b1b1b1;
+}
+.ulh-for{
+	line-height:1.4em;
+}
+.uinn-for2{
+	padding:0.2em 0.5em;
+}
+.c-red-for3{
+	background-color:#ad0000;
+}
+.uc-a-news{
+	-webkit-border-radius: 0.2em;
+	border-radius: 0.2em;
+}
+.ubas-nt{
+	position:absolute;
+	left:0;
+	bottom:0;
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="register/css/main.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="register_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="register_content/js/register_main.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh t-wh ub c-blu">
+                <div id="header" class="uh t-wh ub c-blu">
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                        取消
+                    </div>
+                    <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">选择学校</h1>
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="confirm_change()">
+                        确定
+                    </div>
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+                <div class="ub ub-ver uinn-a1">
+                    <!--复选框开始-->
+                    <!--<div class="uinn">
+                        选择默认学校
+                    </div>
+                    <input id="change_default" type="checkbox" name="che1" class="uhide" value="">
+                    <div onclick="zy_for(event),change_default()" ontouchstart="zy_touch('btn-act')" class="ub umar-a uc-a1 uba c-gra b-gra t-bla uinn">
+                        <div id="default_school" class="ub-f1 ut-s tx-l">
+                            
+                        </div>
+                        <div class="che-icon ub-img umw1">
+                        </div>
+                    </div>      
+					<!--复选框结束-->
+				<div id="change_school_select" class="umar-a">
+				<div class="umar-a">选择其他学校</div>	
+              
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            省份
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l ulh-sel">
+                                            选择省份
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="province" selectedindex="0" id="province" onchange="zy_selectmenu(this.id),getUniversity()">
+                                            <option>加载中....</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            学校
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l ulh-sel">
+                                            选择学校
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="school" selectedindex="0" id="school" onchange="zy_selectmenu(this.id)">
+                                            <option>加载中.....</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+					</div>
+                </div>
+            </div>
+            <!--content结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+        
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+//			$$("default_school").innerHTML = univs_name();
+            //获取省份
+            var url = URL() + "IUSchoolList/getProvince";
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    var tmpl = '<option value="${province_id}">${province_name}</option>';
+                    var s = zy_tmpl(tmpl, data.data.province, zy_tmpl_count(data.data.province));
+                    var d = document.getElementById("province");
+                    d.innerHTML = "<option></option>" + s;
+                }
+                else 
+                    alert("服务器连接失败，请检查网络。");
+            });
+        }
+//		function change_default(){
+//           if ($$("change_default").checked) {
+//		   	document.getElementsByTagName("select")[0].disabled = true;
+//		   	document.getElementsByTagName("select")[1].disabled = true;
+//		   }
+//		   else {
+//		   	document.getElementsByTagName("select")[0].disabled = false;
+//			document.getElementsByTagName("select")[1].disabled = false;
+//		   }
+//		}
+		
+        function confirm_change(){
+//			if ($$("change_default").checked) {
+//				window.localStorage.selected_univs_name = univs_name();
+//				window.localStorage.selected_univs_id = univs_id();
+//			}
+//			else {
+				var select = $$("school");
+				if(select.options[select.selectedIndex].text=="选择学校"||select.options[select.selectedIndex].text==""||select.options[select.selectedIndex].text=="加载中.....")
+				{
+					uexWindow.toast(0, 5, "请选择学校", 1000);
+					select.focus();
+					return;
+				}
+				window.localStorage["selected_univs_name"] =select.options[select.selectedIndex].text;
+				window.localStorage["selected_univs_id"] =select.options[select.selectedIndex].value;
+//			}
+			winClose();
+			uexWindow.evaluateScript("root",0,"reload()");
+			uexWindow.evaluatePopoverScript("root","allInfo_content","reload()");
+        }
+    </script>
+</html>

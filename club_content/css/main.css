@@ -1,0 +1,59 @@
+.perBg{
+	background-image:url(myImg/perBg.png);
+}
+.uh-per1{
+	height:9.375em;
+}
+.uwh-per2{
+	width:3em;
+	height:3em;
+}
+.uc-a-per1{
+	-webkit-border-radius: 3em;
+	border-radius: 3em;
+}
+.uc-a-per2{
+	-webkit-border-radius: 100%;
+	border-radius:100%;
+}
+
+.uinn-per2{
+	padding:1.2em 0 0.3125em 0;
+}
+.umar-r-per1{
+	margin-right:1.6875em;
+}
+.umar-l-per1{
+	margin-left:0.625em;
+}
+.b-gra-per{
+	border-color:#686868;
+}
+.c-wh-per{
+	background-color:rgba(255,255,255,0.7);
+}
+.uinn-a16{
+	padding:0.125em;
+}
+.uinn3
+{
+	padding:0.2em;
+}
+.t-wh2{
+	color:rgba(255,255,255,0.6);
+}
+.ufsty{
+	font-style: italic;
+}
+.t-gra5{
+	color:#686868;
+}
+.t-gra6{
+	color:#c2c2c2;
+}
+.umar-FP1{
+	margin:0 1.25em;
+}
+.setImg1{
+	background-image:url('myImg/set_img1.png');
+}

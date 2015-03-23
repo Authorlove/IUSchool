@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="login_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh" style="background:url('login_content/css/myImg/bg.jpg');background-size:cover;" ontouchstart>
+        <br/>
+        <br/>
+        <center>
+            <img src="login_content/css/myImg/logo.png" style="width:6em;height:6em;"/>
+        </center>
+        <center>
+            <img src="login_content/css/myImg/iuschool.png" style="width:6em;height:2em;"/>
+        </center>
+        <div class="ub ub-ver ">
+            <div class="ub ub-ver">
+                <div class="ubb b-gra3 ub t-gra2 ub-ac uinn-pL1">
+                    <div class="userImg btn_wh2 ub-img mar-ar2">
+                    </div>
+                    <div class="ub-f1">
+                        <div class="uinput uinn4">
+                            <input placeholder="请输入手机号码" id="uid" type="text" class="" style="color:white;font-size:1em;outline:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="ubb b-gra3 ub t-gra2 ub-ac uinn-pL1">
+                    <div class="pwdImg btn_wh2 ub-img mar-ar2">
+                    </div>
+                    <div class="ub-f1">
+                        <div class="uinput uinn4">
+                            <input placeholder="请输入密码" id="upd" type="password" class="" style="color:white;font-size:1em;outline:none;">
+                        </div>
+                    </div>
+                </div>
+                <div class="ub ub-ver">
+                    <div class="uinn-at1"  ontouchstart="zy_touch('')"  onclick="userlogin()">
+                        <div ontouchstart="zy_touch('btn-act')" ontouchstart="zy_touch('')"  class="btn_hei1 c-org uc-a1 t-wh tx-c" style="background: url('login_content/css/myImg/bglogin.png')  ;background-size:100% 100%; padding: 1.5em 0;">
+                            登 录
+                        </div>
+                    </div>
+                    <div class="uinn-at2 ub t-blu ulev-4" style="background: url('login_content/css/myImg/f.png')  ; width: 100%;height: 2.0em;vertical-align: middle;">
+                        <div class="ub-f2" style="background: url('login_content/css/myImg/wr.png') no-repeat;background-size: contain;background-position:left;" ontouchstart="zy_touch('btn-act')" ontouchstart="zy_touch('')" onclick="openNewWin('register','register.html'),winClose()">
+                        </div>
+                        <div class="ub-f2 tx-r" style="background: url('login_content/css/myImg/fp.png') no-repeat;background-size: contain;background-position:right;" ontouchstart="zy_touch('btn-act')" ontouchstart="zy_touch('')" onclick="openNewWin('forgetpassword','forgetpassword.html'),winClose()">
+                        </div>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                uexWindow.setBounce("0");
+                uexWindow.showBounceView("0", "rgba(255,255,255,0)", "0");
+                uexWindow.showBounceView("0", "rgba(255,255,255,0)", "0");
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+        }
+        function userlogin(){
+            var uid = document.getElementById('uid').value;
+            var upd = document.getElementById('upd').value;
+		    window.localStorage['upd'] = upd;
+            var url = URL() + "IUNewStudentUser/login";
+            var json = {};
+            $.clearLS(url);
+            json.uid = uid;
+            json.upd = upd;
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    var t = JSON.stringify(data);
+                    var h = eval('(' + t + ')');
+                    window.localStorage['iu_user'] = t;
+                    window.localStorage['uid'] = h.data.accountMesg.uid;
+                    window.localStorage['univs_id'] = h.data.accountMesg.univs_id;
+                    window.localStorage['academy_id'] = h.data.accountMesg.academy_id;
+                    window.localStorage['grade'] = h.data.accountMesg.grade;
+                    window.localStorage['class_id'] = h.data.accountMesg.class_id;
+                    window.localStorage['lpn'] = h.data.accountMesg.lpn;
+                    window.localStorage['spn'] = h.data.accountMesg.spn;
+                    window.localStorage['realname'] = h.data.accountMesg.realname;
+                    window.localStorage['nickname'] = h.data.accountMesg.nickname;
+                    window.localStorage['sex'] = h.data.accountMesg.sex;
+                    window.localStorage['interest'] = h.data.accountMesg.interest;
+                    window.localStorage['univs_name'] = h.data.accountMesg.univs_name;
+                    window.localStorage['academy_name'] = h.data.accountMesg.academy_name;
+                    window.localStorage['icon'] = h.data.accountMesg.icon;
+                    window.localStorage['report'] = h.data.accountMesg.report;
+                    window.localStorage['sessionuid'] = h.data.session.uid;
+                    window.localStorage['sessionsid'] = h.data.session.sid;
+					window.localStorage['publish_count'] = h.data.accountMesg.publish_count;
+					window.localStorage['followed_count'] = h.data.accountMesg.followed_count;
+					window.localStorage['follow_others_count'] = h.data.accountMesg.follow_others_count;
+					window.localStorage['private_letter_count'] = h.data.accountMesg.private_letter_count;
+                    if (window.localStorage['class_id'] != "null") {
+                        window.localStorage['class_name'] = h.data.classMesg.class_name;
+                        window.localStorage['class_introduce'] = h.data.classMesg.introduce;
+                        window.localStorage['class_grade'] = h.data.classMesg.grade;
+                        window.localStorage['class_academy_id'] = h.data.classMesg.academy_id;
+                        window.localStorage['class_univs_name'] = h.data.classMesg.univs_name;
+                        window.localStorage['class_univs_id'] = h.data.classMesg.univs_id;
+                        window.localStorage['class_owner_id'] = h.data.classMesg.owner_id;
+                        window.localStorage['class_icon'] = h.data.classMesg.icon;
+                        window.localStorage['class_memberCount'] = h.data.classMesg.memberCount;
+                    }
+					else {
+						window.localStorage['class_name'] = "";
+                        window.localStorage['class_introduce'] = "";
+                        window.localStorage['class_grade'] = "";
+                        window.localStorage['class_academy_id'] = "";
+                        window.localStorage['class_univs_name'] = "";
+                        window.localStorage['class_univs_id'] = "";
+                        window.localStorage['class_owner_id'] = "";
+                        window.localStorage['class_icon'] = "";
+                        window.localStorage['class_memberCount'] = "";
+					}
+                    winClose();
+                    openNewWin('index', 'index.html');
+                }
+                else {
+                    uexWindow.alert("提示",data.status.error_mesg,"确定");
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+        } 
+    </script>
+</html>

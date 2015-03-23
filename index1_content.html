@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="index1_content/css/main.css">
+        <link rel="stylesheet" href="css/project/activity.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src='js/zy_slide.js'>
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <style>
+        </style>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+        <div class="ub ub-ver">
+            <div id='' class='ub-f1 tx-l t-bla uof uh-for1'>
+                <!--容器-->
+                <div id='slider' class='ub-con ub ub-fh'>
+                </div>
+                <div class="ub c-bla-50 ub-fh ub-ac ub-f1 ubas-nt">
+                    <div class="ulev-4 ut-s t-wh tx-l ub-f1 uinn-a1" id="title">
+                    </div>
+                    <div class="ub ub-ae mar-ar1" id="proint">
+                        <!--div name="num1" class="uc-a-for1 uwh-for1 c-wh umar-r-for"></div>
+                        <div name="num1" class="uc-a-for1 uwh-for1 c-gra-for2 umar-r-for"></div>
+                        <div name="num1" class="uc-a-for1 uwh-for1 c-gra-for2 umar-r-for"></div-->
+                    </div>
+                </div>
+            </div>
+            <div id="tianchong">
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        var url = URL() + "IUMessageBusiness/getHomePageMessage";
+        window.uexOnload = function(type){
+            if (!type) {
+            }
+            newsCarousel();
+            upload(0, "");
+//			$.clearLS(url);
+//            upload(0, "");
+            setPageBounce(dropDownUpdate, pullUpUpdate);
+        }
+        var idd;//记录最大的news_id      
+        function upload(message_id, condition){
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = message_id;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                //alert(JSON.stringify(data));
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    if (data.data.messages == "") {
+                        uexWindow.toast(0, 5, "没有新数据", 3000);
+                        return;
+                    }
+                    var t = data.data.messages.length;
+                    idd = data.data.messages[t - 1].message_id;
+                    if (message_id == 0) {
+                        document.getElementById("tianchong").innerHTML = "";
+                    }
+                    for (var i = 0; i < t; i++) {
+                        var k = data.data.messages[i];
+                        if (k.type_id == "11") {
+                            var typename = choosetype(k.forwarded_message.type_id);
+                            var zhuanfa = '<div><div class="ub ub-f1 ubb b-gra4 all" id="' + k.message_id + '"><div class="ub-f1 ub ub-ver">' +
+                            '<div><div class="t1"><span class="t3">' +
+                            k.publisher_message.realname +
+                            '分享了</span>' +
+                            '<span class="time aa">' +
+                            k.create_time.substr(5, 11) +
+                            '</span></div></div>' +
+                            '<div class="t4">' +
+                            k.content +
+                            '</div>' +
+                            '<div class="t-gra-b1 ulh-for uof t5 ' +
+                            typename +
+                            '1" onclick="openNew(\'' +
+                            k.forwarded_message.message_id +
+                            '\')">' +
+                            '<div class="author t6">' +
+                            '<span class="type1" id="typename" style="background:url(css/project/icon/' +
+                            typename +
+                            '.png) no-repeat;background-size:100%"></span>' +
+                            '<span class="t7">' +
+                            k.forwarded_message.title.substr(0, 10) +
+                            '</span></div>' +
+                            '<div class="t8">' +
+                            k.forwarded_message.content.substr(0, 30) +
+                            '</div></div></div></div></div>';
+                            var para = document.createElement("div");
+                            para.innerHTML = zhuanfa;
+                            var d = document.getElementById("tianchong");
+                            d.appendChild(para);
+                        }
+                        else {
+                            var typename = choosetype(k.type_id);
+                            if (k.picture_url_list.length == 0) {
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all1" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename"></p>' +
+                                '</div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                k.title.substr(0,30) +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div  class="author ub-f1" onclick=check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')>' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div>' +
+                                '<div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '<span class="uinn">赞</span><span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></p></div></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                            else {
+                            
+                                var zhuanfa = '<div class="ub ub-f1 ubb b-gra4 all" ontouchstart="zy_touch(\'\')"><div class="ub-f1 ub ub-ver">' +
+                                '<div class="ub" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                '<div class="ub-img umar-b type">' +
+                                '<p class="type" style="background:url(css/project/icon/' +
+                                typename +
+                                '.png) no-repeat;background-size:100%" id="typename">' +
+                                '</p></div><div class="umar-l umar-b time">' +
+                                k.label_str +
+                                '</div></div><div class="ulh-for umar-l" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')">' +
+                                k.title.substr(0,30) +
+                                '</div><div class="ub umar-l umar-t">' +
+                                '<div onclick="check(\'' +
+                                k.publisher_message.uid +
+                                '\',\'' +
+                                k.publisher_message.type +
+                                '\',\'' +
+                                k.publisher_message.display_name +
+                                '\')" class="author ub-f1">' +
+                                '<span>' +
+                                k.publisher_message.display_name +
+                                '</span></div><div class="ub-f4"><p class="time tx-l">' +
+                                k.create_time.substr(5, 11) +
+                                '</p></div></div></div><div class="ub-img">' +
+                                '<div class="pic" onclick="openNew(\'' +
+                                k.message_id +
+                                '\')" style="background:url(' +
+                                k.picture_url_list[0].thumbPicUrl +
+                                ');background-size: cover;" id="picture">' +
+                                '</div><div class="time umar-t tx-c right"><span class="uinn">赞</span>' +
+                                '<span id="goodid">' +
+                                k.like_it +
+                                '</span><span class="uinn">评论</span>' +
+                                '<span id="commentid">' +
+                                k.comment_count +
+                                '</span></div></div></div>';
+                                var para = document.createElement("div");
+                                para.innerHTML = zhuanfa;
+                                var d = document.getElementById("tianchong");
+                                d.appendChild(para);
+                            }
+                        }
+                    }
+                    if (t < 15) {
+                        var para = document.createElement("div");
+                        para.innerHTML = '<center class="ub-f1 tx-c umar-a uc-a" style="color:gray">没有更多消息</center>';
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);
+                    }
+                    if (condition == "down") {
+                        uexWindow.resetBounceView('0');
+                        uexWindow.toast(0, 5, "刷新成功", 1000);
+                    }
+                    else 
+                        if (condition == "up") {
+                            uexWindow.resetBounceView('1');
+                        }
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json, true);
+        }
+        
+        function check(id, type, name){
+            window.localStorage['other_user_id'] = id;
+            window.localStorage['other_name'] = name;
+            if (type == '1') 
+                openNewWin('other', 'other_index.html');
+            else {
+                openNewWin('club', 'club_index.html');
+            }
+        }
+        
+        function dropDownUpdate(){
+            $.clearLS(url);
+            upload(0, "down");
+        }
+        
+        function pullUpUpdate(){
+            $.clearLS(url);
+            upload(idd, "up");
+        }
+        
+        function openNew(id){
+            window.localStorage['news_id'] = id;
+            openNewWin('news', 'news.html');
+        }
+        
+        var namearr = [];
+        function newsCarousel(){
+            //新闻图片轮播
+            var arrNews = [{
+                "newsPic": "\'index1_content/css/myImg/news1.jpg\'",
+                "newsTitle2": "哭泣的丽都"
+            }, {
+                "newsPic": "\'index1_content/css/myImg/news2.jpg\'",
+                "newsTitle2": "客机失联谜团或许永远无法解开"
+            }, {
+                "newsPic": "\'index1_content/css/myImg/yaoming.png\'",
+                "newsTitle2": "姚明3岁女儿1米3，遗传公式推测未来身高超1米9"
+            }];
+            var tmpl = '<div class="ub-fh" ontouchstart="zy_touch(\'\')" onclick="openNewWin(\'news_articlecommon\',\'news.html\');">' +
+            '	<div class="ub ub-f1 ub-imgnews newsban ub-ae uh-for1 ${cb:newsTitle2}" style="background-image:url(${newsPic});"></div>' +
+            '</div>';
+            var s = zy_tmpl(tmpl, arrNews, zy_tmpl_count(arrNews), function(a, b){
+                $$('title').innerHTML = arrNews[0].newsTitle2;
+                namearr.push(a.newsTitle2);
+            });
+            $$('slider').innerHTML = s;
+            
+            //显示小点
+            var str = '';
+            for (var i = 0; i < arrNews.length; i++) {
+                if (i == 0) {
+                    str += '<div id="num' + i + '" class="uc-a-for1 uwh-for1 c-wh umar-r-for"></div>';
+                }
+                else {
+                    str += '<div id="num' + i + '" class="uc-a-for1 uwh-for1 c-gra-for2 umar-r-for"></div>';
+                }
+            }
+            $$('proint').innerHTML = str;
+            
+            //滑动时当前图片的小点颜色为白色
+            var slider = new zySlide("slider", "H", function(){
+                var cur = slider.currentPoint;
+                var length = slider.maxPoint;
+                for (var n = 0; n <= length; n++) {
+                    if (n == cur) {
+                        $$("num" + n).className = 'uc-a-for1 uwh-for1 c-wh umar-r-for';
+                    }
+                    else {
+                        $$("num" + n).className = 'uc-a-for1 uwh-for1 c-gra-for2 umar-r-for';
+                    }
+                }
+                $$('title').innerHTML = namearr[cur];
+            }, false, function(e){
+            });
+        }
+    </script>
+</html>

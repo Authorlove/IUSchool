@@ -1,0 +1,63 @@
+.uwh-ec1{
+	width:3.125em;
+	height:3.125em;
+}
+.goodsImg{
+	background-image:url(myImg/goodsImg1.png);
+}
+.uwh-ec2{
+	width:7.8em;
+}
+.uwh-ec3{
+	width:1.0625em;
+	height:1.0625em;
+}
+.star1-ec{
+	background-image:url('myImg/sort1.png');
+}
+.star2-ec{
+	background-image:url('myImg/sort2.png');
+}
+.t-gra-82{
+	color:#828282;
+}
+.umar-l-ec{
+	margin-left:0.875em;
+}
+.umar-l-ec2{
+	margin-left:2.5em;
+}
+.triangle3 {
+	width: 0px;
+	height:0;
+	border-top: 0;
+	border-right: 0.71875em solid #f1f1f1;
+	border-bottom: 0.71875em solid #fff;
+	border-left: 0.71875em solid #f1f1f1;
+}
+.uinn-ec1{
+	padding:0.625em 0.625em 0.3125em 0.625em;
+}
+.t-wh-c7{
+	color:#c7c7c7;
+}
+.uinput textarea.ec-fs{
+	font-size:0.75em;
+	height:3.2em;
+}
+.umar-t-ec2{
+	margin-top:0.3125em;
+}
+.umar-t-ec3{
+	margin-top:0.4375em;
+}
+.imgBg{
+	background-image:url('myImg/addImg.png');
+}
+.uwh-bg{
+	width:4em;
+	height:4em;
+}
+.umar-r-ect{
+	margin-right:0.4375em;
+}

@@ -1,0 +1,69 @@
+   .right1 {
+                background: #E5E5E5;
+                color: grey;
+                padding: 0.2em 0.3em 0.3em 0.3em;
+                border-radius: 0.5em 0 0 0.5em;
+                float: right;
+            }
+            
+            .icon1 {
+                display: block;
+                width: 2.4em;
+                height: 2.4em;
+                margin: 0.8em 0.3em 0.5em 0.3em;
+                border-radius: 0.2em;
+            }
+            
+            .allleft1 {
+                margin-right: 0.2em;
+                width: 2.7em;
+            }
+            
+            .type1 {
+                width:4em;
+               height:2.5em;
+                float: left;
+				display:block;
+            }
+            
+            .t1 {
+                float: left;
+                margin-left: 0.5em;
+            }
+            
+            .t2 {
+                color: blue;
+            }
+            
+            .t3 {
+                font-size: 0.8em;
+                margin-left: 0.5em;
+                color: #b1b1b1;
+            }
+            
+            .t4 {
+                font-size: 0.8em;
+                margin-left: 0.5em;
+                color: grey;
+            }
+            
+            .t5 {
+                margin: 0.4em;
+                padding: 0.3em 0.8em 0.3em 0;
+            }
+            
+            .t6 {
+                margin-top: 0.5em
+            }
+            
+            .t7 {
+                color: black;
+                font-size: 1.3em;
+                margin: 0.5em;
+                font-weight: bold;
+            }
+            
+            .t8 {
+                font-size: 0.8em;
+                padding: 0.2em 0.8em
+            }

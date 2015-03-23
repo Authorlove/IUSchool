@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-box.css">
+		<link rel="stylesheet" href="css/ui-base.css">
+		<link rel="stylesheet" href="css/project/style.css">
+		<script src="js/zy_control.js"></script>
+        <script src="js/zy_click.js"></script>
+		<script src="js/main.js"></script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh t-wh ub c-blu">
+            	<div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+ 					<div class="t-btn-a1 ub-img uwh-tBtn"></div>
+            	</div>
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">用户服务协议</h1>
+				<div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+            	</div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+              <center> IU校园软件许可及服务协议</center>
+      			 <p>  欢迎您使用IU校园软件及服务！</p>
+				 <p>IU校园软件所提供的各项服务的所有权和运作权均归爱柚所有。为使用本软件及服务，您应当阅读并遵守《IU校园软件许可及服务协议》（以下简称“本协议”）。请您务必审慎阅读、充分理解各条款内容，特别是免除或者限制责任的条款，以及开通或使用某项服务的单独协议，并选择接受或不接受。您的下载、安装、使用、获取IU校园帐号、登录等行为即视为您已阅读并同意上述协议的约束。</p>
+				 <p>户必须选择与所安装手机相匹配的软件版本，否则，由于软件与手机型号不相匹配所导致的任何问题或损害，均由用户自行承担；用户在使用本软件访问第三方网站时，因第三方网站及相关内容所可能导致的风险，由用户自行承担;</p>
+				 <p>如果爱柚发现或收到他人举报或投诉用户违反本协议约定的，爱柚有权不经通知随时对相关内容进行删除、屏蔽，并视行为情节对违规帐号处以包括但不限于警告、限制或禁止使用部分或全部功能、帐号封禁直至注销的处罚，并公告处理结果。</p>
+                 <p>爱柚是本软件的知识产权权利人。本软件的一切著作权、商标权、专利权、商业秘密等知识产权，以及与本软件相关的所有信息内容（包括但不限于文字、图片、音频、视频、图表、界面设计、版面框架、有关数据或电子文档等）均受中华人民共和国法律法规和相应的国际条约保护，爱柚享有上述知识产权，但相关权利人依照法律规定应享有的权利除外。</p>
+			</div>
+            <!--content结束-->
+		
+        </div>
+    </body>
+    <script>
+    	zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+               // zy_con("content", "servicep_content.html", 0, $$("header").offsetHeight);
+            }
+			window.onorientationchange=window.onresize=function()
+			{
+				zy_resize("content",0,$$("header").offsetHeight);				
+			}
+        }
+    </script>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="register/css/main.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="register_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh t-wh ub c-blu">
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                    <div class="t-btn-a1 ub-img uwh-tBtn">
+                    </div>
+                </div>
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">更改帐号</h1>
+                <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+                </div>
+            </div>
+            <!--header结束-->
+            <!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+                <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac">
+                    <div class="ulev-app1 umw4">
+                        手机
+                    </div>
+                    <div class="ub-f1 uinn">
+                        <div class="uinput uinn4">
+                            <input placeholder="请输入新手机号" id="uid" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                    <div class="ulev-app1 umw4">
+                        验证码
+                    </div>
+                    <div class="ub-f1 uinn ub">
+                        <div class="uinput uinn4 ub-f3">
+                            <input placeholder="请输入验证码" id="yzm" type="text" class="">
+                        </div>
+                        <div class="ub btn btn-r ub-f1">
+                            <div class="btn4-n ub ub-ac ulim t-wh">
+                                获取
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ontouchstart="zy_touch('btn-act')" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+                    确定更改
+                </div>
+            </div>
+            <!--content结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                //   zy_con("content", "changeuid_content.html", 0, $$("header").offsetHeight);
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+        }
+    </script>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+		 <link rel="stylesheet" href="css/fans.css">
+        <link rel="stylesheet" href="myclass_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+
+        <style>
+           
+        </style>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+    	<input type="hidden" id="getid" value="1"><!--获取最后一个输出的id值-->
+        <div class="up ub ub-ver" tabindex="0" id="tianchong">
+        </div>
+    </body>
+    <script>
+                                zy_init();
+                                window.uexOnload = function(type){
+                                    if (!type) {
+                                      uexWindow.setBounce("1");      
+                                      uexWindow.showBounceView("1", "rgba(255,255,255,0)", "0");
+							
+                                    }
+                                    window.onorientationchange = window.onresize = function(){
+                                        zy_resize("content", 0, $$("header").offsetHeight);
+                                    }
+									initlist(0);
+                        			setPageBounce(dorpDownUpdate, pullUpUpdate);
+                        			        							
+                                }
+                        		   function initlist(id){
+                        		   	 uexWindow.toast(1, 5, "数据加载中", 0);
+                                    var url = URL() + "IUStudentBusiness/getMyFollowerList";
+                                    var json = {};
+                                    json.follow_id = id ;
+                                    json.session = {};
+                        			json.session.uid = sessionuid();
+                        			json.session.sid = sessionsid();
+                                    var t = JSON.stringify(json);
+                                    var json = [{
+                                        'key': 'json',
+                                        'type': '0',
+                                        'value': t
+                                    }];
+                                    $.getJSON(url, function(data){	
+                                        if (data.status.succeed){
+											//var k = JSON.stringify(data);
+											//alert(k);
+											if(data.data.follow_list==""){
+												 uexWindow.toast(1, 5, "没有新数据", 2000);
+												return;}
+											var t = data.data.follow_list.length;
+											var idd = data.data.follow_list[t-1].follow_id;
+ 						     				$$('getid').value =idd;
+                        				var tmpl ='<div class="ubb ub">'+
+                                            '<ul  class=" ub ub-f1 first">'+
+                                                '<li class="ub pos_re" onclick="check1(\'${user_message.uid}\',${user_message.type},\'${user_message.display_name}\')">'+
+                                                    '<div class="uh-app3 ub-img ma " style="background:url(${user_message.icon});background-size: cover;">'+
+                                                    '</div>'+
+                                                '</li>'+
+                                                '<li class="ub-f1 ub m">'+
+                                                    '<div class="ub ub-ver ub-f1 umar-r-infor">'+
+                                                        '<div class="t-bla ulev-app1">'+
+                                                            '<span class="mb">${user_message.display_name}</span>'+
+                                                            '<p class="mc">'+
+                                                                '<span class="md" style="background-size:cover"></span>'+
+                                                                '<span class="me" onclick="check2(\'${user_message.uid}\')">私信</span>'+
+                                                            '</p><p>${cb:user_message.type}</p></div></div></li></ul></div>';
+                       	 var s = zy_tmpl(tmpl, data.data.follow_list, zy_tmpl_count(data.data.follow_list),tmplCB);
+					     function tmplCB(a,b){
+                          switch(b[1]){
+                            case 'user_message.type':
+        					var t = a.user_message.type;
+        					if (t == 1) return "个人用户";
+        					else if(t == 2) return "学校机构";
+        					else if(t == 3) return "社团/官方组织";
+                             break;
+                          }
+                          return '';
+                        }	
+                        var para = document.createElement("div");
+                        para.innerHTML = s;
+                        var d = document.getElementById("tianchong");
+                        d.appendChild(para);					
+                       	uexWindow.closeToast();
+						var t = $$("tianchong").lastChild;
+                                        }
+                                        else {
+                                            alert(data.status.error_mesg);
+                                        }
+                                    }, 'json', function(err){
+                                    }, 'POST', json);
+                                }
+         function check1(id,type,name){	
+		    window.localStorage['other_user_id'] = id;
+			window.localStorage['other_name'] = name;
+		 	if(type=='1') openNewWin('other','other_index.html');
+			else  {openNewWin('club','club_index.html');}
+		 }                   
+         function check2(id){
+		 	window.localStorage['other_user_id'] = id;
+			openNewWin('private','privateletter.html');
+		 }        
+ function dorpDownUpdate(){
+        $$('tianchong').innerHTML = "";
+        initlist(0);
+}
+
+function pullUpUpdate(){
+		var ty = document.getElementById('getid').value;
+		initlist(ty);
+       
+}
+
+
+
+    </script>
+</html>

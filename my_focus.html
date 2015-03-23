@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-tab.css">
+        <link rel="stylesheet" href="css/project/ui-nav-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="index/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+		<style>
+			    input[type = "radio"]:checked + div.rdi {
+                background: #E7A51B;
+                color: white
+            }
+            
+            .radio {
+                border: 1px solid #E7A51B;
+                font-size: 0.9em;
+                color: #E7A51B;
+                float: left;
+                padding: 0.25em 0.9em;
+            }
+            
+            .span1 {
+                margin-right: 0.6em
+            }
+            
+            .span2 {
+                font-size: 0.7em
+            }
+		</style>
+    </head>
+    <body class="um-vp c-bf" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <!--header开始-->
+            <div id="header">
+                <div class="uh t-wh ub c-blu">
+                <div id="hleft" class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+                 </div>
+				 <h1 class="ut ub-f1 ulev-3 ut-s tx-c"  id="indextitle" tabindex="0" style="display:none">我的粉丝</h1>
+                    <div id="zixun" class="ub-f1 ub-ac ub-pc uinn">
+                        <div class="ub uc-a1  b-wh tx-c">
+                            <div style="margin:0 auto" id="hmenu" style="display:none">
+                                <input type="radio" name="rdi" class="uhide" value="" checked>
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "index1_content.html", 0, $$("header").offsetHeight)' class="uinn-a15  ub-f1 rdi radio" style="border-radius: 0.3em 0 0 0.3em;">
+                                    推荐
+                                </div>
+                                <input type="radio" name="rdi" class="uhide" value="">
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "allInfo_content.html", 0, $$("header").offsetHeight)' class="uinn-a15 c-blu ub-f1 rdi t-wh radio" style="border-radius:0 0.3em 0.3em 0">
+                                   全部                         
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					
+                    <div id="hright" class="umw4 ub ub-ac ub-pc ulev-0" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('fabu','fabu.html')">
+                       发布
+                    </div>
+					
+                </div>
+            </div>
+            <!--header结束-->
+            <!--content开始-->
+            <div id="content" class="ub-f1 tx-l  ub-img4">
+            </div>
+            <!--content结束-->
+            <!--footer-->
+            <div id="footer" class="">
+                <!--导航条开始-->
+                <div class="uf t-bla ub tab t-wh ubt b-gra2 c-gra2" style="background:white">
+                    <div class="pos_re ub ub-f1">
+                        <input class="uhide" type="radio" name="tabSwitch" checked="true">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act" onclick='first()'>
+                            <div class="ub-f1 ub-img5 tp-home">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="first">
+                               资讯
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pos_re ub ub-f1">
+                        <input class="uhide" type="radio" name="tabSwitch">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act" onclick='third()'>
+                            <div class="ub-f1 ub-img5 tp-search">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="third">
+                                发现
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pos_re ub ub-f1" ontouchstart="zy_touch('',zy_for)" onclick='fourth()'>
+                        <input class="uhide" type="radio" name="tabSwitch">
+                        <div ontouchstart="zy_touch('',zy_for)" class="ub-f1 ub ub-ver tab-act">
+                            <div class="ub-f1 ub-img5 tp-my">
+                            </div>
+                            <div class="uinn-a13 ulev-1 tx-c act-col" id="fourth">
+                                我
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--导航条结束-->
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+            if (typeof(window.localStorage['iu_user']) == "undefined" || window.localStorage['iu_user'] == null) {
+                openNewWin('login', 'login_content.html');
+            }
+            else {
+                if (!type) {
+                    zy_con("content", "index1_content.html", 0, $$("header").offsetHeight);
+                }
+            }
+        }          
+            //创建弹出框
+            function createActionSheet(){
+                uexActionSheet.onClickItem = onClickItem;
+                var x = 10;
+                var y = 10;
+                var width = 400;//如果传0，默认是屏幕宽度
+                var height = 0;
+                var JsonData = '{"actionSheet_style":{"frameBgColor":"#ffffff","frameBroundColor":"#00ffff","frameBgImg":"","btnSelectBgImg":"","btnUnSelectBgImg":"","cancelBtnSelectBgImg":"","cancelBtnUnSelectBgImg":"","textSize":"17","textColor":"#000000","actionSheetList":[{"name":"全部信息"},{"name":"选择类型"},{"name":"选择标签"}]}}';
+                uexActionSheet.open(x, y, width, height, JsonData);
+            }
+        function first(){
+			$$("hright").style.display="block";
+			$$("indextitle").style.display = "none";
+			$$("zixun").style.display="block";
+		    document.getElementsByTagName("input")[0].checked = true;
+			zy_con("content", "index1_content.html", 0, $$("header").offsetHeight);
+		}
+        function third(){
+            zy_con("content", "dongtai_content.html", 0, $$("header").offsetHeight);
+			$$("hright").style.display="none";
+			$$("indextitle").style.display = "block";
+			$$("zixun").style.display="none";
+            $$("indextitle").innerHTML = "发现";
+        }
+        function fourth(){
+            zy_con("content", "person_content.html", 0, $$("header").offsetHeight);
+			$$("indextitle").style.display = "block";
+			$$("zixun").style.display="none";
+            $$("indextitle").innerHTML = "我";
+        }
+		function reloadAllInfo(){
+			uexWindow.evaluatePopoverScript("root","content","closeWin()");
+			zy_con("content", "allInfo_content.html", 0, $$("header").offsetHeight);
+		}
+    </script>
+</html>

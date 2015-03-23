@@ -1,0 +1,27 @@
+.shop-wh{
+	min-width:3.17125em;
+	min-height:3.3125em;
+}
+.umwh{
+	min-width:0.6em;
+	min-height:1em;
+}
+.ulim12{
+	max-width: 14em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.t-red{
+	color:red;
+}
+.uinn-t{
+	padding: .3em 0;
+}
+.ulev-8{
+	font-size:0.875em;
+}
+.ulev-9{
+	font-size:0.9375em;
+}

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/ui-tab.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="myclass/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <style>
+            input[type = "radio"]:checked + div.rdi {
+                background: #E7A51B;
+                color: white
+            }
+            
+            .radio {
+                border: 1px solid #E7A51B;
+                font-size: 0.9em;
+                color: #E7A51B;
+                float: left;
+                padding: 0.25em 0.9em;
+            }
+            
+            .span1 {
+                margin-right: 0.6em
+            }
+            
+            .span2 {
+                font-size: 0.7em
+            }
+        </style>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header">
+                <div class="uh t-wh ub c-blu">
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                        <div class="t-btn-a1 ub-img uwh-tBtn">
+                        </div>
+                    </div>
+                    <div class="ub-f1 ub-ac ub-pc uinn">
+                        <div class="ub uc-a1  b-wh tx-c">
+                            <div style="margin:0 auto" id="hmenu" style="display:none">
+                                <input type="radio" name="rdi" class="uhide" value="" checked>
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "myclass_content.html", 0, $$("header").offsetHeight)' class="uinn-a15  ub-f1 rdi radio" style="border-radius: 0.3em 0 0 0.3em;">
+                                    通知
+                                </div>
+                                <input type="radio" name="rdi" class="uhide" value="">
+                                <div ontouchstart="zy_touch()" onclick='zy_for(event),zy_con("content", "myclassmember.html", 0, $$("header").offsetHeight)' class="uinn-a15 c-blu ub-f1 rdi t-wh radio" style="border-radius:0 0.3em 0.3em 0">
+                                    成员
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('c_fabu','c_fabu.html')">
+                        <div class="t-btn-infor ub-img uwh-tBtn">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-wh">
+                <div style="margin:0.5em" id="joinClass" style="display:none">
+                    <br/>
+                    <p style="margin-left: 0.5em;">
+                        你目前没有班级，请选择班级吧~
+                    </p>
+                    <div>
+                        <div class="uc-a1 uba b-gra t-bla umar-a" id="classList">
+                        </div>
+                        <div id="confirm_join" ontouchstart="zy_touch('btn-act')" onclick="joinClass()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+                            确定加入
+                        </div>
+                        <p>
+                            找不到班级？<span style="color:blue" onclick="change()">自己创建！</span>
+                        </p>
+                        <div id="create" style="display:none;margin:0.5em;border: 1px solid grey;border-radius: 0.5em;">
+                            <div class="c-wh uba b-gra uinput uinn4" style="margin:0.5em">
+                                <input id="class_name"placeholder="班级名称" type="text" class="uc-a1">
+                            </div>
+                            <div class="c-wh uba b-gra uinput uinn4" style="margin:0.5em">
+                                <input id="introduce" placeholder="班级简介" type="text" class="uc-a1">
+                            </div><!--按钮开始-->
+                            <div ontouchstart="zy_touch('btn-act')" onclick="createClass()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">
+                                确定创建
+                            </div>
+                            <!--按钮结束-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--content结束-->
+            <div id="footer">
+            </div>
+        </div>
+    </body>
+    <script>
+        zy_init();
+        var classList = [];
+        window.uexOnload = function(type){
+            if (!type) {
+                if (class_id() == "null") {
+                    $$("hmenu").style.display = "none";
+                    $$("joinClass").style.display = "block";
+                    var url = URL() + "IUClassBusiness/getClassesBasedOnMyAcademyInfo";
+                    var json = {};
+                    json.session = {};
+                    json.session.sid = sessionsid();
+                    json.session.uid = sessionuid();
+                    json = JSON.stringify(json);
+                    json = [{
+                        "key": "json",
+                        "type": 0,
+                        "value": json
+                    }];
+                    var tmpl = '<input type="radio" name="rdi1" class="uhide" id="radio-1-1" value="">' +
+                    '<div onclick="zy_for(event)"  class="ub uc-t1 ubb c-gra  b-gra ui-rdi uinn5">' +
+                    '<div class="ub-f1  ut-s tx-l">' +
+                    '<span class="span1">${class_name}</span>' +
+                    '<span class="span2">${introduce}</span></div>' +
+                    '<div class="rdi-icon ub-img umw1"></div></div>';
+                    $.getJSON(url, function(data){
+                        if (data.status.error_mesg) {
+                            alert(data.status.error_mesg);
+                        }
+                        else if (data.data.classes.length == 0) {
+                            $$("classList").innerHTML = "你所在的学院还没有新建的班级！";
+                            $$("confirm_join").style.display = "none";
+                        }
+                        else {
+                            var s = zy_tmpl(tmpl, data.data.classes, zy_tmpl_count(data.data.classes));
+                            $$("classList").innerHTML = s;
+                            classList = data.data.classes;
+                        }
+                    }, 'json', function(err){
+                    }, 'POST', json);
+                }
+                else {
+                    $$("joinClass").style.display = "none";
+                    zy_con("content", "myclass_content.html", 0, $$("header").offsetHeight);
+                }
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+        }
+        function change(){
+            $$("hmenu").style.display = "none";
+            $$('create').style.display = "block";
+        }
+        
+        function joinClass(){
+            var url = URL() + "IUClassBusiness/joinClass";
+            alert(url);
+            var j = {};
+            j.session = {};
+            j.session.uid = sessionuid();
+            j.session.sid = sessionsid();
+            var choice = document.getElementsByName("rdi1");
+            alert(choice.length);
+            for (var i = 0; i < choice.length; i++) {
+                if (choice[i].checked) {
+                    j.class_id = classList[i].class_id;
+                    window.localStorage['class_id'] = j.class_id;
+                    window.localStorage['class_name'] = j.class_name;
+                    window.localStorage['class_introduce'] = j.introduce;
+                    window.localStorage['class_memberCount'] = j.memberCount;
+                    break;
+                }
+            }
+            if (i == choice.length) {
+                alert("请选择要加入的班级");
+                return;
+            }
+            var jsr = JSON.stringify(j);
+            j = [{
+                "key": "json",
+                "type": 0,
+                "value": jsr
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg!=""){
+                    alert(data.status.error_mesg);
+                }
+                else{
+                    alert(JSON.stringify(data));
+                    $$("hmenu").style.display = "block";
+                    $$("joinClass").style.display = "none";
+                    zy_con("content", "myclass_content.html", 0, $$("header").offsetHeight);
+                }
+                
+            }, 'json', function(err){
+            
+            }, 'POST', j);
+        }
+        
+        function createClass(){
+            var url = URL() + "IUClassBusiness/createClass";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            if ($$("class_name").value == "") {
+                alert("请输入班级名称！");
+                $$("class_name").focus();
+                return;
+            }
+            if ($$("introduce").value == "") {
+                alert("请输入班级简介！");
+                $$("introduce").focus();
+                return;
+            }
+            json.class_name = $$("class_name").value;
+            json.introduce = $$("introduce").value;
+            json = JSON.stringify(json);
+            alert(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            alert(url);
+            $.getJSON(url, function(data){
+                alert(JSON.stringify(data));
+                if (data.status.error_mesg != "") {
+                    alert(data.status.error_mesg);
+                }
+                else {
+                    window.localStorage['class_id'] = data.data.classMesg.class_id;
+                    window.localStorage['class_name'] = data.data.classMesg.class_name;
+                    window.localStorage['class_introduce'] = data.data.classMesg.introduce;
+                    window.localStorage['class_memberCount'] = data.data.classMesg.memberCount;
+                    $$("hmenu").style.display = "block";
+                    $$("joinClass").style.display = "none";
+                    zy_con("content", "myclass_content.html", 0, $$("header").offsetHeight);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+            
+            
+        }
+    </script>
+</html>

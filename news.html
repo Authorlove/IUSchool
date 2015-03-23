@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="news/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+    </head>
+    <body class="um-vp c-wh2" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="ub ub-ver">
+                <div id="" class="uh c-blu t-wh ub">
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                        <div class="uwh-tBtn ub-img t-btn-a1">
+                        </div>
+                    </div>
+                    <h1 class="ut ub-f1 ulev0 ut-s tx-c" tabindex="0">详情</h1>
+                    <div class="umw4 ub ub-ac ub-pc tx-b" ontouchstart="zy_touch('btn-act')" onclick="confirm_report()">
+                        举报
+                    </div>
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub ub-f1 c-wh1 ub-ver ">
+            </div>
+            <!--content结束--><!--footer开始-->
+            <div id="footer" class="ub c-wh ub-ac" style="height:2em">
+                <div id="like" class="ub-f3 ub-img">
+                    <span onclick="likeMessage()" style="display: block;width: 1.5em;height: 1.5em;background: url(css/project/images/ico_good.png);background-size: cover;margin: 0.3em auto;"></span>
+                </div>
+                <div id="like_cnt" class="ub-f1 ut-l">
+                    0
+                </div>
+                <div class="ub-f3 ub-img" onclick="makeComment()">
+                    <span style="display: block;width: 1.5em;height: 1.5em;background: url(css/project/images/ico_comment.png);background-size: cover;margin: 0.3em auto;"></span>
+                </div>
+                <div id="cmt_cnt" class="ub-f1 ut-l">
+                    0
+                </div>
+                <div class="ub-f3 ub-img" onclick="forward()">
+                    <span style="display: block;width: 2.3em;height: 1.5em;background: url(css/project/images/ico_share.png);background-size: cover;margin: 0.3em auto;"></span>
+                </div>
+                <div id="forward_cnt" class="ub-f1 ut-l">
+                    0
+                </div>
+            </div>
+            <!--footer结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+            if (!type) {
+                zy_con("content", "news_content.html", 0, $$("header").offsetHeight);
+            }
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+            uexLocalNotification.onActive = onActiveCallBack;
+            uexLocalNotification.cbGetData = cbGetData;
+            
+        }
+        function onActiveCallBack(notificationID){
+            alert(notificationID + " active");
+        }
+        
+        function cbGetData(notificationID, msg){
+            alert(msg);
+        }
+        
+        function test(ret){
+            alert(ret);
+        }
+        
+        function confirm_report(){
+            uexWindow.cbConfirm = function(opId, dataType, data){
+                if (data == 1) {
+                    makeReport();
+                }
+            }
+            uexWindow.confirm("确认举报？", "举报该信息包含色情，诈骗，广告等劣质损害他人利益的信息", ["取消", "确认"]);
+        }
+        
+        //举报一条消息及其他的发布者
+        //上传参数:session,message_id
+        //返回参数:成功或失败
+        function makeReport(){
+            var url = URL() + "IUMessageBusiness/makeReport";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    uexWindow.toast(0, 5, "已举报过了", 500);
+                else {
+                    uexWindow.toast(0, 5, "举报成功", 500);
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+            
+        }
+        
+        //点赞
+        //上传参数:session,message_id
+        //返回参数:成功或失败
+        function likeMessage(){
+            var url = URL() + "IUMessageBusiness/likeMessage";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    uexWindow.toast(0, 5, data.status.error_mesg, 500);
+                
+                else {
+                    $$("like").innerHTML = '<span  onclick="dontLikeMessage()" style="display:block;width: 1.5em;height: 1.5em;background: url(css/project/icon/like_act.png);background-size: cover;margin: 0.3em auto;"></span>';
+                    
+                    $$('like_cnt').innerHTML = parseInt($$('like_cnt').innerHTML, 10) + 1;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        //取消点赞
+        //上传参数:session,message_id
+        //返回参数:成功或失败
+        function dontLikeMessage(){
+            var url = URL() + "IUMessageBusiness/dontLikeMessage";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    $$("like").innerHTML = '<span  onclick="likeMessage()" style="display: block;width: 1.5em;height: 1.5em;background: url(css/project/icon/like.png);background-size: cover;margin: 0.3em auto;"></span>';
+                    
+                    $$('like_cnt').innerHTML = parseInt($$('like_cnt').innerHTML, 10) - 1;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function forward(){
+            uexWindow.cbPrompt = function(opId, dataType, data){
+                var obj = eval('(' + data + ')');
+                forwardMessage(obj.value);
+            }
+            uexWindow.prompt("转发", "说点什么", "", ["确认", "取消"]);
+        }
+        
+        //转发新闻（1），通知（2），讲座（3），比赛（4），活动（5），个人发布(8)
+        //上传参数:session,forwarded_message_id,content
+        //返回参数:message_id,foward_count_increment_succeed(1或0,表示有无将转发数增一，一个账号增能对一条消息增加一次转发数)
+        function forwardMessage(content){
+            var url = URL() + "IUMessageBusiness/forwardMessage";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.forwarded_message_id = window.localStorage['news_id'];
+            json.content = content;
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert(JSON.stringify(data));
+                    if (data.data.foward_count_increment_succeed == 0) {
+                        uexWindow.toast(0, 5, "未转发成功！", 500);
+                        return;
+                    }
+                    $$('forward_cnt').innerHTML = parseInt($$('forward_cnt').innerHTML, 10) + 1;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        //添加转发记录
+        //上传参数:session,message_id
+        //返回参数:increaseForwardCount(1或0) 1表示此账号未曾经转发过，消息的转发数会加1
+        function addForward(){
+            var url = URL() + "IUMessageBusiness/addForward";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    alert(JSON.stringify(data));
+                    if (data.data.increaseForwardCount) {
+                        uexWindow.toast(0, 5, "已转发过！", 500);
+                        return;
+                    }
+                    
+                    $$('forward_cnt').innerHTML = parseInt($$('forward_cnt').innerHTML, 10) + 1;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+        
+        function updateLike(like_cnt, hasLikedIt){
+            if (hasLikedIt == 1) 
+                $$("like").innerHTML = '<span onclick="dontLikeMessage()" style="display: block;width: 1.5em;height: 1.5em;background: url(css/project/icon/like_act.png);background-size: cover;margin: 0.3em auto;"></span>';
+            if (like_cnt != 0) 
+                $$('like_cnt').innerHTML = like_cnt;
+        }
+        
+        function updateForwardCount(forwardCount){
+            $$("forward_cnt").innerHTML = forwardCount;
+        }
+        
+        function updateCommentCount(comment_count){
+            $$("cmt_cnt").innerHTML = comment_count;
+            
+        }
+        
+        function makeComment(){
+            uexWindow.cbPrompt = function(opId, dataType, data){
+                var obj = eval('(' + data + ')');
+                if (obj.value = "") 
+                    return;
+                uploadComment(obj.value);
+            }
+            uexWindow.prompt("评论", "填写评论", "", ["确认", "取消"]);
+        }
+        
+        function uploadComment(content){
+            var url = URL() + "IUMessageBusiness/makeComment";
+            var json = {};
+            json.session = {};
+            json.session.sid = sessionsid();
+            json.session.uid = sessionuid();
+            json.content = content;
+            json.message_id = window.localStorage['news_id'];
+            json = JSON.stringify(json);
+            json = [{
+                "key": "json",
+                "type": 0,
+                "value": json
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.error_mesg) 
+                    alert(data.status.error_mesg);
+                else {
+                    window.localStorage.comment = JSON.stringify(data.data.comment);
+                    uexWindow.evaluatePopoverScript("news", "content", "updateComment()");
+                    uexWindow.toast(0, 5, "评论成功", 1000);
+                    $$('cmt_cnt').innerHTML = parseInt($$('cmt_cnt').innerHTML, 10) + 1;
+                }
+            }, 'json', function(err){
+            
+            }, 'POST', json);
+        }
+    </script>
+</html>

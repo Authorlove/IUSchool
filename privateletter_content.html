@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">    <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+    <link rel="stylesheet" href="css/project/ui-res-v3.css">
+    <link rel="stylesheet" href="css/project/ui-input-v3.css">
+    <link rel="stylesheet" href="css/project/ui-color-v3.css">
+
+    <link rel="stylesheet" href="css/ui-base.css">
+    <link rel="stylesheet" href="css/ui-box.css">
+	<link rel="stylesheet" href="css/project/style.css">
+    <script src="js/zy_control.js"></script>
+    <script src="js/zy_click.js"></script>
+    <script src="js/zy_tmpl.js"></script>
+	<script src="js/main.js"></script>
+	<script src='js/zy_slide.js'></script>
+	<script src="js/zy_json.js"></script>
+	<script src="js/iu_school.js"></script>
+</head>
+<body class="um-vp" ontouchstart>
+	<div style="padding:0.5em">
+    <textarea placeholder="请输入私信内容" id="content" style="width: 100%;height: 10em;border-radius: 0.5em;font-size: 1em;border:1px solid grey" ></textarea>
+    <!--按钮开始-->
+<div ontouchstart="zy_touch('btn-act')" onclick="send()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c">发送</div>
+<!--按钮结束-->
+
+</div>
+</body>
+<script>
+zy_init();
+window.uexOnload=function(type){
+	if(!type){
+		
+	}
+}
+function send(){
+	var receiver_id = window.localStorage['other_user_id'];
+	var content  = $$('content').value;
+	if(content=='') uexWindow.alert('提示','请输入内容','确定');
+	else {
+		 var json = {};
+         json.content = content;
+		 json.receiver_id = receiver_id;
+		 json.session = {};
+		 json.session.uid  = sessionuid();
+		 json.session.sid = sessionsid();
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+			url = URL() +"IUPrivateLetter/sendPrivateLetter";
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+				    uexWindow.toast(0, 5, "发送成功", 3000);
+					uexWindow.evaluateScript("private",0,"winClose()"); 
+                }
+                else {
+                    uexWindow.alert("提示",data.status.error_mesg,"确定");
+                }
+            }, 'json', function(err){
+            }, 'POST', json);
+	}
+}
+function aa(){
+	 	 
+     uexWindow.evaluateScript("myprivate",0,"initlist(0)");      
+}
+</script>
+</html>

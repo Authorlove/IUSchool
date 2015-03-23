@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="information/css/main.css">
+        <link rel="stylesheet" href="information_content/css/main.css">
+		       <script src="js/zy_icache.js"></script>
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+		<script src="js/main.js"></script>
+        <style>
+            .bgg {
+                width: 0.4em;
+                height: 2.2em;
+                border-radius: 0 0.5em 0.5em 0;
+                margin: 0.2em 0;
+                text-align: left;
+            }
+            
+            input[type =
+            "radio"]:checked + div.rdi {
+                background: green;
+            }
+            
+            .p {
+                width: 90%;
+                display: block;
+                margin: 0.45em;
+            }
+            
+            .span1 {
+                width: 4em;
+                margin: 0 4em 0 0.3em;
+            }
+            
+            .span2 {
+                width: 10em;
+            }
+            
+            .span3 {
+                float: right;
+                font-size: 0.7em;
+            }
+            
+            #change_nick {
+                width: 14em;
+                height: 1.4em;
+                border: none;
+                font-size: 0.95em;
+                border-bottom: 1px solid grey;
+            }
+        </style>
+    </head>
+    <body class="um-vp c-gra1" ontouchstart style="background:#e3e3e3;overflow:hidden">
+    	<div id="header" class="uh t-wh ub c-blu">
+            	<div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+ 					<div class="t-btn-a1 ub-img uwh-tBtn"></div>
+            	</div>
+                <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">群组详情</h1>
+				<div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+            	</div>
+            </div>
+        <div id="content" class="ub-f1 tx-l t-bla" style="font-size:0.925em">
+            <div class="ub ub-ver" style="padding:0em 0em 0.7em 0em">
+                <div class="uba b-gra-b7  uinn-na2 c-wh " id="touxiangg">
+                    <img src="" style="width: 4em;height: 4em;margin: 0.3em;float:left; " id="icon">
+                </div>
+            </div>
+            <div class="ub-ver">
+                <div class="uba b-gra-b7  c-wh" style="border-bottom: 1px solid grey;">
+                    <div class="b-gra-be  ub">
+                        <div style="background:#1EAC56;" class="bgg ">
+                        </div>
+                        <p class="p">
+                            <span class="span1">群组名称</span>
+                            <span class="span2" id="group_name"></span>
+                        </p>
+                    </div>
+                    <div class="ub">
+                        <div style="background:#E4A715;" class="bgg">
+                        </div>
+                        <p class="p" style="margin: 0.45em 0.45em 0em 0.45em;border:none;">
+                            <span class="span1" style="float:left;">群组介绍</span>
+                            <span class="span2" id="group_intro" style="background:white;display:block;float:left"></span>
+                        </p>
+                    </div>                
+                </div>
+
+		    </div>
+        
+		<br/>
+<div ontouchstart="zy_touch('btn-act')" onclick = "resign_group()" class="btn uba b-org uinn5 c-org uc-a t-wh umar-a tx-c"><span>退出</span>群组</div>
+
+
+		</div>
+        </div>
+    </div>
+    </div>
+    <input type="hidden" name="iconn" value="" id="iconn"/>
+</body>
+<script>
+    zy_init();
+    window.uexOnload = function(type){
+        if (!type) {
+            $$("group_name").innerHTML = window.localStorage['my_group_name'];
+			$$("group_intro").innerHTML = window.localStorage['my_notice'];
+			$$("icon").style.backgroundImage='url('+window.localStorage['my_icon']+')';
+        }
+        window.onorientationchange = window.onresize = function(){
+            zy_resize("content", 0, $$("header").offsetHeight);
+        }        
+    }  
+    function A(){
+		$$('icon').src = icon();
+        $$('nick').innerHTML = nickname();
+        $$('uid').innerHTML = uid();
+        if (sex() == 1) 
+            $$('sex').innerHTML = "男";
+        else 
+            $$("sex").innerHTML = "女";
+        $$("univs_name").innerHTML = univs_name();
+        $$("grade_academy").innerHTML = grade() + academy_name();
+        
+        if (class_id() == "null") {
+            $$("classname").innerHTML = '<label style="color:blue">加入班级</label>';
+            
+        }
+        else {
+            $$('tips').innerHTML = "有班级的人不能修改以下资料。";
+            $$("classname").innerHTML = class_name();
+        }
+        $$("realname").innerHTML = realname();
+        $$("nick").innerHTML = nickname();   
+    }
+    function C(){
+		winClose();
+		uexWindow.evaluateScript("threadWindow","content","B()");
+		
+	}
+	function resign_group(){
+		var url = URL() + "IUGroupBusiness/leaveGroup";
+    		 var sessionuid1 = sessionuid();
+            var sessionsid1 = sessionsid();
+            var json = {};
+            json.session = {};
+            json.session.uid = sessionuid1;
+            json.session.sid = sessionsid1;
+			json.group_id = window.localStorage['my_group_id'];
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                var t = JSON.stringify(data);
+          alert(t);
+		  uexWindow.evaluateScript("root",0,"third()");
+		  openNewWin("index","index.html");
+                
+            }, 'json', function(err){
+            
+            }, 'POST', json);    
+        
+	}
+</script>
+</html>

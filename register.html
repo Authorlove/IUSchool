@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html class="um landscape min-width-240px min-width-320px min-width-480px min-width-768px min-width-1024px">
+    <head>
+        <title></title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" href="register/css/main.css">
+        <link rel="stylesheet" href="css/project/ui-input-v3.css">
+        <link rel="stylesheet" href="css/project/ui-res-v3.css">
+        <link rel="stylesheet" href="css/project/ui-color-v3.css">
+        <link rel="stylesheet" href="css/project/ui-btn-v3.css">
+        <link rel="stylesheet" href="css/ui-box.css">
+        <link rel="stylesheet" href="css/ui-base.css">
+        <link rel="stylesheet" href="css/ui-input.css">
+        <link rel="stylesheet" href="css/project/style.css">
+        <link rel="stylesheet" href="register_content/css/main.css">
+        <script src="js/zy_control.js">
+        </script>
+        <script src="js/zy_click.js">
+        </script>
+        <script src="js/zy_json.js">
+        </script>
+        <script src="js/zy_tmpl.js">
+        </script>
+        <script src="js/iu_school.js">
+        </script>
+        <script src="js/zy_event.js">
+        </script>
+        <script src="js/main.js">
+        </script>
+        <script src="register_content/js/register_main.js">
+        </script>
+        <script src="js/zy_icache.js">
+        </script>
+		<style>
+			.wenzi{font-size:0.9em;margin-top:0.5em}
+		</style>
+    </head>
+    <body class="um-vp c-wh" ontouchstart>
+        <div id="page_0" class="up ub ub-ver" tabindex="0">
+            <!--header开始-->
+            <div id="header" class="uh t-wh ub c-blu">
+                <div id="header" class="uh t-wh ub c-blu">
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="winClose()">
+                        <div class="t-btn-a1 ub-img uwh-tBtn">
+                        </div>
+                    </div>
+                    <h1 class="ut ub-f1 ulev-3 ut-s tx-c" tabindex="0">注册</h1>
+                    <div class="umw4 ub ub-ac ub-pc" ontouchstart="zy_touch('btn-act')" onclick="">
+                    </div>
+                </div>
+            </div>
+            <!--header结束--><!--content开始-->
+            <div id="content" class="ub-f1 tx-l t-bla c-gra1">
+                <div class="ub ub-ver uinn-a1">
+                  <div id="first">
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac">
+                        <div class="ulev-app1 umw4">
+                            手机
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <input placeholder="请输入手机号" id="uid" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            密码
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <input placeholder="请输入密码" id="password" type="password">
+                            </div>
+                        </div>
+                    </div>
+					<div class="uinn-at1" onclick="nextstep1()">
+                            <div ontouchstart="zy_touch('btn-act')" class="uinn-a2 btn_hei1 c-org uc-a1 t-wh tx-c">
+                                下一步
+                            </div>
+                    </div>
+				   </div>
+				   <div id="second" style="display:none">
+				   	<div class="wenzi">选择完这些，就好了。(*^__^*)</div> 
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            省份
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                                            选择省份
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="province" selectedindex="0" id="province" onchange="zy_selectmenu(this.id),getUniversity()">
+                                            <option>加载中....</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            学校
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                                            选择学校
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="school" selectedindex="0" id="school" onchange="zy_selectmenu(this.id),getAcademy()">
+                                            <option>加载中.....</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            学院
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel" id="choose2">
+                                            选择学院
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="academy" selectedindex="0" id="academy" onchange="zy_selectmenu(this.id)">
+                                            <option>加载中.....</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            年级
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <!--下拉列表开始-->
+                                <div class="ub t-bla">
+                                    <div class="ub-f1 ub uba c-wh b-gra  sel">
+                                        <div class="ub-f1 ut-s uinn ulev-1 tx-l t-gra ulh-sel">
+                                            选择年级
+                                        </div>
+                                        <div class="ubl b-gra c-06 umw2 ub ub-pc ub-ac">
+                                            <div class="ub-img umw1 umh1 res3">
+                                            </div>
+                                        </div>
+                                        <select name="grade" selectedindex="0" id="grade" onchange="zy_selectmenu(this.id)">
+                                            <option></option>
+                                            <option value="2014">2014级</option>
+                                            <option value="2013">2013级</option>
+                                            <option value="2012">2012级</option>
+                                            <option value="2011">2011级</option>
+                                            <option value="2010">2010级</option>
+                                            <option value="2009">2009级</option>
+                                            <option value="2008">2008级</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--下拉列表结束-->
+                            </div>
+                        </div>
+                    </div>
+                         <div class="wenzi">请输入真实姓名，否则无法通过验证。</div>
+				    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            真实姓名
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                            	
+                                <input placeholder="这是一个实名制的平台。" id="realname" type="text" class="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            昵称
+                        </div>
+                        <div class="ub-f1 uinn">
+                            <div class="uinput uinn4">
+                                <input placeholder="请输入昵称" id="nick" type="text" class="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uba b-gra3 uc-a1 c-wh ub uinn-a7 ub-ac umar-at1">
+                        <div class="ulev-app1 umw4">
+                            性别
+                        </div>
+                        <!--单选框开始-->
+                        <input type="radio" name="sex" class="uhide" id="radio-1" value="1">
+                        <div onclick="zy_for(event)" ontouchstart="zy_touch('btn-act')" class=" ub uc-a1 t-wh ui-rdi umar-a">
+                            <div class="rdi-icon ub-img  umw2 umh4">
+                            </div>
+                        </div>男<!--单选框结束-->
+                        <!--单选框开始-->
+                        <input type="radio" name="sex" class="uhide" id="radio-2" value="0">
+                        <div onclick="zy_for(event)" ontouchstart="zy_touch('btn-act')" class=" ub uc-a1 t-wh ui-rdi umar-a">
+                            <div class="rdi-icon ub-img  umw2 umh4">
+                            </div>
+                        </div>女<!--单选框结束-->
+                    </div>
+                    <div class="ub ub-ver">
+                        <div class="ub ub-pe uinn-a6 ulev-4">
+                            <div class="t-gra4">
+                                我同意
+                            </div>
+                            <div class=" t-blu" ontouchstart="zy_touch('btn-act')" onclick="openNewWin('用户服务协议','servicep.html');">
+                                用户服务协议
+                            </div>
+                        </div>
+                        <div class="uinn-at1" onclick="sumbit1()">
+                            <div ontouchstart="zy_touch('btn-act')" class="uinn-a2 btn_hei1 c-org uc-a1 t-wh tx-c">
+                                注册
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+				</div>
+            </div>
+            <!--content结束-->
+        </div>
+    </body>
+    <script>
+        zy_init();
+        window.uexOnload = function(type){
+        
+            window.onorientationchange = window.onresize = function(){
+                zy_resize("content", 0, $$("header").offsetHeight);
+            }
+            //获取省份
+            var url = URL() + "IUSchoolList/getProvince";
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {
+                    var tmpl = '<option value="${province_id}">${province_name}</option>';
+                    var s = zy_tmpl(tmpl, data.data.province, zy_tmpl_count(data.data.province));
+                    var d = document.getElementById("province");
+                    d.innerHTML = "<option></option>" + s;
+                }
+                else{}
+            });
+        }
+		function nextstep1(){
+			var patrn =  /1[3-8]+\d{9}/;
+           if(!patrn.exec($$('uid').value)) {
+		   	   uexWindow.alert('提示','请输入真实手机号码','确定');
+			   return;
+            }
+			if($$('password').value==""){
+				uexWindow.alert('提示','请输入密码','确定');
+				return;
+			}
+			$$('first').style.display = "none";
+			$$('second').style.display = 'block';
+		}
+        //注册后返回数据
+        function sumbit1(){
+            var uid = document.getElementById("uid").value;
+            var password = document.getElementById("password").value;
+            var school = document.getElementById("school").value;
+            var academy = document.getElementById("academy").value;
+            var grade = document.getElementById("grade").value;
+            var realname = document.getElementById("realname").value;
+            var nick = document.getElementById("nick").value;
+            var sex = document.getElementsByName("sex");
+            for (var i = 0; i < sex.length; i++) {
+                if (sex[i].checked) 
+                    var s = sex[i].value;
+            }
+            var url = URL() + "IUNewStudentUser/register";
+            var json = {};
+			$.clearLS(url);
+            json.uid = uid;
+            json.upd = password;
+            json.univs_id = school;
+            json.academy_id = academy;
+            json.grade = grade;
+            json.nickname = nick;
+            json.realname = realname;
+            json.sex = s;
+            var t = JSON.stringify(json);
+            var json = [{
+                'key': 'json',
+                'type': '0',
+                'value': t
+            }];
+            $.getJSON(url, function(data){
+                if (data.status.succeed) {		
+					var t = JSON.stringify(data);
+                    var h = eval('(' + t + ')');
+                    window.localStorage['iu_user'] = t;
+                    window.localStorage['uid'] = h.data.accountMesg.uid;
+                    window.localStorage['univs_id'] = h.data.accountMesg.univs_id;
+                    window.localStorage['academy_id'] = h.data.accountMesg.academy_id;
+                    window.localStorage['grade'] = h.data.accountMesg.grade;
+                    window.localStorage['class_id'] = h.data.accountMesg.class_id;
+                    window.localStorage['lpn'] = h.data.accountMesg.lpn;
+                    window.localStorage['spn'] = h.data.accountMesg.spn;
+                    window.localStorage['realname'] = h.data.accountMesg.realname;
+                    window.localStorage['nickname'] = h.data.accountMesg.nickname;
+                    window.localStorage['sex'] = h.data.accountMesg.sex;
+                    window.localStorage['interest'] = h.data.accountMesg.interest;
+                    window.localStorage['univs_name'] = h.data.accountMesg.univs_name;
+                    window.localStorage['academy_name'] = h.data.accountMesg.academy_name;
+                    window.localStorage['icon'] = h.data.accountMesg.icon;
+                    window.localStorage['report'] = h.data.accountMesg.report;
+                    window.localStorage['sessionuid'] = h.data.session.uid;
+                    window.localStorage['sessionsid'] = h.data.session.sid;
+					window.localStorage['publish_count'] = h.data.accountMesg.publish_count;
+					window.localStorage['followed_count'] = h.data.accountMesg.followed_count;
+					window.localStorage['follow_others_count'] = h.data.accountMesg.follow_others_count;
+					window.localStorage['private_letter_count'] = h.data.accountMesg.private_letter_count;
+                    if (window.localStorage['class_id'] != "null") {
+                        window.localStorage['class_name'] = h.data.classMesg.class_name;
+                        window.localStorage['class_introduce'] = h.data.classMesg.introduce;
+                        window.localStorage['class_grade'] = h.data.classMesg.grade;
+                        window.localStorage['class_academy_id'] = h.data.classMesg.academy_id;
+                        window.localStorage['class_univs_name'] = h.data.classMesg.univs_name;
+                        window.localStorage['class_univs_id'] = h.data.classMesg.univs_id;
+                        window.localStorage['class_owner_id'] = h.data.classMesg.owner_id;
+                        window.localStorage['class_icon'] = h.data.classMesg.icon;
+                        window.localStorage['class_memberCount'] = h.data.classMesg.memberCount;
+                    }
+					else {
+						window.localStorage['class_name'] = "";
+                        window.localStorage['class_introduce'] = "";
+                        window.localStorage['class_grade'] = "";
+                        window.localStorage['class_academy_id'] = ""
+                        window.localStorage['class_univs_name'] = "";
+                        window.localStorage['class_univs_id'] = "";
+                        window.localStorage['class_owner_id'] = "";
+                        window.localStorage['class_icon'] = "";
+                        window.localStorage['class_memberCount'] = "";
+					}
+					 uexWindow.alert("提示","注册成功！","确定");	
+                    openNewWin('uploadicon', 'uploadicon.html');
+                    winClose();
+                }
+                else {
+                    uexWindow.alert("提示",data.status.error_mesg,"确定");
+                }
+            }, 'json', function(err){
+            }, 'POST', json, true);
+        }
+    </script>
+</html>
